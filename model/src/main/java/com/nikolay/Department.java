@@ -1,11 +1,7 @@
 package com.nikolay;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Arrays;
 import java.util.Currency;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * The type Department.
@@ -20,7 +16,7 @@ public class Department {
 
     private Currency currency;
 
-    private List<Employee> employees;
+    private BigDecimal averageSalary;
 
     /**
      * Instantiates a new Department.
@@ -28,17 +24,25 @@ public class Department {
     public Department() {
     }
 
-    public Department(Long id, String departmentName, Currency currency, List<Employee> employees) {
+    /**
+     * Instantiates a new Department.
+     *
+     * @param id             the id
+     * @param departmentName the department name
+     * @param currency       the currency
+     * @param averageSalary  the average salary
+     */
+    public Department(Long id, String departmentName, Currency currency, BigDecimal averageSalary) {
         this.id = id;
         this.departmentName = departmentName;
         this.currency = currency;
-        this.employees = employees;
+        this.averageSalary = averageSalary;
     }
 
     /**
      * Gets id.
      *
-     * @return the identifier
+     * @return the id
      */
     public Long getId() {
         return id;
@@ -47,7 +51,7 @@ public class Department {
     /**
      * Sets id.
      *
-     * @param id the identifier to set
+     * @param id the id
      */
     public void setId(Long id) {
         this.id = id;
@@ -65,38 +69,16 @@ public class Department {
     /**
      * Sets department name.
      *
-     * @param departmentName the department name to set
+     * @param departmentName the department name
      */
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
     }
 
-    public List<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }
-
-
-    /**
-     * Gets average salary.
-     *
-     * @return the average salary
-     */
-    public BigDecimal getAverageSalary() {
-        int size = employees.size();
-        if(size == 0){
-            return BigDecimal.ZERO;
-        }
-        return employees.stream().map(Employee::getSalary).reduce(BigDecimal::add).get().divide(BigDecimal.valueOf(size), RoundingMode.FLOOR);
-    }
-
     /**
      * Gets currency.
      *
-     * @return - the currency
+     * @return the currency
      */
     public Currency getCurrency() {
         return currency;
@@ -105,25 +87,27 @@ public class Department {
     /**
      * Sets currency.
      *
-     * @param currency the currency to set
+     * @param currency the currency
      */
     public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Department that = (Department) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(departmentName, that.departmentName) &&
-                Objects.equals(currency, that.currency) &&
-                Objects.equals(employees, that.employees);
+    /**
+     * Gets average salary.
+     *
+     * @return the average salary
+     */
+    public BigDecimal getAverageSalary() {
+        return averageSalary;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, departmentName, currency, employees);
+    /**
+     * Sets average salary.
+     *
+     * @param averageSalary the average salary
+     */
+    public void setAverageSalary(BigDecimal averageSalary) {
+        this.averageSalary = averageSalary;
     }
 }

@@ -1,12 +1,11 @@
 package com.nikolay;
 
+import com.nikolay.impl.DepartmentDAOImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Currency;
 import java.util.List;
 
@@ -30,11 +29,7 @@ public class TestDepartmentDAO {
 
   @Test
   public void testSaveDepartment() {
-    Department department = new Department(1L, "java", Currency.getInstance("USD"),
-            Arrays.asList(
-                    new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28), BigDecimal.valueOf(200), Currency.getInstance("USD")),
-                    new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28), BigDecimal.valueOf(200), Currency.getInstance("USD"))
-            ));
+    Department department = new Department(1L, "java", Currency.getInstance("USD"), BigDecimal.valueOf(200));
     Long departmentId = departmentDAO.saveDepartment(department);
     Assert.assertEquals(department.getId(), departmentId);
   }
@@ -56,11 +51,7 @@ public class TestDepartmentDAO {
   @Test
   public void testUpdateDepartment() {
     Department department = departmentDAO.getDepartmentById(1L);
-    Department newDepartment = new Department(1L, "java", Currency.getInstance("USD"),
-            Arrays.asList(
-                    new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28), BigDecimal.valueOf(200), Currency.getInstance("USD")),
-                    new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28), BigDecimal.valueOf(200), Currency.getInstance("USD"))
-            ));
+    Department newDepartment = new Department(1L, "java", Currency.getInstance("USD"), BigDecimal.valueOf(200));
     Long newDepartmentId = departmentDAO.updateDepartment(newDepartment);
     Assert.assertEquals(department.getId(), newDepartmentId);
   }

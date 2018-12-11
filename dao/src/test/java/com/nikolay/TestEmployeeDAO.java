@@ -1,5 +1,6 @@
 package com.nikolay;
 
+import com.nikolay.impl.EmployeeDAOImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

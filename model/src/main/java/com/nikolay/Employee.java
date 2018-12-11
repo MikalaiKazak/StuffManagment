@@ -11,7 +11,7 @@ public class Employee {
 
     private Long id;
 
-    private long departmentId;
+    private Long departmentId;
 
     private String fullName;
 
@@ -21,27 +21,29 @@ public class Employee {
 
     private Currency currency;
 
-    /** Instantiates a new Employee. */
+    /**
+     * Instantiates a new Employee.
+     */
     public Employee() {
     }
 
-  /**
-   * Instantiates a new Employee.
-   *
-   * @param id the id
-   * @param departmentId the department id
-   * @param fullName the full name
-   * @param birthday the birthday
-   * @param salary the salary
-   * @param currency the currency
-   */
-  public Employee(
-      Long id,
-      long departmentId,
-      String fullName,
-      LocalDate birthday,
-      BigDecimal salary,
-      Currency currency) {
+    /**
+     * Instantiates a new Employee.
+     *
+     * @param id           the id
+     * @param departmentId the department id
+     * @param fullName     the full name
+     * @param birthday     the birthday
+     * @param salary       the salary
+     * @param currency     the currency
+     */
+    public Employee(
+            Long id,
+            Long departmentId,
+            String fullName,
+            LocalDate birthday,
+            BigDecimal salary,
+            Currency currency) {
         this.id = id;
         this.departmentId = departmentId;
         this.fullName = fullName;
@@ -53,7 +55,7 @@ public class Employee {
     /**
      * Gets id.
      *
-     * @return the identifier
+     * @return the id
      */
     public Long getId() {
         return id;
@@ -62,16 +64,16 @@ public class Employee {
     /**
      * Sets id.
      *
-     * @param id the identifier to set
+     * @param id the id
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * Gets department name.
+     * Gets department id.
      *
-     * @return the department name
+     * @return the department id
      */
     public Long getDepartmentId() {
         return departmentId;
@@ -80,7 +82,7 @@ public class Employee {
     /**
      * Sets department id.
      *
-     * @param departmentId the department identifier to set
+     * @param departmentId the department id
      */
     public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
@@ -89,7 +91,7 @@ public class Employee {
     /**
      * Gets full name.
      *
-     * @return the employee full name
+     * @return the full name
      */
     public String getFullName() {
         return fullName;
@@ -98,7 +100,7 @@ public class Employee {
     /**
      * Sets full name.
      *
-     * @param fullName the employee full name to set
+     * @param fullName the full name
      */
     public void setFullName(String fullName) {
         this.fullName = fullName;
@@ -107,7 +109,7 @@ public class Employee {
     /**
      * Gets birthday.
      *
-     * @return the employee birthday
+     * @return the birthday
      */
     public LocalDate getBirthday() {
         return birthday;
@@ -116,7 +118,7 @@ public class Employee {
     /**
      * Sets birthday.
      *
-     * @param birthday the employee birthday to set
+     * @param birthday the birthday
      */
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
@@ -125,7 +127,7 @@ public class Employee {
     /**
      * Gets salary.
      *
-     * @return the employee salary
+     * @return the salary
      */
     public BigDecimal getSalary() {
         return salary;
@@ -134,7 +136,7 @@ public class Employee {
     /**
      * Sets salary.
      *
-     * @param salary the employee salary to set
+     * @param salary the salary
      */
     public void setSalary(BigDecimal salary) {
         this.salary = salary;
