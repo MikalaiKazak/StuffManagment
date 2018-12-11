@@ -30,7 +30,7 @@ public class TestEmployeeDAO {
     Employee employee =
         new Employee(
             1L,
-            "java",
+            1L,
             "Nikolay Kozak",
             LocalDate.of(1999, 2, 28),
             BigDecimal.valueOf(200),
@@ -59,7 +59,7 @@ public class TestEmployeeDAO {
     Employee newEmployee =
         new Employee(
             1L,
-            "sql",
+            2L,
             "Nikolay Kozak",
             LocalDate.of(1999, 2, 28),
             BigDecimal.valueOf(200),

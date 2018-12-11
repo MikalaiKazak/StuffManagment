@@ -1,7 +1,11 @@
 package com.nikolay;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Arrays;
 import java.util.Currency;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * The type Department.
@@ -14,110 +18,117 @@ public class Department {
 
     private String departmentName;
 
-    private BigDecimal averageSalary;
-
     private Currency currency;
 
-  /** Instantiates a new Department. */
-  public Department() {}
+    private List<Employee> employees;
 
-  /**
-   * Instantiates a new Department.
-   *
-   * @param departmentName the department name
-   * @param averageSalary the average salary
-   * @param currency the currency
-   */
-  public Department(String departmentName, BigDecimal averageSalary, Currency currency) {
-        this.departmentName = departmentName;
-        this.averageSalary = averageSalary;
-        this.currency = currency;
+    /**
+     * Instantiates a new Department.
+     */
+    public Department() {
     }
 
-  /**
-   * Instantiates a new Department.
-   *
-   * @param id the id
-   * @param departmentName the department name
-   * @param averageSalary the average salary
-   * @param currency the currency
-   */
-  public Department(Long id, String departmentName, BigDecimal averageSalary, Currency currency) {
+    /**
+     * Instantiates a new Department.
+     *
+     * @param id the id
+     * @param departmentName the department name
+     * @param employees the employees
+     */
+    public Department(Long id, String departmentName, List<Employee> employees) {
         this.id = id;
         this.departmentName = departmentName;
-        this.averageSalary = averageSalary;
-        this.currency = currency;
+        this.employees = employees;
     }
 
-  /**
-   * Gets id.
-   *
-   * @return the identifier
-   */
-  public Long getId() {
+    /**
+     * Gets id.
+     *
+     * @return the identifier
+     */
+    public Long getId() {
         return id;
     }
 
-  /**
-   * Sets id.
-   *
-   * @param id the identifier to set
-   */
-  public void setId(Long id) {
+    /**
+     * Sets id.
+     *
+     * @param id the identifier to set
+     */
+    public void setId(Long id) {
         this.id = id;
     }
 
-  /**
-   * Gets department name.
-   *
-   * @return the department name
-   */
-  public String getDepartmentName() {
+    /**
+     * Gets department name.
+     *
+     * @return the department name
+     */
+    public String getDepartmentName() {
         return departmentName;
     }
 
-  /**
-   * Sets department name.
-   *
-   * @param departmentName the department name to set
-   */
-  public void setDepartmentName(String departmentName) {
+    /**
+     * Sets department name.
+     *
+     * @param departmentName the department name to set
+     */
+    public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
     }
 
-  /**
-   * Gets average salary.
-   *
-   * @return the average salary
-   */
-  public BigDecimal getAverageSalary() {
-        return averageSalary;
+    public List<Employee> getEmployees() {
+        return employees;
     }
 
-  /**
-   * Sets average salary.
-   *
-   * @param averageSalary the average salary to set
-   */
-  public void setAverageSalary(BigDecimal averageSalary) {
-        this.averageSalary = averageSalary;
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 
-  /**
-   * Gets currency.
-   *
-   * @return - the currency
-   */
-  public Currency getCurrency() {
+
+    /**
+     * Gets average salary.
+     *
+     * @return the average salary
+     */
+    public BigDecimal getAverageSalary() {
+        int size = employees.size();
+        if(size == 0){
+            return BigDecimal.ZERO;
+        }
+        return employees.stream().map(Employee::getSalary).reduce(BigDecimal::add).get().divide(BigDecimal.valueOf(size), RoundingMode.FLOOR);
+    }
+
+    /**
+     * Gets currency.
+     *
+     * @return - the currency
+     */
+    public Currency getCurrency() {
         return currency;
     }
 
-  /**
-   * Sets currency.
-   *
-   * @param currency the currency to set
-   */
-  public void setCurrency(Currency currency) {
+    /**
+     * Sets currency.
+     *
+     * @param currency the currency to set
+     */
+    public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Department that = (Department) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(departmentName, that.departmentName) &&
+                Objects.equals(employees, that.employees);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, departmentName, employees);
     }
 }
