@@ -44,6 +44,7 @@ public interface EmployeeDAO {
      * Delete employee by identifier
      *
      * @param employeeId the employee identifier
+     * @return           the identifier of the deleted employee
      */
-    void deleteEmployee(Long employeeId);
+    Long deleteEmployee(Long employeeId);
 }

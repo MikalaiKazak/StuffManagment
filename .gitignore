@@ -20,6 +20,7 @@ target/
 *.iml
 *.iws
 *.ipr
+*.attach*
 .idea/
 
 # OS

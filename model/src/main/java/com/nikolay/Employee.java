@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Currency;
 
+/** The type Employee. */
 public class Employee {
 
     private Long id;
@@ -18,10 +19,24 @@ public class Employee {
 
     private Currency currency;
 
-    public Employee() {
-    }
+  /** Instantiates a new Employee. */
+  public Employee() {}
 
-    public Employee(String departmentName, String fullName, LocalDate birthday, BigDecimal salary, Currency currency) {
+  /**
+   * Instantiates a new Employee.
+   *
+   * @param departmentName the department name
+   * @param fullName the full name
+   * @param birthday the birthday
+   * @param salary the salary
+   * @param currency the currency
+   */
+  public Employee(
+      String departmentName,
+      String fullName,
+      LocalDate birthday,
+      BigDecimal salary,
+      Currency currency) {
         this.departmentName = departmentName;
         this.fullName = fullName;
         this.birthday = birthday;
@@ -29,7 +44,23 @@ public class Employee {
         this.currency = currency;
     }
 
-    public Employee(Long id, String departmentName, String fullName, LocalDate birthday, BigDecimal salary, Currency currency) {
+  /**
+   * Instantiates a new Employee.
+   *
+   * @param id the id
+   * @param departmentName the department name
+   * @param fullName the full name
+   * @param birthday the birthday
+   * @param salary the salary
+   * @param currency the currency
+   */
+  public Employee(
+      Long id,
+      String departmentName,
+      String fullName,
+      LocalDate birthday,
+      BigDecimal salary,
+      Currency currency) {
         this.id = id;
         this.departmentName = departmentName;
         this.fullName = fullName;
@@ -38,87 +69,111 @@ public class Employee {
         this.currency = currency;
     }
 
-    /**
-     * @return the identifier
-     */
-    public Long getId() {
+  /**
+   * Gets id.
+   *
+   * @return the identifier
+   */
+  public Long getId() {
         return id;
     }
 
-    /**
-     * @param id the identifier to set
-     */
-    public void setId(Long id) {
+  /**
+   * Sets id.
+   *
+   * @param id the identifier to set
+   */
+  public void setId(Long id) {
         this.id = id;
     }
 
-    /**
-     * @return the department name
-     */
-    public String getDepartmentName() {
+  /**
+   * Gets department name.
+   *
+   * @return the department name
+   */
+  public String getDepartmentName() {
         return departmentName;
     }
 
-    /**
-     * @param departmentName the department name to set
-     */
-    public void setDepartmentName(String departmentName) {
+  /**
+   * Sets department name.
+   *
+   * @param departmentName the department name to set
+   */
+  public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
     }
 
-    /**
-     * @return the employee full name
-     */
-    public String getFullName() {
+  /**
+   * Gets full name.
+   *
+   * @return the employee full name
+   */
+  public String getFullName() {
         return fullName;
     }
 
-    /**
-     * @param fullName the employee full name to set
-     */
-    public void setFullName(String fullName) {
+  /**
+   * Sets full name.
+   *
+   * @param fullName the employee full name to set
+   */
+  public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    /**
-     * @return the employee birthday
-     */
-    public LocalDate getBirthday() {
+  /**
+   * Gets birthday.
+   *
+   * @return the employee birthday
+   */
+  public LocalDate getBirthday() {
         return birthday;
     }
 
-    /**
-     * @param birthday the employee birthday to set
-     */
-    public void setBirthday(LocalDate birthday) {
+  /**
+   * Sets birthday.
+   *
+   * @param birthday the employee birthday to set
+   */
+  public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
-    /**
-     * @return the employee salary
-     */
-    public BigDecimal getSalary() {
+  /**
+   * Gets salary.
+   *
+   * @return the employee salary
+   */
+  public BigDecimal getSalary() {
         return salary;
     }
 
-    /**
-     * @param salary the employee salary to set
-     */
-    public void setSalary(BigDecimal salary) {
+  /**
+   * Sets salary.
+   *
+   * @param salary the employee salary to set
+   */
+  public void setSalary(BigDecimal salary) {
         this.salary = salary;
     }
 
-    /**
-     * @return the currency
-     */
-    public Currency getCurrency() {
+  /**
+   * Gets currency.
+   *
+   * @return the currency
+   */
+  public Currency getCurrency() {
         return currency;
     }
 
-    /**
-     * @param currency the currency to set
-     */
-    public void setCurrency(Currency currency) {
+  /**
+   * Sets currency.
+   *
+   * @param currency the currency to set
+   */
+  public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 }

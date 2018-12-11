@@ -23,7 +23,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return null;
     }
 
-    public void deleteEmployee(Long employeeId) {
-
+    public Long deleteEmployee(Long employeeId) {
+        return null;
     }
 }
