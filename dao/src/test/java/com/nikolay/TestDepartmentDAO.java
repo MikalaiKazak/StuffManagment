@@ -30,7 +30,8 @@ public class TestDepartmentDAO {
 
   @Test
   public void testSaveDepartment() {
-    Department department = new Department(1L, "java", Arrays.asList(
+    Department department = new Department(1L, "java", Currency.getInstance("USD"),
+            Arrays.asList(
                     new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28), BigDecimal.valueOf(200), Currency.getInstance("USD")),
                     new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28), BigDecimal.valueOf(200), Currency.getInstance("USD"))
             ));
@@ -55,7 +56,8 @@ public class TestDepartmentDAO {
   @Test
   public void testUpdateDepartment() {
     Department department = departmentDAO.getDepartmentById(1L);
-    Department newDepartment = new Department(1L, "java", Arrays.asList(
+    Department newDepartment = new Department(1L, "java", Currency.getInstance("USD"),
+            Arrays.asList(
                     new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28), BigDecimal.valueOf(200), Currency.getInstance("USD")),
                     new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28), BigDecimal.valueOf(200), Currency.getInstance("USD"))
             ));

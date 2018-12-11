@@ -28,16 +28,10 @@ public class Department {
     public Department() {
     }
 
-    /**
-     * Instantiates a new Department.
-     *
-     * @param id the id
-     * @param departmentName the department name
-     * @param employees the employees
-     */
-    public Department(Long id, String departmentName, List<Employee> employees) {
+    public Department(Long id, String departmentName, Currency currency, List<Employee> employees) {
         this.id = id;
         this.departmentName = departmentName;
+        this.currency = currency;
         this.employees = employees;
     }
 
@@ -124,11 +118,12 @@ public class Department {
         Department that = (Department) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(departmentName, that.departmentName) &&
+                Objects.equals(currency, that.currency) &&
                 Objects.equals(employees, that.employees);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, departmentName, employees);
+        return Objects.hash(id, departmentName, currency, employees);
     }
 }

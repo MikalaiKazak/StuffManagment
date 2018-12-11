@@ -15,10 +15,11 @@ public class TestDepartment {
 
     @Before
     public void setUp(){
-        department = new Department(1L, "java", Arrays.asList(
-            new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28), BigDecimal.valueOf(200), Currency.getInstance("USD")),
-            new Employee(2L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28), BigDecimal.valueOf(200), Currency.getInstance("USD"))
-        ));
+        department = new Department(1L, "java", Currency.getInstance("USD"),
+                Arrays.asList(
+                        new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28), BigDecimal.valueOf(200), Currency.getInstance("USD")),
+                        new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28), BigDecimal.valueOf(200), Currency.getInstance("USD"))
+                ));
     }
 
     @Test
