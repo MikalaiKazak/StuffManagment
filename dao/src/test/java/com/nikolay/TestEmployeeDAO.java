@@ -34,8 +34,7 @@ public class TestEmployeeDAO {
             1L,
             "Nikolay Kozak",
             LocalDate.of(1999, 2, 28),
-            BigDecimal.valueOf(200),
-            Currency.getInstance("USD"));
+            BigDecimal.valueOf(200));
     Long employeeId = employeeDAO.saveEmployee(employee);
     Assert.assertEquals(employee.getId(), employeeId);
   }
@@ -63,8 +62,7 @@ public class TestEmployeeDAO {
             2L,
             "Nikolay Kozak",
             LocalDate.of(1999, 2, 28),
-            BigDecimal.valueOf(200),
-            Currency.getInstance("USD"));
+            BigDecimal.valueOf(200));
     Long newEmployeeId = employeeDAO.updateEmployee(newEmployee);
     Assert.assertEquals(employee.getId(), newEmployeeId);
   }

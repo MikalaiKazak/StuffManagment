@@ -29,7 +29,7 @@ public class TestDepartmentDAO {
 
   @Test
   public void testSaveDepartment() {
-    Department department = new Department(1L, "java", Currency.getInstance("USD"), BigDecimal.valueOf(200));
+    Department department = new Department(1L, "java", BigDecimal.valueOf(200));
     Long departmentId = departmentDAO.saveDepartment(department);
     Assert.assertEquals(department.getId(), departmentId);
   }
@@ -51,7 +51,7 @@ public class TestDepartmentDAO {
   @Test
   public void testUpdateDepartment() {
     Department department = departmentDAO.getDepartmentById(1L);
-    Department newDepartment = new Department(1L, "java", Currency.getInstance("USD"), BigDecimal.valueOf(200));
+    Department newDepartment = new Department(1L, "java", BigDecimal.valueOf(200));
     Long newDepartmentId = departmentDAO.updateDepartment(newDepartment);
     Assert.assertEquals(department.getId(), newDepartmentId);
   }
