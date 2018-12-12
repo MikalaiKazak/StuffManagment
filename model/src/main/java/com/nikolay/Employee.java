@@ -6,6 +6,7 @@ import java.util.Currency;
 
 /**
  * The type Employee.
+ * @author Mikalai_Kazak @epam.com 10.12.2018
  */
 public class Employee {
 
@@ -18,8 +19,6 @@ public class Employee {
     private LocalDate birthday;
 
     private BigDecimal salary;
-
-    private Currency currency;
 
     /**
      * Instantiates a new Employee.
@@ -35,21 +34,13 @@ public class Employee {
      * @param fullName     the full name
      * @param birthday     the birthday
      * @param salary       the salary
-     * @param currency     the currency
      */
-    public Employee(
-            Long id,
-            Long departmentId,
-            String fullName,
-            LocalDate birthday,
-            BigDecimal salary,
-            Currency currency) {
+    public Employee(Long id, Long departmentId, String fullName, LocalDate birthday, BigDecimal salary) {
         this.id = id;
         this.departmentId = departmentId;
         this.fullName = fullName;
         this.birthday = birthday;
         this.salary = salary;
-        this.currency = currency;
     }
 
     /**
@@ -140,24 +131,6 @@ public class Employee {
      */
     public void setSalary(BigDecimal salary) {
         this.salary = salary;
-    }
-
-    /**
-     * Gets currency.
-     *
-     * @return the currency
-     */
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    /**
-     * Sets currency.
-     *
-     * @param currency the currency
-     */
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
     }
 }
 
