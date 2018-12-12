@@ -14,8 +14,6 @@ public class Department {
 
     private String departmentName;
 
-    private Currency currency;
-
     private BigDecimal averageSalary;
 
     /**
@@ -29,13 +27,11 @@ public class Department {
      *
      * @param id             the id
      * @param departmentName the department name
-     * @param currency       the currency
      * @param averageSalary  the average salary
      */
-    public Department(Long id, String departmentName, Currency currency, BigDecimal averageSalary) {
+    public Department(Long id, String departmentName, BigDecimal averageSalary) {
         this.id = id;
         this.departmentName = departmentName;
-        this.currency = currency;
         this.averageSalary = averageSalary;
     }
 
@@ -73,24 +69,6 @@ public class Department {
      */
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
-    }
-
-    /**
-     * Gets currency.
-     *
-     * @return the currency
-     */
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    /**
-     * Sets currency.
-     *
-     * @param currency the currency
-     */
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
     }
 
     /**
