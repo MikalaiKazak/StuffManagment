@@ -2,6 +2,7 @@ package com.nikolay.impl;
 
 import com.nikolay.Department;
 import com.nikolay.DepartmentDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -9,8 +10,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Objects;
 
 /** @author Mikalai_Kazak@epam.com 10.12.2018 */
+@Component
 public class DepartmentDAOImpl implements DepartmentDAO {
 
     @Value("${department.DEPARTMENT_ID_COLUMN}")
@@ -54,10 +56,11 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     @Value("${department.GET_DEPARTMENT_AVERAGE_SALARY}")
     private String GET_DEPARTMENT_AVERAGE_SALARY;
 
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public DepartmentDAOImpl(DataSource dataSource) {
-        namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    @Autowired
+    public DepartmentDAOImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override

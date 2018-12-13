@@ -12,7 +12,8 @@ import java.util.List;
 
 /** @author Mikalai Kazak */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:test-dao.xml"})
+@ContextConfiguration(locations = {"classpath*:/test-dao.xml"})
+
 public class TestDepartmentDAO {
 
     private final static long AMOUNT_DEPARTMENTS = 14;
