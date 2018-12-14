@@ -50,7 +50,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private DepartmentMapper departmentMapper;
+    private DepartmentMapper departmentMapper = new DepartmentMapper();
 
     @Autowired
     public DepartmentDAOImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -59,13 +59,13 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 
     @Override
     public List<Department> getAllDepartments() {
-        return this.namedParameterJdbcTemplate.query(GET_ALL_DEPARTMENTS, new DepartmentMapper());
+        return this.namedParameterJdbcTemplate.query(GET_ALL_DEPARTMENTS, departmentMapper);
     }
 
     @Override
     public Department getDepartmentById(Long departmentId) {
         SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_DEPARTMENT_ID, departmentId);
-        return this.namedParameterJdbcTemplate.queryForObject(GET_DEPARTMENT_BY_ID, namedParameters, new DepartmentMapper());
+        return this.namedParameterJdbcTemplate.queryForObject(GET_DEPARTMENT_BY_ID, namedParameters, departmentMapper);
     }
 
     @Override

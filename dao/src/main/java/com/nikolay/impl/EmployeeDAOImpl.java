@@ -71,16 +71,18 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    private EmployeeMapper employeeMapper = new EmployeeMapper();
+
     @Autowired
     public EmployeeDAOImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-    }
 
+    }
 
     @Override
     public Employee getEmployeeById(Long employeeId) {
         SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_EMPLOYEE_ID, employeeId);
-        return this.namedParameterJdbcTemplate.queryForObject(GET_EMPLOYEE_BY_ID, namedParameters, new EmployeeMapper());
+        return this.namedParameterJdbcTemplate.queryForObject(GET_EMPLOYEE_BY_ID, namedParameters, employeeMapper);
     }
 
     @Override
@@ -118,13 +120,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public List<Employee> getAllEmployees() {
-        return this.namedParameterJdbcTemplate.query(GET_ALL_EMPLOYEE, new EmployeeMapper());
+        return this.namedParameterJdbcTemplate.query(GET_ALL_EMPLOYEE, employeeMapper);
     }
 
     @Override
     public List<Employee> getEmployeeByDateOfBirthday(LocalDate date) {
         SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_EMPLOYEE_BIRTHDAY, date.toString());
-        return this.namedParameterJdbcTemplate.query(GET_EMPLOYEE_BY_DATE_OF_BIRTHDAY, namedParameters, new EmployeeMapper());
+        return this.namedParameterJdbcTemplate.query(GET_EMPLOYEE_BY_DATE_OF_BIRTHDAY, namedParameters, employeeMapper);
     }
 
     @Override
@@ -132,7 +134,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY_FROM, dateFrom.toString());
         namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY_TO, dateTo.toString());
-        return this.namedParameterJdbcTemplate.query(GET_EMPLOYEE_BETWEEN_DATES_OF_BIRTHDAY, namedParameters, new EmployeeMapper());
+        return this.namedParameterJdbcTemplate.query(GET_EMPLOYEE_BETWEEN_DATES_OF_BIRTHDAY, namedParameters, employeeMapper);
     }
 
 }
