@@ -16,7 +16,6 @@ import java.util.List;
 public class TestDepartmentDAO {
 
     private final static long AMOUNT_DEPARTMENTS = 14L;
-    private final static long WRONG_DEPARTMENT_ID = 20L;
     private final static long DEPARTMENT_ID = 1L;
     private final static String DEPARTMENT_NAME = "Accounting";
     private final static String NEW_DEPARTMENT_NAME = "New department";

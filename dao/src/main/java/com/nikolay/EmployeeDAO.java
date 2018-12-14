@@ -63,5 +63,5 @@ public interface EmployeeDAO {
      * @param dateTo   the date to
      * @return the employee between dates of birtday
      */
-    List<Employee> getEmployeeBetweenDatesOfBirtday(LocalDate dateFrom, LocalDate dateTo);
+    List<Employee> getEmployeeBetweenDatesOfBirthday(LocalDate dateFrom, LocalDate dateTo);
 }

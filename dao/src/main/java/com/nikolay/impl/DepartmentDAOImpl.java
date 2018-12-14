@@ -2,9 +2,9 @@ package com.nikolay.impl;
 
 import com.nikolay.Department;
 import com.nikolay.DepartmentDAO;
+import com.nikolay.mapper.DepartmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -14,20 +14,12 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
 /** @author Mikalai_Kazak@epam.com 10.12.2018 */
 @Component
 public class DepartmentDAOImpl implements DepartmentDAO {
-
-    @Value("${department.DEPARTMENT_ID_COLUMN}")
-    private String DEPARTMENT_ID_COLUMN;
-
-    @Value("${department.DEPARTMENT_NAME_COLUMN}")
-    private String DEPARTMENT_NAME_COLUMN;
 
     @Value("${parameters.department_id}")
     private String PARAMETER_DEPARTMENT_ID;
@@ -57,6 +49,8 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     private String GET_DEPARTMENT_AVERAGE_SALARY;
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    private DepartmentMapper departmentMapper;
 
     @Autowired
     public DepartmentDAOImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -106,19 +100,6 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     public BigDecimal getDepartmentAverageSalary(Long departmentId) {
         SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_DEPARTMENT_ID, departmentId);
         return this.namedParameterJdbcTemplate.queryForObject(GET_DEPARTMENT_AVERAGE_SALARY, namedParameters, BigDecimal.class);
-    }
-
-    /**
-     * The type Department mapper.
-     */
-    final class DepartmentMapper implements RowMapper<Department> {
-        @Override
-        public Department mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Department department = new Department();
-            department.setId(rs.getLong(DEPARTMENT_ID_COLUMN));
-            department.setDepartmentName(rs.getString(DEPARTMENT_NAME_COLUMN));
-            return department;
-        }
     }
 
 }

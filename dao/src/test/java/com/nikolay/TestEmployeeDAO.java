@@ -44,7 +44,7 @@ public class TestEmployeeDAO {
 
     @Test
     public void testGetEmployeeBetweenDatesOfBirtday() {
-        List<Employee> employeeList = employeeDAO.getEmployeeBetweenDatesOfBirtday(DATE_FROM, DATE_TO);
+        List<Employee> employeeList = employeeDAO.getEmployeeBetweenDatesOfBirthday(DATE_FROM, DATE_TO);
         Assert.assertNotNull(employeeList);
         Assert.assertEquals(3, employeeList.size());
         Assert.assertEquals(EMPLOYEE_FULL_NAME, employeeList.get(0).getFullName());
