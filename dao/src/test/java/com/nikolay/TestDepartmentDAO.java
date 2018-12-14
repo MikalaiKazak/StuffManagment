@@ -13,15 +13,15 @@ import java.util.List;
 /** @author Mikalai Kazak */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-dao.xml"})
-
 public class TestDepartmentDAO {
 
-    private final static long AMOUNT_DEPARTMENTS = 14;
+    private final static long AMOUNT_DEPARTMENTS = 14L;
+    private final static long WRONG_DEPARTMENT_ID = 20L;
     private final static long DEPARTMENT_ID = 1L;
     private final static String DEPARTMENT_NAME = "Accounting";
     private final static String NEW_DEPARTMENT_NAME = "New department";
     private final static String CHANGED_DEPARTMENT_NAME = "Department";
-    private final static BigDecimal DEPARTMENT_AVERAGE_SALARY = BigDecimal.valueOf(810);
+    private final static BigDecimal DEPARTMENT_AVERAGE_SALARY = BigDecimal.valueOf(2399);
 
     @Autowired
     private DepartmentDAO departmentDAO;

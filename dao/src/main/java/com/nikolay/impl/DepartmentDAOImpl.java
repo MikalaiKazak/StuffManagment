@@ -30,10 +30,10 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     private String DEPARTMENT_NAME_COLUMN;
 
     @Value("${parameters.department_id}")
-    private String DEPARTMENT_ID;
+    private String PARAMETER_DEPARTMENT_ID;
 
     @Value("${parameters.department_name}")
-    private String DEPARTMENT_NAME;
+    private String PARAMETER_DEPARTMENT_NAME;
 
     @Value("${department.GET_ALL_DEPARTMENTS}")
     private String GET_ALL_DEPARTMENTS;
@@ -44,7 +44,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     @Value("${department.DELETE_DEPARTMENT}")
     private String DELETE_DEPARTMENT_BY_ID;
 
-    @Value("${employee.DELETE_EMPLOYEE_BY_DEPARTMENT_ID}")
+    @Value("${department.DELETE_EMPLOYEE_BY_DEPARTMENT_ID}")
     private String DELETE_EMPLOYEE_BY_DEPARTMENT_ID;
 
     @Value("${department.ADD_DEPARTMENT}")
@@ -70,7 +70,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 
     @Override
     public Department getDepartmentById(Long departmentId) {
-        SqlParameterSource namedParameters = new MapSqlParameterSource(DEPARTMENT_ID, departmentId);
+        SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_DEPARTMENT_ID, departmentId);
         return this.namedParameterJdbcTemplate.queryForObject(GET_DEPARTMENT_BY_ID, namedParameters, new DepartmentMapper());
     }
 
@@ -79,7 +79,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.getJdbcTemplate().update(
                 connection -> {
-                    PreparedStatement ps = connection.prepareStatement(ADD_DEPARTMENT, new String[] {DEPARTMENT_ID});
+                    PreparedStatement ps = connection.prepareStatement(ADD_DEPARTMENT, new String[]{PARAMETER_DEPARTMENT_ID});
                     ps.setString(1, department.getDepartmentName());
                     return ps;
                 },
@@ -90,21 +90,21 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     @Override
     public void updateDepartment(Department department) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue(DEPARTMENT_ID, department.getId());
-        namedParameters.addValue(DEPARTMENT_NAME, department.getDepartmentName());
+        namedParameters.addValue(PARAMETER_DEPARTMENT_ID, department.getId());
+        namedParameters.addValue(PARAMETER_DEPARTMENT_NAME, department.getDepartmentName());
         this.namedParameterJdbcTemplate.update(UPDATE_DEPARTMENT_BY_ID, namedParameters);
     }
 
     @Override
     public void deleteDepartment(Long departmentId) {
-        SqlParameterSource namedParameters = new MapSqlParameterSource(DEPARTMENT_ID, departmentId);
+        SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_DEPARTMENT_ID, departmentId);
         this.namedParameterJdbcTemplate.update(DELETE_EMPLOYEE_BY_DEPARTMENT_ID, namedParameters);
         this.namedParameterJdbcTemplate.update(DELETE_DEPARTMENT_BY_ID, namedParameters);
     }
 
     @Override
     public BigDecimal getDepartmentAverageSalary(Long departmentId) {
-        SqlParameterSource namedParameters = new MapSqlParameterSource(DEPARTMENT_ID, departmentId);
+        SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_DEPARTMENT_ID, departmentId);
         return this.namedParameterJdbcTemplate.queryForObject(GET_DEPARTMENT_AVERAGE_SALARY, namedParameters, BigDecimal.class);
     }
 
