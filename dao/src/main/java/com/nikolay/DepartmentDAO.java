@@ -1,50 +1,58 @@
 package com.nikolay;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * The interface Department dao.
- *
- * @author Mikalai_Kazak @epam.com 10.12.2018 Defines DAO operations for the department model.
  */
 public interface DepartmentDAO {
 
   /**
-   * Get the list of all departments
+   * Gets all departments.
    *
-   * @return the list of all departments
+   * @return the all departments
    */
   List<Department> getAllDepartments();
 
   /**
-   * Get department by identifier
+   * Gets department by id.
    *
-   * @param departmentId the department identifier that you want get
-   * @return the department
+   * @param departmentId the department id
+   * @return the department by id
    */
   Department getDepartmentById(Long departmentId);
 
   /**
-   * Save department
+   * Save department long.
    *
-   * @param department the department that oyu want save
-   * @return the identifier of the department created
+   * @param department the department
+   * @return the long
    */
   Long saveDepartment(Department department);
 
-  /**
-   * Update department
-   *
-   * @param department the department that you want edit
-   * @return the identifier of the department updated
-   */
-  Long updateDepartment(Department department);
 
   /**
-   * Delete department
+   * Update department.
    *
-   * @param departmentId the department identifier
-   * @return the identifier of the deleted department
+   * @param department the department
    */
-  Long deleteDepartment(Long departmentId);
+  void updateDepartment(Department department);
+
+  /**
+   * Delete department.
+   *
+   * @param departmentId the department id
+   */
+  void deleteDepartment(Long departmentId);
+
+
+  /**
+   * Gets department average salary.
+   *
+   * @param departmentId the department id
+   * @return the department average salary
+   */
+  BigDecimal getDepartmentAverageSalary(Long departmentId);
+
 }

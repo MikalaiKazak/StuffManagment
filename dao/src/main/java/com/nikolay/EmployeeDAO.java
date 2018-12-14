@@ -13,10 +13,10 @@ public interface EmployeeDAO {
     /**
      * Get one employee by identifier
      *
-     * @param id the employee id that you want get
+     * @param employeeId the employee id that you want get
      * @return the employee
      */
-    Employee getEmployeeById(Long id);
+    Employee getEmployeeById(Long employeeId);
 
     /**
      * Save employee
@@ -30,25 +30,15 @@ public interface EmployeeDAO {
      * Update employee
      *
      * @param employee the employee that you want to change
-     * @return the identifier of the employee updated
      */
-    Long updateEmployee(Employee employee);
+    void updateEmployee(Employee employee);
 
     /**
      * Delete employee by identifier
      *
      * @param employeeId the employee identifier
-     * @return the identifier of the deleted employee
      */
-    Long deleteEmployee(Long employeeId);
-
-    /**
-     * Gets employee by department name.
-     *
-     * @param departmentName the department name
-     * @return the employee by department name
-     */
-    List<Employee> getEmployeeByDepartmentName(String departmentName);
+    void deleteEmployee(Long employeeId);
 
     /**
      * Get the list of all employees
@@ -73,5 +63,5 @@ public interface EmployeeDAO {
      * @param dateTo   the date to
      * @return the employee between dates of birtday
      */
-    List<Employee> getEmployeeBetweenDatesOfBirtday(LocalDate dateFrom, LocalDate dateTo);
+    List<Employee> getEmployeeBetweenDatesOfBirthday(LocalDate dateFrom, LocalDate dateTo);
 }

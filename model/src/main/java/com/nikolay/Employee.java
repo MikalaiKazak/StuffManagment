@@ -44,6 +44,21 @@ public class Employee {
     }
 
     /**
+     * Instantiates a new Employee.
+     *
+     * @param departmentId the department id
+     * @param fullName     the full name
+     * @param birthday     the birthday
+     * @param salary       the salary
+     */
+    public Employee(Long departmentId, String fullName, LocalDate birthday, BigDecimal salary) {
+        this.departmentId = departmentId;
+        this.fullName = fullName;
+        this.birthday = birthday;
+        this.salary = salary;
+    }
+
+    /**
      * Gets id.
      *
      * @return the id

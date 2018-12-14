@@ -36,6 +36,17 @@ public class Department {
     }
 
     /**
+     * Instantiates a new Department.
+     *
+     * @param departmentName the department name
+     * @param averageSalary  the average salary
+     */
+    public Department(String departmentName, BigDecimal averageSalary) {
+        this.departmentName = departmentName;
+        this.averageSalary = averageSalary;
+    }
+
+    /**
      * Gets id.
      *
      * @return the id
