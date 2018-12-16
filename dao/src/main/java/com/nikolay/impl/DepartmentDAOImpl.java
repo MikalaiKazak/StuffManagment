@@ -33,6 +33,9 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     @Value("${department.GET_DEPARTMENT_BY_ID}")
     private String GET_DEPARTMENT_BY_ID;
 
+    @Value("${department.GET_DEPARTMENT_BY_NAME}")
+    private String GET_DEPARTMENT_BY_NAME;
+
     @Value("${department.DELETE_DEPARTMENT}")
     private String DELETE_DEPARTMENT_BY_ID;
 
@@ -66,6 +69,12 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     public Department getDepartmentById(Long departmentId) {
         SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_DEPARTMENT_ID, departmentId);
         return this.namedParameterJdbcTemplate.queryForObject(GET_DEPARTMENT_BY_ID, namedParameters, departmentMapper);
+    }
+
+    @Override
+    public Department getDepartmentByName(String departmentName) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_DEPARTMENT_NAME, departmentName);
+        return this.namedParameterJdbcTemplate.queryForObject(GET_DEPARTMENT_BY_NAME, namedParameters, departmentMapper);
     }
 
     @Override

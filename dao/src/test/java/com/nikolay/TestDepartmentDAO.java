@@ -33,6 +33,13 @@ public class TestDepartmentDAO {
     }
 
     @Test
+    public void testGetDepartmentByName() {
+        Department department = departmentDAO.getDepartmentByName("Java");
+        Assert.assertNotNull(department);
+        Assert.assertEquals("Java", department.getDepartmentName());
+    }
+
+    @Test
     public void testGetDepartmentAverageSalary(){
         BigDecimal averageSalary = departmentDAO.getDepartmentAverageSalary(DEPARTMENT_ID);
         Assert.assertNotNull(averageSalary);

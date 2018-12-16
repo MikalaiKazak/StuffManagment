@@ -30,6 +30,15 @@ public interface DepartmentService {
     Department getDepartmentById(Long departmentId) throws DepartmentNotFoundException;
 
     /**
+     * Gets department by name.
+     *
+     * @param departmentName the department name
+     * @return the department by name
+     * @throws DepartmentNotFoundException the department not found exception
+     */
+    Department getDepartmentByName(String departmentName) throws DepartmentNotFoundException;
+
+    /**
      * Save department long.
      *
      * @param department the department
