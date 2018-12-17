@@ -3,7 +3,6 @@ package com.nikolay.impl;
 import com.nikolay.Employee;
 import com.nikolay.EmployeeDAO;
 import com.nikolay.mapper.EmployeeMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,6 +11,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
@@ -73,9 +73,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     private EmployeeMapper employeeMapper = new EmployeeMapper();
 
-    @Autowired
-    public EmployeeDAOImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    public EmployeeDAOImpl(DataSource dataSource) {
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
     }
 

@@ -23,8 +23,12 @@
         <property name="password" value="${jdbc.password}"/>
     </bean>
 
-    <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-        <constructor-arg type="javax.sql.DataSource" ref="dataSource"/>
+    <bean id="departmentDAO" class="com.nikolay.impl.DepartmentDAOImpl">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="employeeDAO" class="com.nikolay.impl.EmployeeDAOImpl">
+        <constructor-arg ref="dataSource"/>
     </bean>
 
     <jdbc:initialize-database>

@@ -1,13 +1,12 @@
 package com.nikolay;
 
-import com.nikolay.exception.DepartmentNotFoundException;
+import com.nikolay.impl.DepartmentServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -17,17 +16,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:/test-service.xml"})
+@RunWith(MockitoJUnitRunner.class)
 public class TestDepartmentService {
 
-
-    @Qualifier("departmentDAO")
-    @Autowired
+    @Mock
     private DepartmentDAO departmentDAOMock;
 
-    @Autowired
-    private DepartmentService departmentService;
+    @InjectMocks
+    private DepartmentServiceImpl departmentService;
 
     private Department dep1;
     private Department dep2;
@@ -102,17 +98,4 @@ public class TestDepartmentService {
         departmentService.deleteDepartment(13L);
         verify(departmentDAOMock, times(2)).deleteDepartment(anyLong());
     }
-
-    @Test(expected = DepartmentNotFoundException.class)
-    public void testGetDepartmentByIdException() {
-        when(departmentDAOMock.getDepartmentById(dep1.getId())).thenThrow(new DepartmentNotFoundException());
-        departmentService.getDepartmentById(dep1.getId());
-    }
-
-    @Test(expected = DepartmentNotFoundException.class)
-    public void testSaveDepartmentException() {
-        when(departmentDAOMock.saveDepartment(null)).thenThrow(new DepartmentNotFoundException());
-        departmentService.getDepartmentById(null);
-    }
-
 }

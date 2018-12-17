@@ -4,7 +4,6 @@ import com.nikolay.Department;
 import com.nikolay.DepartmentDAO;
 import com.nikolay.DepartmentService;
 import com.nikolay.exception.DepartmentNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,7 +12,6 @@ import java.util.List;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
 
-    @Autowired
     private DepartmentDAO departmentDAO;
 
     public void setDepartmentDAO(DepartmentDAO departmentDAO) {
@@ -51,9 +49,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         if (department.getAverageSalary() == null) {
             throw new DepartmentNotFoundException("Department average salary shouldn't be null");
-        }
-        if (departmentDAO.getDepartmentByName(department.getDepartmentName()) != null) {
-            throw new DepartmentNotFoundException("Department " + department.getDepartmentName() + " is exists");
         }
         return departmentDAO.saveDepartment(department);
     }

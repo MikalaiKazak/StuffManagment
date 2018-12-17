@@ -3,7 +3,6 @@ package com.nikolay.impl;
 import com.nikolay.Department;
 import com.nikolay.DepartmentDAO;
 import com.nikolay.mapper.DepartmentMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,6 +11,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -55,9 +55,9 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 
     private DepartmentMapper departmentMapper = new DepartmentMapper();
 
-    @Autowired
-    public DepartmentDAOImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+
+    public DepartmentDAOImpl(DataSource dataSource) {
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     @Override

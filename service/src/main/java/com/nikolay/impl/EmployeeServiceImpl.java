@@ -4,7 +4,6 @@ import com.nikolay.Employee;
 import com.nikolay.EmployeeDAO;
 import com.nikolay.EmployeeService;
 import com.nikolay.exception.EmployeeNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,7 +12,6 @@ import java.util.List;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired
     private EmployeeDAO employeeDAO;
 
     public void setEmployeeDAO(EmployeeDAO employeeDAO) {

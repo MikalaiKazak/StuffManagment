@@ -1,22 +1,20 @@
 package com.nikolay;
 
+import com.nikolay.impl.EmployeeServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:/test-service.xml"})
+@RunWith(MockitoJUnitRunner.class)
 public class TestEmployeeService {
 
-    @Qualifier("employeeDAO")
-    @Autowired
+    @Mock
     EmployeeDAO employeeDAOMock;
 
-    @Autowired
-    EmployeeService employeeService;
+    @InjectMocks
+    EmployeeServiceImpl employeeService;
 
 
     @Test
