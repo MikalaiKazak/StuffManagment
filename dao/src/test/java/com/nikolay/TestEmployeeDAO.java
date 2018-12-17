@@ -1,9 +1,11 @@
 package com.nikolay;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -12,11 +14,17 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ContextConfiguration(locations = {"classpath*:/test-dao.xml"})
 public class TestEmployeeDAO {
 
     @Autowired
     private EmployeeDAO employeeDAO;
+
+    @After
+    public void resetEnv() {
+
+    }
 
     private final static long AMOUNT_EMPLOYEES = 13L;
     private final static long EMPLOYEE_ID = 1L;
@@ -25,7 +33,6 @@ public class TestEmployeeDAO {
     private final static LocalDate DATE_TO = LocalDate.of(1991, 7, 20);
     private final static BigDecimal EMPLOYEE_SALARY = BigDecimal.valueOf(200);
     private final static String EMPLOYEE_FULL_NAME = "Clem Hudspith";
-    private final static String EMPLOYEE_FULL_NAME_NEW = "Channa Thinn";
 
     @Test
     public void testGetEmployee() {
@@ -36,14 +43,14 @@ public class TestEmployeeDAO {
 
     @Test
     public void testGetEmployeeByBirthday() {
-        List<Employee> employeeList = employeeDAO.getEmployeeByDateOfBirthday(DATE_TO);
+        List<Employee> employeeList = employeeDAO.getEmployeeByDateOfBirthday(DATE_FROM);
         Assert.assertNotNull(employeeList);
         Assert.assertEquals(1L, employeeList.size());
-        Assert.assertEquals(EMPLOYEE_FULL_NAME_NEW, employeeList.get(0).getFullName());
+        Assert.assertEquals(EMPLOYEE_FULL_NAME, employeeList.get(0).getFullName());
     }
 
     @Test
-    public void testGetEmployeeBetweenDatesOfBirtday() {
+    public void testGetEmployeeBetweenDatesOfBirthday() {
         List<Employee> employeeList = employeeDAO.getEmployeeBetweenDatesOfBirthday(DATE_FROM, DATE_TO);
         Assert.assertNotNull(employeeList);
         Assert.assertEquals(3, employeeList.size());
