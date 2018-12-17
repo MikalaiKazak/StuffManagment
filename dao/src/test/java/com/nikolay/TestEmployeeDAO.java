@@ -1,6 +1,5 @@
 package com.nikolay;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,11 +19,6 @@ public class TestEmployeeDAO {
 
     @Autowired
     private EmployeeDAO employeeDAO;
-
-    @After
-    public void resetEnv() {
-
-    }
 
     private final static long AMOUNT_EMPLOYEES = 13L;
     private final static long EMPLOYEE_ID = 1L;

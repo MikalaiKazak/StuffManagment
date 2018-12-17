@@ -28,8 +28,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Long saveEmployee(Employee employee) throws EmployeeNotFoundException {
-        if (employee.getDepartmentId() != null) {
-            throw new EmployeeNotFoundException("Department identifier should be null");
+        if (employee.getId() != null) {
+            throw new EmployeeNotFoundException("Employee identifier should be null");
+        }
+        if (employee.getDepartmentId() == null) {
+            throw new EmployeeNotFoundException("Department identifier shouldn't be null");
         }
         if (employee.getFullName() == null) {
             throw new EmployeeNotFoundException("Employee full name shouldn't be null");
