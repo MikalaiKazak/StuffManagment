@@ -24,6 +24,14 @@ public interface DepartmentDAO {
   Department getDepartmentById(Long departmentId);
 
   /**
+   * Gets department by name.
+   *
+   * @param departmentName the department name
+   * @return the department by name
+   */
+  Department getDepartmentByName(String departmentName);
+
+  /**
    * Save department long.
    *
    * @param department the department

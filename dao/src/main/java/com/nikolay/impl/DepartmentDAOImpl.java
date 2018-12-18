@@ -3,7 +3,6 @@ package com.nikolay.impl;
 import com.nikolay.Department;
 import com.nikolay.DepartmentDAO;
 import com.nikolay.mapper.DepartmentMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,6 +11,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -33,6 +33,9 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     @Value("${department.GET_DEPARTMENT_BY_ID}")
     private String GET_DEPARTMENT_BY_ID;
 
+    @Value("${department.GET_DEPARTMENT_BY_NAME}")
+    private String GET_DEPARTMENT_BY_NAME;
+
     @Value("${department.DELETE_DEPARTMENT}")
     private String DELETE_DEPARTMENT_BY_ID;
 
@@ -52,9 +55,9 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 
     private DepartmentMapper departmentMapper = new DepartmentMapper();
 
-    @Autowired
-    public DepartmentDAOImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+
+    public DepartmentDAOImpl(DataSource dataSource) {
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     @Override
@@ -66,6 +69,12 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     public Department getDepartmentById(Long departmentId) {
         SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_DEPARTMENT_ID, departmentId);
         return this.namedParameterJdbcTemplate.queryForObject(GET_DEPARTMENT_BY_ID, namedParameters, departmentMapper);
+    }
+
+    @Override
+    public Department getDepartmentByName(String departmentName) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_DEPARTMENT_NAME, departmentName);
+        return this.namedParameterJdbcTemplate.queryForObject(GET_DEPARTMENT_BY_NAME, namedParameters, departmentMapper);
     }
 
     @Override
