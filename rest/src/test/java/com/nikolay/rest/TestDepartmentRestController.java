@@ -53,8 +53,8 @@ public class TestDepartmentRestController {
 
     @After
     public void tearDown() {
-        reset(mockDepartmentService);
         verifyNoMoreInteractions(mockDepartmentService);
+        reset(mockDepartmentService);
     }
 
     @Test
