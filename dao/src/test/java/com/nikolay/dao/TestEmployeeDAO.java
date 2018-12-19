@@ -1,5 +1,6 @@
-package com.nikolay;
+package com.nikolay.dao;
 
+import com.nikolay.model.Employee;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

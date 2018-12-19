@@ -24,6 +24,8 @@
         <mocito.version>2.10.0</mocito.version>
         <servlet.version>3.1.0</servlet.version>
         <mysql-connector-version>8.0.11</mysql-connector-version>
+        <jackson-databind.version>2.9.7</jackson-databind.version>
+        <json-path.version>2.4.0</json-path.version>
     </properties>
 
     <dependencyManagement>
@@ -49,6 +51,13 @@
             </dependency>
 
             <dependency>
+                <groupId>com.jayway.jsonpath</groupId>
+                <artifactId>json-path</artifactId>
+                <version>${json-path.version}</version>
+            </dependency>
+
+
+            <dependency>
                 <groupId>com.nikolay.department-app</groupId>
                 <artifactId>rest</artifactId>
                 <version>${project.version}</version>
@@ -58,6 +67,12 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson-databind.version}</version>
             </dependency>
 
             <dependency>

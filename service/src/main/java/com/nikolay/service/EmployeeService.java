@@ -1,6 +1,7 @@
-package com.nikolay;
+package com.nikolay.service;
 
-import com.nikolay.exception.EmployeeNotFoundException;
+import com.nikolay.service.exception.EmployeeNotFoundException;
+import com.nikolay.model.Employee;
 
 import java.time.LocalDate;
 import java.util.List;

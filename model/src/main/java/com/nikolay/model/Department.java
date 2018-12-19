@@ -1,4 +1,4 @@
-package com.nikolay;
+package com.nikolay.model;
 
 import java.math.BigDecimal;
 import java.util.Currency;

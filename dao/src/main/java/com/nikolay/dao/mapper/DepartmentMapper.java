@@ -1,6 +1,6 @@
-package com.nikolay.mapper;
+package com.nikolay.dao.mapper;
 
-import com.nikolay.Department;
+import com.nikolay.model.Department;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

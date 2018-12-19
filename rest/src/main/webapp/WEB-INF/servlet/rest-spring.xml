@@ -5,14 +5,12 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
-
-
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.nikolay"/>
+    <context:component-scan base-package="com.nikolay.rest"/>
 
     <mvc:annotation-driven/>
 
@@ -28,19 +26,19 @@
         <property name="password" value="${jdbc.password}"/>
     </bean>
 
-    <bean id="departmentDAO" class="com.nikolay.impl.DepartmentDAOImpl">
+    <bean id="departmentDAO" class="com.nikolay.dao.impl.DepartmentDAOImpl">
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="employeeDAO" class="com.nikolay.impl.EmployeeDAOImpl">
+    <bean id="employeeDAO" class="com.nikolay.dao.impl.EmployeeDAOImpl">
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="departmentService" class="com.nikolay.impl.DepartmentServiceImpl">
+    <bean id="departmentService" class="com.nikolay.service.impl.DepartmentServiceImpl">
         <property name="departmentDAO" ref="departmentDAO"/>
     </bean>
 
-    <bean id="employeeService" class="com.nikolay.impl.EmployeeServiceImpl">
+    <bean id="employeeService" class="com.nikolay.service.impl.EmployeeServiceImpl">
         <property name="employeeDAO" ref="employeeDAO"/>
     </bean>
 

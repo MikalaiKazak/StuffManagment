@@ -1,4 +1,6 @@
-package com.nikolay;
+package com.nikolay.dao;
+
+import com.nikolay.model.Employee;
 
 import java.time.LocalDate;
 import java.util.List;

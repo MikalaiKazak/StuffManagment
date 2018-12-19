@@ -1,5 +1,7 @@
-package com.nikolay;
+package com.nikolay.rest;
 
+import com.nikolay.model.Employee;
+import com.nikolay.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -19,8 +21,12 @@ public class EmployeeRestController {
     /**
      * The Employee service.
      */
+    private EmployeeService employeeService;
+
     @Autowired
-    EmployeeService employeeService;
+    public EmployeeRestController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     /**
      * Gets all employees.
@@ -104,7 +110,7 @@ public class EmployeeRestController {
      * @param id          the id
      * @return the response entity
      */
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity updateEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
         Employee employee = employeeService.getEmployeeById(id);
         employee.setDepartmentId(newEmployee.getDepartmentId());

@@ -1,5 +1,7 @@
-package com.nikolay;
+package com.nikolay.service;
 
+import com.nikolay.dao.DepartmentDAO;
+import com.nikolay.model.Department;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

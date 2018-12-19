@@ -1,5 +1,7 @@
-package com.nikolay;
+package com.nikolay.rest;
 
+import com.nikolay.model.Department;
+import com.nikolay.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +19,12 @@ public class DepartmentRestController {
     /**
      * The Department service.
      */
+    private DepartmentService departmentService;
+
     @Autowired
-    DepartmentService departmentService;
+    public DepartmentRestController(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
 
     /**
      * Gets all departments.
@@ -75,8 +81,8 @@ public class DepartmentRestController {
      * @param id            the id
      * @return the response entity
      */
-    @PostMapping("/{id}")
-    public ResponseEntity updateDepartment(@RequestBody Department newDepartment, @PathVariable Long id) {
+    @PutMapping("/{id}")
+    public ResponseEntity updateDepartment(@PathVariable Long id, @RequestBody Department newDepartment) {
         Department department = departmentService.getDepartmentById(id);
         department.setDepartmentName(newDepartment.getDepartmentName());
         department.setAverageSalary(newDepartment.getAverageSalary());

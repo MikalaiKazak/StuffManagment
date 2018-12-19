@@ -1,6 +1,7 @@
-package com.nikolay;
+package com.nikolay.service;
 
-import com.nikolay.exception.DepartmentNotFoundException;
+import com.nikolay.service.exception.DepartmentNotFoundException;
+import com.nikolay.model.Department;
 
 import java.math.BigDecimal;
 import java.util.List;

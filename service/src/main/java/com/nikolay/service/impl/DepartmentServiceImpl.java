@@ -1,9 +1,9 @@
-package com.nikolay.impl;
+package com.nikolay.service.impl;
 
-import com.nikolay.Department;
-import com.nikolay.DepartmentDAO;
-import com.nikolay.DepartmentService;
-import com.nikolay.exception.DepartmentNotFoundException;
+import com.nikolay.dao.DepartmentDAO;
+import com.nikolay.model.Department;
+import com.nikolay.service.DepartmentService;
+import com.nikolay.service.exception.DepartmentNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

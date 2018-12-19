@@ -1,4 +1,4 @@
-package com.nikolay.exception;
+package com.nikolay.service.exception;
 
 public class DepartmentNotFoundException extends RuntimeException {
 

@@ -5,18 +5,18 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="departmentDAO" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg value="com.nikolay.DepartmentDAO"/>
+        <constructor-arg value="com.nikolay.dao.DepartmentDAO"/>
     </bean>
 
-    <bean id="departmentService" class="com.nikolay.impl.DepartmentServiceImpl">
+    <bean id="departmentService" class="com.nikolay.service.impl.DepartmentServiceImpl">
         <property name="departmentDAO" ref="departmentDAO"/>
     </bean>
 
     <bean id="employeeDAO" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg value="com.nikolay.EmployeeDAO"/>
+        <constructor-arg value="com.nikolay.dao.EmployeeDAO"/>
     </bean>
 
-    <bean id="employeeService" class="com.nikolay.impl.EmployeeServiceImpl">
+    <bean id="employeeService" class="com.nikolay.service.impl.EmployeeServiceImpl">
         <property name="employeeDAO" ref="employeeDAO"/>
     </bean>
 

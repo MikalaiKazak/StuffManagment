@@ -1,8 +1,8 @@
-package com.nikolay.impl;
+package com.nikolay.dao.impl;
 
-import com.nikolay.Employee;
-import com.nikolay.EmployeeDAO;
-import com.nikolay.mapper.EmployeeMapper;
+import com.nikolay.model.Employee;
+import com.nikolay.dao.EmployeeDAO;
+import com.nikolay.dao.mapper.EmployeeMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

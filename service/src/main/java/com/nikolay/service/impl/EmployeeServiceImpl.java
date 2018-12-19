@@ -1,9 +1,9 @@
-package com.nikolay.impl;
+package com.nikolay.service.impl;
 
-import com.nikolay.Employee;
-import com.nikolay.EmployeeDAO;
-import com.nikolay.EmployeeService;
-import com.nikolay.exception.EmployeeNotFoundException;
+import com.nikolay.model.Employee;
+import com.nikolay.dao.EmployeeDAO;
+import com.nikolay.service.EmployeeService;
+import com.nikolay.service.exception.EmployeeNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

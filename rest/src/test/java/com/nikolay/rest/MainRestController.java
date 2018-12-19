@@ -1,4 +1,4 @@
-package com.nikolay;
+package com.nikolay.rest;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;

@@ -1,5 +1,8 @@
-package com.nikolay;
+package com.nikolay.service;
 
+import com.nikolay.dao.EmployeeDAO;
+import com.nikolay.model.Employee;
+import com.nikolay.service.EmployeeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
