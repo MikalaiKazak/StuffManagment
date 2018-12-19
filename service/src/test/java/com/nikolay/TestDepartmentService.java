@@ -1,12 +1,11 @@
 package com.nikolay;
 
-import com.nikolay.impl.DepartmentServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -16,14 +15,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath*:/test-service-mock.xml"})
 public class TestDepartmentService {
 
-    @Mock
+    @Autowired
     private DepartmentDAO departmentDAOMock;
 
-    @InjectMocks
-    private DepartmentServiceImpl departmentService;
+    @Autowired
+    private DepartmentService departmentService;
 
     private Department dep1;
     private Department dep2;
