@@ -1,8 +1,11 @@
 package com.nikolay.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Currency;
 
 /**
  * The type Employee.
@@ -16,6 +19,9 @@ public class Employee {
 
     private String fullName;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDate birthday;
 
     private BigDecimal salary;
