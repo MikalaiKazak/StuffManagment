@@ -23,6 +23,11 @@ public class EmployeeRestController {
      */
     private EmployeeService employeeService;
 
+    /**
+     * Instantiates a new Employee rest controller.
+     *
+     * @param employeeService the employee service
+     */
     @Autowired
     public EmployeeRestController(EmployeeService employeeService) {
         this.employeeService = employeeService;
@@ -34,7 +39,16 @@ public class EmployeeRestController {
      * @return the all employees
      */
     @GetMapping("/")
-    public ResponseEntity<List<Employee>> getAllEmployees() {
+    public ResponseEntity<List<Employee>> getAllEmployees(@RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+                                                          @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
+                                                          @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo) {
+        if (dateFrom != null && dateTo != null) {
+            List<Employee> employees = employeeService.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
+            return new ResponseEntity<>(employees, HttpStatus.FOUND);
+        } else if (date != null) {
+            List<Employee> employees = employeeService.getEmployeeByDateOfBirthday(date);
+            return new ResponseEntity<>(employees, HttpStatus.FOUND);
+        }
         List<Employee> employees = employeeService.getAllEmployees();
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
@@ -75,32 +89,6 @@ public class EmployeeRestController {
     public ResponseEntity removeEmployee(@PathVariable("id") Long id) {
         employeeService.deleteEmployee(id);
         return new ResponseEntity(HttpStatus.OK);
-    }
-
-    /**
-     * Gets employee by date of birthday.
-     *
-     * @param date the date
-     * @return the employee by date of birthday
-     */
-    @GetMapping("/date/{date}")
-    public ResponseEntity<List<Employee>> getEmployeeByDateOfBirthday(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
-        List<Employee> employees = employeeService.getEmployeeByDateOfBirthday(date);
-        return new ResponseEntity<>(employees, HttpStatus.FOUND);
-    }
-
-    /**
-     * Gets employee between dates of birthday.
-     *
-     * @param from the from
-     * @param to   the to
-     * @return the employee between dates of birthday
-     */
-    @GetMapping("/date/{from}/{to}")
-    public ResponseEntity<List<Employee>> getEmployeeBetweenDatesOfBirthday(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate from,
-                                                                            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate to) {
-        List<Employee> employees = employeeService.getEmployeeBetweenDatesOfBirthday(from, to);
-        return new ResponseEntity<>(employees, HttpStatus.FOUND);
     }
 
     /**

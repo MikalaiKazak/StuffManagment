@@ -122,7 +122,7 @@ public class TestEmployeeRestController {
         LocalDate date = LocalDate.of(1999, 2, 28);
         when(mockEmployeeService.getEmployeeByDateOfBirthday(date)).thenReturn(Collections.singletonList(emp1));
         mockMvc.perform(
-                get("/employee/date/{date}", date)
+                get("/employee/?date={date}", date)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -134,11 +134,11 @@ public class TestEmployeeRestController {
 
     @Test
     public void testGetEmployeeBetweenDatesOfBirthday() throws Exception {
-        LocalDate from = LocalDate.of(1999, 2, 28);
-        LocalDate to = LocalDate.of(2000, 12, 5);
-        when(mockEmployeeService.getEmployeeBetweenDatesOfBirthday(from, to)).thenReturn(employees);
+        LocalDate dateFrom = LocalDate.of(1999, 2, 28);
+        LocalDate dateTo = LocalDate.of(2000, 12, 5);
+        when(mockEmployeeService.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo)).thenReturn(employees);
         mockMvc.perform(
-                get("/employee/date/{from}/{to}", from, to)
+                get("/employee/?dateFrom={dateFrom}&dateTo={dateTo}", dateFrom, dateTo)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -147,7 +147,7 @@ public class TestEmployeeRestController {
                 .andExpect(jsonPath("$[0].fullName").value("Nikolay Kozak"))
                 .andExpect(jsonPath("$[1].id").value("2"))
                 .andExpect(jsonPath("$[1].fullName").value("Dmitry Kozak"));
-        verify(mockEmployeeService).getEmployeeBetweenDatesOfBirthday(from, to);
+        verify(mockEmployeeService).getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
     }
 
 
