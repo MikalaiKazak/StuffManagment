@@ -25,15 +25,17 @@ curl -X GET -v localhost:8060/employee/1
 ```
 
 ##Explore Rest APIs
-    *GET /department/                                      Return all departments
-    *GET /department/{id}                                  Return department by identifier
-    *DELETE /department/{id}                               Delete department by identifier
-    *POST /department/                                     Create new department (The values are sent in the request body)
-    *PUT /department/                                      Update department (The values are sent in the request body)
-    *GET /employee/                                        Return all employees          
-    *GET /employee/{id}                                    Return employee by identifier  
-    *GET /employee/?date={date}                            Return employees by date of birthday
-    *GET /employee/?dateFrom={dateFrom}&dateTo={dateTo}    Return employees with day of birthday in interval
-    *DELETE /employee/{id}                                 Delete employee by edintifier
-    *POST /employee/                                       Add new employee (The values are sent in the request body)
-    *PUT /employee/                                        Update employee (The values are sent in the request body)
+| URL | Description |
+| --- | --- |
+  | GET /department/ |                                    Return all departments
+  | GET /department/{id} |                                Return department by identifier
+  | DELETE /department/{id} |                             Delete department by identifier
+  | POST /department/ |                                   Create new department (The values are sent in the request body)
+  | PUT /department/ |                                    Update department (The values are sent in the request body)
+  | GET /employee/ |                                      Return all employees          
+  | GET /employee/{id} |                                  Return employee by identifier  
+  | GET /employee/?date={date} |                          Return employees by date of birthday
+  | GET /employee/?dateFrom={dateFrom}&dateTo={dateTo} |  Return employees with day of birthday in interval
+  | DELETE /employee/{id} |                               Delete employee by edintifier
+  | POST /employee/ |                                     Add new employee (The values are sent in the request body)
+  | PUT /employee/ |                                      Update employee (The values are sent in the request body)
