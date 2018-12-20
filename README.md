@@ -24,7 +24,7 @@ curl -X GET -v localhost:8060/employee/ --- Return all employees
 curl -X GET -v localhost:8060/employee/1
 ```
 
-##Explore Rest APIs
+## Explore Rest APIs
 | URL | Description |
 | --- | --- |
   | GET /department/ |                                    Return all departments
