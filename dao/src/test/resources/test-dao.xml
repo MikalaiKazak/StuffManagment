@@ -23,6 +23,11 @@
         <property name="password" value="${jdbc.password}"/>
     </bean>
 
+    <jdbc:initialize-database>
+        <jdbc:script location="classpath*:/db/create_table.sql"/>
+        <jdbc:script location="classpath*:/db/init_table.sql"/>
+    </jdbc:initialize-database>
+
     <bean id="departmentDAO" class="com.nikolay.dao.impl.DepartmentDAOImpl">
         <constructor-arg ref="dataSource"/>
     </bean>
@@ -30,11 +35,6 @@
     <bean id="employeeDAO" class="com.nikolay.dao.impl.EmployeeDAOImpl">
         <constructor-arg ref="dataSource"/>
     </bean>
-
-    <jdbc:initialize-database>
-        <jdbc:script location="classpath*:/db/create_table.sql"/>
-        <jdbc:script location="classpath*:/db/init_table.sql"/>
-    </jdbc:initialize-database>
 
 </beans>
 

@@ -5,6 +5,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <context:component-scan base-package="com.nikolay.rest"/>
+
     <bean id="departmentService" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="com.nikolay.service.DepartmentService"/>
     </bean>
@@ -12,7 +14,5 @@
     <bean id="employeeService" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="com.nikolay.service.EmployeeService"/>
     </bean>
-
-    <context:component-scan base-package="com.nikolay.rest"/>
 
 </beans>

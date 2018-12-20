@@ -11,6 +11,7 @@
 
     <artifactId>model</artifactId>
     <packaging>jar</packaging>
+
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

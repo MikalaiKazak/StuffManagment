@@ -51,7 +51,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     @Value("${department.GET_DEPARTMENT_AVERAGE_SALARY}")
     private String GET_DEPARTMENT_AVERAGE_SALARY;
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private DepartmentMapper departmentMapper = new DepartmentMapper();
 
