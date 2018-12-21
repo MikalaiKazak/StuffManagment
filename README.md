@@ -16,13 +16,13 @@ A project for departments and employees management
  <role rolename="manager-status"/>  
  <user username="tomcat" password="tomcat" roles="manager-gui,manager-jmx,manager-script,manager-status"/>  
 ```
-3. Start the Tomcat server: sudo service tomcat7 start
+3. Start the Tomcat server:sudo service tomcat run
 
 ## Usage
 1. Clone this project, git clone https://github.com/MikalaiKazak/department-app.git
 2. Build the war file with maven, mvn clean install
 3. Copy the WAR file you have just created to CATALINA_HOME/webapps, e.g., /opt/tomcat/webapps.
-    
+4. Restart the Tomcat server: sudo service tomcat restart
 and try CURL requests like:
 ```
 curl -X GET -v localhost:8080/department/ --- Return all departments
