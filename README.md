@@ -2,6 +2,7 @@
 A project for departments and employees management
 
 ## Built With
+* JDK 8
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [Tomcat](http://tomcat.apache.org/) - Tomcat
 
