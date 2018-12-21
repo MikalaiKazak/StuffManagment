@@ -3,25 +3,37 @@ A project for departments and employees management
 
 ## Built With
 * [Maven](https://maven.apache.org/) - Dependency Management
+* [Tomcat](http://tomcat.apache.org/) - Tomcat
+
+
+## Tomcat 
+1. Install Tomcat --- sudo apt-get install tomcat8
+2. Modify tomcat-users.xml file accordingly
+```
+ <role rolename="manager-script"/>  
+ <role rolename="manager-gui"/>  
+ <role rolename="manager-jmx"/>  
+ <role rolename="manager-status"/>  
+ <user username="tomcat" password="tomcat" roles="manager-gui,manager-jmx,manager-script,manager-status"/>  
+```
+3. Start the Tomcat server: sudo service tomcat7 start
 
 ## Usage
 1. Clone this project, git clone https://github.com/MikalaiKazak/department-app.git
-3. Build the war file with maven, mvn clean install
-4. Start REST:\
-    cd rest\
-    mvn tomcat7:run
+2. Build the war file with maven, mvn clean install
+3. Copy the WAR file you have just created to CATALINA_HOME/webapps, e.g., /opt/tomcat/webapps.
     
 and try CURL requests like:
 ```
-curl -X GET -v localhost:8060/department/ --- Return all departments
+curl -X GET -v localhost:8080/department/ --- Return all departments
 
-curl -X GET -v localhost:8060/department/1
+curl -X GET -v localhost:8080/department/1
 
-curl -X DELETE -v localhost:8060/department/1
+curl -X DELETE -v localhost:8080/department/1
 
-curl -X GET -v localhost:8060/employee/ --- Return all employees
+curl -X GET -v localhost:8080/employee/ --- Return all employees
 
-curl -X GET -v localhost:8060/employee/1
+curl -X GET -v localhost:8080/employee/1
 ```
 
 ## Explore Rest APIs
