@@ -12,6 +12,7 @@
         <module>model</module>
         <module>dao</module>
         <module>service</module>
+        <module>rest</module>
     </modules>
 
     <properties>
@@ -21,6 +22,9 @@
         <junit.version>4.12</junit.version>
         <hsqldb.version>2.4.0</hsqldb.version>
         <mocito.version>2.10.0</mocito.version>
+        <servlet.version>3.1.0</servlet.version>
+        <jackson-databind.version>2.9.7</jackson-databind.version>
+        <json-path.version>2.4.0</json-path.version>
     </properties>
 
     <dependencyManagement>
@@ -46,6 +50,24 @@
             </dependency>
 
             <dependency>
+                <groupId>com.nikolay.department-app</groupId>
+                <artifactId>rest</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jayway.jsonpath</groupId>
+                <artifactId>json-path</artifactId>
+                <version>${json-path.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson-databind.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${spring.version}</version>
@@ -60,6 +82,24 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <scope>provided</scope>
+                <version>${servlet.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
                 <version>${spring.version}</version>
             </dependency>
 
@@ -93,13 +133,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <distributionManagement>
-        <site>
-            <id>${project.artifactId}-site</id>
-            <url>${project.baseUri}</url>
-        </site>
-    </distributionManagement>
-
     <build>
         <pluginManagement>
             <plugins>
@@ -110,6 +143,15 @@
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.tomcat.maven</groupId>
+                    <artifactId>tomcat7-maven-plugin</artifactId>
+                    <version>2.2</version>
+                    <configuration>
+                        <server>mytomcat7</server>
+                        <path>/</path>
                     </configuration>
                 </plugin>
             </plugins>
