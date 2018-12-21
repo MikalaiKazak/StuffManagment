@@ -23,6 +23,7 @@ A project for departments and employees management
 2. Build the war file with maven, mvn clean install
 3. Copy the WAR file you have just created to CATALINA_HOME/webapps, e.g., /opt/tomcat/webapps.
 4. Restart the Tomcat server: sudo service tomcat restart
+
 and try CURL requests like:
 ```
 curl -X GET -v localhost:8080/department/ --- Return all departments
