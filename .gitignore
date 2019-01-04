@@ -12,6 +12,8 @@ tomcat
 *.jar
 *.war
 *.class
+*.log
+*.gz
 
 # Maven 
 target/

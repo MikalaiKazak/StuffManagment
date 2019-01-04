@@ -1,13 +1,18 @@
 package com.nikolay.dao;
 
 import com.nikolay.model.Department;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,6 +22,8 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath*:/test-dao.xml"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class TestDepartmentDAO {
+
+    public static final Logger LOGGER = LogManager.getLogger();
 
     private final static long AMOUNT_DEPARTMENTS = 14L;
     private final static long DEPARTMENT_ID = 1L;
@@ -28,8 +35,19 @@ public class TestDepartmentDAO {
     @Autowired
     private DepartmentDAO departmentDAO;
 
+    @Before
+    public void beforeTest() {
+        LOGGER.error("execute: beforeTest()");
+    }
+
+    @After
+    public void afterTest() {
+        LOGGER.error("execute: afterTest()");
+    }
+
     @Test
     public void testGetDepartment() {
+        LOGGER.debug("test DAO: run testGetDepartment()");
         Department department = departmentDAO.getDepartmentById(DEPARTMENT_ID);
         Assert.assertNotNull(department);
         Assert.assertEquals(DEPARTMENT_NAME, department.getDepartmentName());
@@ -37,6 +55,7 @@ public class TestDepartmentDAO {
 
     @Test
     public void testGetDepartmentByName() {
+        LOGGER.debug("test DAO: run testGetDepartmentByName()");
         Department department = departmentDAO.getDepartmentByName("Java");
         Assert.assertNotNull(department);
         Assert.assertEquals("Java", department.getDepartmentName());
@@ -44,6 +63,7 @@ public class TestDepartmentDAO {
 
     @Test
     public void testGetDepartmentAverageSalary(){
+        LOGGER.debug("test DAO: run testGetDepartmentAverageSalary()");
         BigDecimal averageSalary = departmentDAO.getDepartmentAverageSalary(DEPARTMENT_ID);
         Assert.assertNotNull(averageSalary);
         Assert.assertEquals(DEPARTMENT_AVERAGE_SALARY, averageSalary);
@@ -51,6 +71,7 @@ public class TestDepartmentDAO {
 
     @Test
     public void testSaveDepartment() {
+        LOGGER.debug("test DAO: run testSaveDepartment()");
         Department department = new Department(NEW_DEPARTMENT_NAME, BigDecimal.valueOf(200));
         long sizeBefore = departmentDAO.getAllDepartments().size();
         Long departmentId = departmentDAO.saveDepartment(department);
@@ -62,6 +83,7 @@ public class TestDepartmentDAO {
     }
     @Test
     public void testDeleteDepartment() {
+        LOGGER.debug("test DAO: run testDeleteDepartment()");
         long sizeBefore = departmentDAO.getAllDepartments().size();
         Assert.assertEquals(AMOUNT_DEPARTMENTS, sizeBefore);
         departmentDAO.deleteDepartment(sizeBefore);
@@ -71,6 +93,7 @@ public class TestDepartmentDAO {
 
     @Test
     public void testGetAllDepartment() {
+        LOGGER.debug("test DAO: run testGetAllDepartment()");
         List<Department> departments = departmentDAO.getAllDepartments();
         Assert.assertNotNull(departments);
         Assert.assertEquals(AMOUNT_DEPARTMENTS, departments.size());
@@ -78,6 +101,7 @@ public class TestDepartmentDAO {
 
     @Test
     public void testUpdateDepartment() {
+        LOGGER.debug("test DAO: run testUpdateDepartment()");
         Department department = departmentDAO.getDepartmentById(DEPARTMENT_ID);
         Assert.assertNotNull(department);
         Assert.assertEquals(1L, department.getId().longValue());

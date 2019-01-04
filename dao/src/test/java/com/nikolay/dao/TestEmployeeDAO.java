@@ -1,13 +1,18 @@
 package com.nikolay.dao;
 
 import com.nikolay.model.Employee;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,6 +26,8 @@ public class TestEmployeeDAO {
     @Autowired
     private EmployeeDAO employeeDAO;
 
+    public static final Logger LOGGER = LogManager.getLogger();
+
     private final static long AMOUNT_EMPLOYEES = 13L;
     private final static long EMPLOYEE_ID = 1L;
     private final static long NEW_DEPARTMENT_ID = 2L;
@@ -29,8 +36,19 @@ public class TestEmployeeDAO {
     private final static BigDecimal EMPLOYEE_SALARY = BigDecimal.valueOf(200);
     private final static String EMPLOYEE_FULL_NAME = "Clem Hudspith";
 
+    @Before
+    public void beforeTest() {
+        LOGGER.error("execute: beforeTest()");
+    }
+
+    @After
+    public void afterTest() {
+        LOGGER.error("execute: afterTest()");
+    }
+
     @Test
     public void testGetEmployee() {
+        LOGGER.debug("test DAO: run testGetEmployee()");
         Employee employee = employeeDAO.getEmployeeById(EMPLOYEE_ID);
         Assert.assertNotNull(employee);
         Assert.assertEquals(EMPLOYEE_FULL_NAME, employee.getFullName());
@@ -38,6 +56,7 @@ public class TestEmployeeDAO {
 
     @Test
     public void testGetEmployeeByBirthday() {
+        LOGGER.debug("test DAO: run testGetEmployeeByBirthday()");
         List<Employee> employeeList = employeeDAO.getEmployeeByDateOfBirthday(DATE_FROM);
         Assert.assertNotNull(employeeList);
         Assert.assertEquals(1L, employeeList.size());
@@ -46,6 +65,7 @@ public class TestEmployeeDAO {
 
     @Test
     public void testGetEmployeeBetweenDatesOfBirthday() {
+        LOGGER.debug("test DAO: run testGetEmployeeBetweenDatesOfBirthday()");
         List<Employee> employeeList = employeeDAO.getEmployeeBetweenDatesOfBirthday(DATE_FROM, DATE_TO);
         Assert.assertNotNull(employeeList);
         Assert.assertEquals(3, employeeList.size());
@@ -54,6 +74,7 @@ public class TestEmployeeDAO {
 
     @Test
     public void testGetAllEmployee() {
+        LOGGER.debug("test DAO: run testGetAllEmployee()");
         List<Employee> employees = employeeDAO.getAllEmployees();
         Assert.assertNotNull(employees);
         Assert.assertEquals(AMOUNT_EMPLOYEES, employees.size());
@@ -61,6 +82,7 @@ public class TestEmployeeDAO {
 
     @Test
     public void testDeleteEmployee() {
+        LOGGER.debug("test DAO: run testDeleteEmployee()");
         long sizeBefore = employeeDAO.getAllEmployees().size();
         employeeDAO.deleteEmployee(14L);
         long sizeAfter = employeeDAO.getAllEmployees().size();
@@ -69,6 +91,7 @@ public class TestEmployeeDAO {
 
     @Test
     public void testSaveEmployee() {
+        LOGGER.debug("test DAO: run testSaveEmployee()");
         long sizeBefore = employeeDAO.getAllEmployees().size();
         Employee employee = new Employee(sizeBefore + 1, 2L, "Nikolay Kozak", LocalDate.of(1999, 12, 28), BigDecimal.valueOf(300));
         long employeeId = employeeDAO.saveEmployee(employee);
@@ -81,6 +104,7 @@ public class TestEmployeeDAO {
 
     @Test
     public void testUpdateEmployee() {
+        LOGGER.debug("test DAO: run testUpdateEmployee()");
         Employee employee = employeeDAO.getEmployeeById(EMPLOYEE_ID);
         Assert.assertNotNull(employee);
         Assert.assertEquals(1L, employee.getId().longValue());

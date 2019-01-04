@@ -2,11 +2,15 @@ package com.nikolay.rest;
 
 import com.nikolay.model.Employee;
 import com.nikolay.service.EmployeeService;
+import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/employee")
 public class EmployeeRestController {
+
+    public static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The Employee service.
@@ -40,12 +46,18 @@ public class EmployeeRestController {
      */
     @GetMapping("/")
     public ResponseEntity<List<Employee>> getAllEmployees(@RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
-                                                          @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
-                                                          @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo) {
+        @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
+        @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo) {
+        LOGGER.debug("getAllEmployees()");
         if (dateFrom != null && dateTo != null) {
+            LOGGER.debug("getAllEmployees(dateFrom, dateTo): dateFrom = {}, dateTo = {}",
+                dateFrom.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                dateTo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             List<Employee> employees = employeeService.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
             return new ResponseEntity<>(employees, HttpStatus.FOUND);
         } else if (date != null) {
+            LOGGER.debug("getAllEmployees(date): date = {}",
+                date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             List<Employee> employees = employeeService.getEmployeeByDateOfBirthday(date);
             return new ResponseEntity<>(employees, HttpStatus.FOUND);
         }
@@ -62,6 +74,7 @@ public class EmployeeRestController {
     @GetMapping("/{id}")
     @ResponseStatus(value = HttpStatus.FOUND)
     public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Long id) {
+        LOGGER.debug("getEmployeeById(id): id = {}", id);
         Employee employee = employeeService.getEmployeeById(id);
         return new ResponseEntity<>(employee, HttpStatus.FOUND);
     }
@@ -74,6 +87,7 @@ public class EmployeeRestController {
      */
     @PostMapping("/")
     public ResponseEntity<Long> addEmployee(@RequestBody Employee employee) {
+        LOGGER.debug("addEmployee(employee): employeeName = {}", employee.getFullName());
         Long id = employeeService.saveEmployee(employee);
         employee.setId(id);
         return new ResponseEntity<>(id, HttpStatus.CREATED);
@@ -87,6 +101,7 @@ public class EmployeeRestController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity removeEmployee(@PathVariable("id") Long id) {
+        LOGGER.debug("removeEmployee(id): id = {}", id);
         employeeService.deleteEmployee(id);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -100,6 +115,8 @@ public class EmployeeRestController {
      */
     @PutMapping("/{id}")
     public ResponseEntity updateEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
+        LOGGER.debug("updateEmployee(id, employee): id = {}, employeeName = {}", id,
+            newEmployee.getFullName());
         Employee employee = employeeService.getEmployeeById(id);
         employee.setDepartmentId(newEmployee.getDepartmentId());
         employee.setFullName(newEmployee.getFullName());
