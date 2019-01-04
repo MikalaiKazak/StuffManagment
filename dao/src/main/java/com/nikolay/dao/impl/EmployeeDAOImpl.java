@@ -3,6 +3,7 @@ package com.nikolay.dao.impl;
 import com.nikolay.model.Employee;
 import com.nikolay.dao.EmployeeDAO;
 import com.nikolay.dao.mapper.EmployeeMapper;
+import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -10,6 +11,9 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.sql.Date;
@@ -23,6 +27,8 @@ import java.util.Objects;
  */
 @Component
 public class EmployeeDAOImpl implements EmployeeDAO {
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Value("${parameters.employee_id}")
     private String PARAMETER_EMPLOYEE_ID;
@@ -80,28 +86,33 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public Employee getEmployeeById(Long employeeId) {
+        LOGGER.debug("getEmployeeById(employeeId): id = {}", employeeId);
         SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_EMPLOYEE_ID, employeeId);
         return this.namedParameterJdbcTemplate.queryForObject(GET_EMPLOYEE_BY_ID, namedParameters, employeeMapper);
     }
 
     @Override
     public Long saveEmployee(Employee employee) {
+        LOGGER.debug("saveEmployee(employee): employeeName = {}", employee.getFullName());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.getJdbcTemplate().update(
-                connection -> {
-                    PreparedStatement ps = connection.prepareStatement(ADD_EMPLOYEE, new String[]{PARAMETER_EMPLOYEE_ID});
-                    ps.setLong(1, employee.getDepartmentId());
-                    ps.setString(2, employee.getFullName());
-                    ps.setDate(3, Date.valueOf(employee.getBirthday()));
-                    ps.setBigDecimal(4, employee.getSalary());
-                    return ps;
-                },
-                keyHolder);
-        return Objects.requireNonNull(keyHolder.getKey()).longValue();
+            connection -> {
+                PreparedStatement ps = connection.prepareStatement(ADD_EMPLOYEE, new String[]{PARAMETER_EMPLOYEE_ID});
+                ps.setLong(1, employee.getDepartmentId());
+                ps.setString(2, employee.getFullName());
+                ps.setDate(3, Date.valueOf(employee.getBirthday()));
+                ps.setBigDecimal(4, employee.getSalary());
+                return ps;
+            },
+            keyHolder);
+        Long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
+        LOGGER.debug("saveEmployee(employee): id = {}", id);
+        return id;
     }
 
     @Override
     public void updateEmployee(Employee employee) {
+        LOGGER.debug("updateEmployee(employee): employeeId = {}", employee.getId());
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue(PARAMETER_EMPLOYEE_ID, employee.getId());
         namedParameters.addValue(PARAMETER_DEPARTMENT_ID, employee.getDepartmentId());
@@ -113,23 +124,30 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public void deleteEmployee(Long employeeId) {
+        LOGGER.debug("deleteEmployee(employeeId): id = {}", employeeId);
         SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_EMPLOYEE_ID, employeeId);
         this.namedParameterJdbcTemplate.update(DELETE_EMPLOYEE, namedParameters);
     }
 
     @Override
     public List<Employee> getAllEmployees() {
+        LOGGER.debug("getAllEmployees()");
         return this.namedParameterJdbcTemplate.query(GET_ALL_EMPLOYEE, employeeMapper);
     }
 
     @Override
     public List<Employee> getEmployeeByDateOfBirthday(LocalDate date) {
+        LOGGER.debug("getEmployeeByDateOfBirthday(date): date = {}",
+            date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_EMPLOYEE_BIRTHDAY, date.toString());
         return this.namedParameterJdbcTemplate.query(GET_EMPLOYEE_BY_DATE_OF_BIRTHDAY, namedParameters, employeeMapper);
     }
 
     @Override
     public List<Employee> getEmployeeBetweenDatesOfBirthday(LocalDate dateFrom, LocalDate dateTo) {
+        LOGGER.debug("getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo): dateFrom = {}, dateTo = {}",
+            dateFrom.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+            dateTo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY_FROM, dateFrom.toString());
         namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY_TO, dateTo.toString());
