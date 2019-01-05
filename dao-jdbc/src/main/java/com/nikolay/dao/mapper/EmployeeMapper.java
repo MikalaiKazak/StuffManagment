@@ -1,11 +1,13 @@
 package com.nikolay.dao.mapper;
 
 import com.nikolay.model.Employee;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
+/**
+ * The type Employee mapper.
+ */
 public class EmployeeMapper implements RowMapper<Employee> {
 
     @Override

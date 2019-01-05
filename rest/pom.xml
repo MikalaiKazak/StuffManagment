@@ -24,6 +24,11 @@
             <artifactId>dao</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.nikolay.department-app</groupId>
+            <artifactId>dao-jdbc</artifactId>
+        </dependency>
+
         <!--log4j-->
 
         <dependency>

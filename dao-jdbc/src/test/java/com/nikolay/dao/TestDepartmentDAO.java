@@ -1,6 +1,10 @@
 package com.nikolay.dao;
 
 import com.nikolay.model.Department;
+import java.math.BigDecimal;
+import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,13 +15,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.math.BigDecimal;
-import java.util.List;
-
-/** @author Mikalai Kazak */
+/**
+ * The type Test department dao.
+ *
+ * @author Mikalai Kazak
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-dao.xml"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -51,18 +53,21 @@ public class TestDepartmentDAO {
         Department department = departmentDAO.getDepartmentById(DEPARTMENT_ID);
         Assert.assertNotNull(department);
         Assert.assertEquals(DEPARTMENT_NAME, department.getDepartmentName());
+        Assert.assertEquals(DEPARTMENT_AVERAGE_SALARY, department.getAverageSalary());
     }
 
     @Test
     public void testGetDepartmentByName() {
         LOGGER.debug("test DAO: run testGetDepartmentByName()");
-        Department department = departmentDAO.getDepartmentByName("Java");
+        Department department = departmentDAO.getDepartmentByName(DEPARTMENT_NAME);
         Assert.assertNotNull(department);
-        Assert.assertEquals("Java", department.getDepartmentName());
+        Assert.assertEquals(DEPARTMENT_ID, department.getId().longValue());
+        Assert.assertEquals(DEPARTMENT_NAME, department.getDepartmentName());
+        Assert.assertEquals(DEPARTMENT_AVERAGE_SALARY, department.getAverageSalary());
     }
 
     @Test
-    public void testGetDepartmentAverageSalary(){
+    public void testGetDepartmentAverageSalary() {
         LOGGER.debug("test DAO: run testGetDepartmentAverageSalary()");
         BigDecimal averageSalary = departmentDAO.getDepartmentAverageSalary(DEPARTMENT_ID);
         Assert.assertNotNull(averageSalary);
@@ -72,7 +77,7 @@ public class TestDepartmentDAO {
     @Test
     public void testSaveDepartment() {
         LOGGER.debug("test DAO: run testSaveDepartment()");
-        Department department = new Department(NEW_DEPARTMENT_NAME, BigDecimal.valueOf(200));
+        Department department = new Department(NEW_DEPARTMENT_NAME, DEPARTMENT_AVERAGE_SALARY);
         long sizeBefore = departmentDAO.getAllDepartments().size();
         Long departmentId = departmentDAO.saveDepartment(department);
         long sizeAfter = departmentDAO.getAllDepartments().size();
@@ -81,12 +86,14 @@ public class TestDepartmentDAO {
         Assert.assertNotNull(newDepartment);
         Assert.assertEquals(department.getDepartmentName(), newDepartment.getDepartmentName());
     }
+
     @Test
     public void testDeleteDepartment() {
         LOGGER.debug("test DAO: run testDeleteDepartment()");
         long sizeBefore = departmentDAO.getAllDepartments().size();
         Assert.assertEquals(AMOUNT_DEPARTMENTS, sizeBefore);
-        departmentDAO.deleteDepartment(sizeBefore);
+        Long amountDeleted = departmentDAO.deleteDepartment(sizeBefore);
+        Assert.assertEquals(1, amountDeleted.longValue());
         long sizeAfter = departmentDAO.getAllDepartments().size();
         Assert.assertEquals(sizeBefore - 1, sizeAfter);
     }
@@ -106,7 +113,8 @@ public class TestDepartmentDAO {
         Assert.assertNotNull(department);
         Assert.assertEquals(1L, department.getId().longValue());
         department.setDepartmentName(CHANGED_DEPARTMENT_NAME);
-        departmentDAO.updateDepartment(department);
+        Long amountUpdated = departmentDAO.updateDepartment(department);
+        Assert.assertEquals(1L, amountUpdated.longValue());
         Department newDepartment = departmentDAO.getDepartmentById(DEPARTMENT_ID);
         Assert.assertEquals(CHANGED_DEPARTMENT_NAME, newDepartment.getDepartmentName());
     }

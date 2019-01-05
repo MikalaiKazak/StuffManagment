@@ -1,7 +1,6 @@
 package com.nikolay.dao;
 
 import com.nikolay.model.Employee;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -32,15 +31,17 @@ public interface EmployeeDAO {
      * Update employee
      *
      * @param employee the employee that you want to change
+     * @return the long
      */
-    void updateEmployee(Employee employee);
+    Long updateEmployee(Employee employee);
 
     /**
      * Delete employee by identifier
      *
      * @param employeeId the employee identifier
+     * @return the long
      */
-    void deleteEmployee(Long employeeId);
+    Long deleteEmployee(Long employeeId);
 
     /**
      * Get the list of all employees
@@ -62,8 +63,8 @@ public interface EmployeeDAO {
      * Gets employee between dates of birtday.
      *
      * @param dateFrom the date from
-     * @param dateTo   the date to
-     * @return the employee between dates of birtday
+     * @param dateTo the date to
+     * @return the employee between dates of birthday
      */
     List<Employee> getEmployeeBetweenDatesOfBirthday(LocalDate dateFrom, LocalDate dateTo);
 }
