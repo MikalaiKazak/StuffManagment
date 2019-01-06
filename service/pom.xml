@@ -1,67 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>department-app</artifactId>
-        <groupId>com.nikolay.department-app</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>department-app</artifactId>
+    <groupId>com.nikolay.department-app</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>service</artifactId>
-    <packaging>jar</packaging>
+  <artifactId>service</artifactId>
+  <packaging>jar</packaging>
 
-    <dependencies>
+  <dependencies>
 
-        <dependency>
-            <groupId>com.nikolay.department-app</groupId>
-            <artifactId>dao</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>com.nikolay.department-app</groupId>
+      <artifactId>dao</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>com.nikolay.department-app</groupId>
-            <artifactId>dao-jdbc</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>com.nikolay.department-app</groupId>
+      <artifactId>dao-jdbc</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>com.nikolay.department-app</groupId>
-            <artifactId>model</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>com.nikolay.department-app</groupId>
+      <artifactId>model</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
 
-        <!--log4j-->
+    <!--log4j-->
 
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
 
-    </dependencies>
+  </dependencies>
 
 
 </project>

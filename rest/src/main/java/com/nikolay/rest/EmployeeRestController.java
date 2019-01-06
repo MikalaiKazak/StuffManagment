@@ -2,18 +2,24 @@ package com.nikolay.rest;
 
 import com.nikolay.model.Employee;
 import com.nikolay.service.EmployeeService;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.time.LocalDate;
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The type Employee rest controller.
@@ -45,19 +51,21 @@ public class EmployeeRestController {
      * @return the all employees
      */
     @GetMapping("/")
-    public ResponseEntity<List<Employee>> getAllEmployees(@RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
-        @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
-        @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo) {
+    public ResponseEntity<List<Employee>> getAllEmployees(
+            @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+            @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
+            @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo) {
         LOGGER.debug("getAllEmployees()");
         if (dateFrom != null && dateTo != null) {
             LOGGER.debug("getAllEmployees(dateFrom, dateTo): dateFrom = {}, dateTo = {}",
-                dateFrom.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                dateTo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            List<Employee> employees = employeeService.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
+                    dateFrom.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                    dateTo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            List<Employee> employees = employeeService
+                    .getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
             return new ResponseEntity<>(employees, HttpStatus.FOUND);
         } else if (date != null) {
             LOGGER.debug("getAllEmployees(date): date = {}",
-                date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             List<Employee> employees = employeeService.getEmployeeByDateOfBirthday(date);
             return new ResponseEntity<>(employees, HttpStatus.FOUND);
         }
@@ -72,7 +80,6 @@ public class EmployeeRestController {
      * @return the employee by id
      */
     @GetMapping("/{id}")
-    @ResponseStatus(value = HttpStatus.FOUND)
     public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Long id) {
         LOGGER.debug("getEmployeeById(id): id = {}", id);
         Employee employee = employeeService.getEmployeeById(id);
@@ -110,13 +117,13 @@ public class EmployeeRestController {
      * Update employee response entity.
      *
      * @param newEmployee the new employee
-     * @param id          the id
+     * @param id the id
      * @return the response entity
      */
     @PutMapping("/{id}")
     public ResponseEntity updateEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
         LOGGER.debug("updateEmployee(id, employee): id = {}, employeeName = {}", id,
-            newEmployee.getFullName());
+                newEmployee.getFullName());
         Employee employee = employeeService.getEmployeeById(id);
         employee.setDepartmentId(newEmployee.getDepartmentId());
         employee.setFullName(newEmployee.getFullName());

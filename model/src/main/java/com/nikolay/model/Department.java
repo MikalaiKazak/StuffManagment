@@ -1,7 +1,6 @@
 package com.nikolay.model;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 
 /**
  * The type Department.
@@ -25,9 +24,9 @@ public class Department {
     /**
      * Instantiates a new Department.
      *
-     * @param id             the id
+     * @param id the id
      * @param departmentName the department name
-     * @param averageSalary  the average salary
+     * @param averageSalary the average salary
      */
     public Department(Long id, String departmentName, BigDecimal averageSalary) {
         this.id = id;
@@ -39,7 +38,7 @@ public class Department {
      * Instantiates a new Department.
      *
      * @param departmentName the department name
-     * @param averageSalary  the average salary
+     * @param averageSalary the average salary
      */
     public Department(String departmentName, BigDecimal averageSalary) {
         this.departmentName = departmentName;

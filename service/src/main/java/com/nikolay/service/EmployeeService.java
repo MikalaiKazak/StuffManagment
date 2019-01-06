@@ -1,8 +1,6 @@
 package com.nikolay.service;
 
-import com.nikolay.service.exception.EmployeeNotFoundException;
 import com.nikolay.model.Employee;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,34 +14,30 @@ public interface EmployeeService {
      *
      * @param employeeId the employee id
      * @return the employee by id
-     * @throws EmployeeNotFoundException the employee not found exception
      */
-    Employee getEmployeeById(Long employeeId) throws EmployeeNotFoundException;
+    Employee getEmployeeById(Long employeeId);
 
     /**
      * Save employee long.
      *
      * @param employee the employee
      * @return the long
-     * @throws EmployeeNotFoundException the employee not found exception
      */
-    Long saveEmployee(Employee employee) throws EmployeeNotFoundException;
+    Long saveEmployee(Employee employee);
 
     /**
      * Update employee.
      *
      * @param employee the employee
-     * @throws EmployeeNotFoundException the employee not found exception
      */
-    void updateEmployee(Employee employee) throws EmployeeNotFoundException;
+    void updateEmployee(Employee employee);
 
     /**
      * Delete employee.
      *
      * @param employeeId the employee id
-     * @throws EmployeeNotFoundException the employee not found exception
      */
-    void deleteEmployee(Long employeeId) throws EmployeeNotFoundException;
+    void deleteEmployee(Long employeeId);
 
     /**
      * Gets all employees.
@@ -64,7 +58,7 @@ public interface EmployeeService {
      * Gets employee between dates of birthday.
      *
      * @param dateFrom the date from
-     * @param dateTo   the date to
+     * @param dateTo the date to
      * @return the employee between dates of birthday
      */
     List<Employee> getEmployeeBetweenDatesOfBirthday(LocalDate dateFrom, LocalDate dateTo);

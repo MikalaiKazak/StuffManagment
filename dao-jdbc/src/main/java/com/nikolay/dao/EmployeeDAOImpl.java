@@ -1,6 +1,5 @@
 package com.nikolay.dao;
 
-import com.nikolay.dao.EmployeeDAO;
 import com.nikolay.dao.mapper.EmployeeMapper;
 import com.nikolay.model.Employee;
 import java.sql.Date;
@@ -27,42 +26,58 @@ import org.springframework.stereotype.Component;
 public class EmployeeDAOImpl implements EmployeeDAO {
 
     private static final Logger LOGGER = LogManager.getLogger();
+
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
     @Value("${parameters.employee_id}")
     private String PARAMETER_EMPLOYEE_ID;
+
     @Value("${parameters.fullName}")
     private String PARAMETER_FULL_NAME;
+
     @Value("${parameters.birthday}")
     private String PARAMETER_EMPLOYEE_BIRTHDAY;
+
     @Value("${parameters.birthday_to}")
     private String PARAMETER_EMPLOYEE_BIRTHDAY_TO;
+
     @Value("${parameters.birthday_from}")
     private String PARAMETER_EMPLOYEE_BIRTHDAY_FROM;
+
     @Value("${parameters.department_id}")
     private String PARAMETER_DEPARTMENT_ID;
+
     @Value("${parameters.salary}")
     private String PARAMETER_EMPLOYEE_SALARY;
+
     @Value("${employee.GET_ALL_EMPLOYEE}")
     private String GET_ALL_EMPLOYEE;
+
     @Value("${employee.GET_EMPLOYEE_BY_ID}")
     private String GET_EMPLOYEE_BY_ID;
+
     @Value("${employee.GET_EMPLOYEE_BY_DEPARTMENT_ID}")
     private String GET_EMPLOYEE_BY_DEPARTMENT_ID;
+
     @Value("${employee.GET_EMPLOYEE_BY_DATE_OF_BIRTHDAY}")
     private String GET_EMPLOYEE_BY_DATE_OF_BIRTHDAY;
+
     @Value("${employee.GET_EMPLOYEE_BETWEEN_DATES_OF_BIRTHDAY}")
     private String GET_EMPLOYEE_BETWEEN_DATES_OF_BIRTHDAY;
+
     @Value("${employee.ADD_EMPLOYEE}")
     private String ADD_EMPLOYEE;
+
     @Value("${employee.UPDATE_EMPLOYEE}")
     private String UPDATE_EMPLOYEE;
+
     @Value("${employee.DELETE_EMPLOYEE}")
     private String DELETE_EMPLOYEE;
+
     private EmployeeMapper employeeMapper = new EmployeeMapper();
 
     public EmployeeDAOImpl(DataSource dataSource) {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-
     }
 
     @Override

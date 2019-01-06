@@ -1,18 +1,12 @@
 package com.nikolay.service;
 
-import com.nikolay.service.exception.DepartmentNotFoundException;
 import com.nikolay.model.Department;
-
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * The interface Department service.
- *
- * @author Mikalai_Kazak 14.12.2012
  */
 public interface DepartmentService {
-
 
     /**
      * Gets all departments.
@@ -26,50 +20,37 @@ public interface DepartmentService {
      *
      * @param departmentId the department id
      * @return the department by id
-     * @throws DepartmentNotFoundException the department not found exception
      */
-    Department getDepartmentById(Long departmentId) throws DepartmentNotFoundException;
+    Department getDepartmentById(Long departmentId);
 
     /**
      * Gets department by name.
      *
      * @param departmentName the department name
      * @return the department by name
-     * @throws DepartmentNotFoundException the department not found exception
      */
-    Department getDepartmentByName(String departmentName) throws DepartmentNotFoundException;
+    Department getDepartmentByName(String departmentName);
 
     /**
      * Save department long.
      *
      * @param department the department
      * @return the long
-     * @throws DepartmentNotFoundException the department not found exception
      */
-    Long saveDepartment(Department department) throws DepartmentNotFoundException;
+    Long saveDepartment(Department department);
 
     /**
      * Update department.
      *
      * @param department the department
-     * @throws DepartmentNotFoundException the department not found exception
      */
-    void updateDepartment(Department department) throws DepartmentNotFoundException;
+    void updateDepartment(Department department);
 
     /**
      * Delete department.
      *
      * @param departmentId the department id
-     * @throws DepartmentNotFoundException the department not found exception
      */
-    void deleteDepartment(Long departmentId) throws DepartmentNotFoundException;
+    void deleteDepartment(Long departmentId);
 
-    /**
-     * Gets department average salary.
-     *
-     * @param departmentId the department id
-     * @return the department average salary
-     * @throws DepartmentNotFoundException the department not found exception
-     */
-    BigDecimal getDepartmentAverageSalary(Long departmentId) throws DepartmentNotFoundException;
 }
