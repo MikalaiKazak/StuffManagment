@@ -92,13 +92,14 @@ public class DepartmentRestController {
      * Update department response entity.
      *
      * @param newDepartment the new department
-     * @param id            the id
+     * @param id the id
      * @return the response entity
      */
     @PutMapping("/{id}")
-    public ResponseEntity updateDepartment(@PathVariable Long id, @RequestBody Department newDepartment) {
+    public ResponseEntity updateDepartment(@PathVariable Long id,
+            @RequestBody Department newDepartment) {
         LOGGER.debug("updateDepartment(): id = {}, newDepartmentName = {}", id,
-            newDepartment.getDepartmentName());
+                newDepartment.getDepartmentName());
         Department department = departmentService.getDepartmentById(id);
         department.setDepartmentName(newDepartment.getDepartmentName());
         department.setAverageSalary(newDepartment.getAverageSalary());

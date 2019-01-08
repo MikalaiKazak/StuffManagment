@@ -3,12 +3,12 @@ package com.nikolay.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
  * The type Employee.
+ *
  * @author Mikalai_Kazak @epam.com 10.12.2018
  */
 public class Employee {
@@ -19,7 +19,7 @@ public class Employee {
 
     private String fullName;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDate birthday;
@@ -35,13 +35,14 @@ public class Employee {
     /**
      * Instantiates a new Employee.
      *
-     * @param id           the id
+     * @param id the id
      * @param departmentId the department id
-     * @param fullName     the full name
-     * @param birthday     the birthday
-     * @param salary       the salary
+     * @param fullName the full name
+     * @param birthday the birthday
+     * @param salary the salary
      */
-    public Employee(Long id, Long departmentId, String fullName, LocalDate birthday, BigDecimal salary) {
+    public Employee(Long id, Long departmentId, String fullName, LocalDate birthday,
+            BigDecimal salary) {
         this.id = id;
         this.departmentId = departmentId;
         this.fullName = fullName;
@@ -53,9 +54,9 @@ public class Employee {
      * Instantiates a new Employee.
      *
      * @param departmentId the department id
-     * @param fullName     the full name
-     * @param birthday     the birthday
-     * @param salary       the salary
+     * @param fullName the full name
+     * @param birthday the birthday
+     * @param salary the salary
      */
     public Employee(Long departmentId, String fullName, LocalDate birthday, BigDecimal salary) {
         this.departmentId = departmentId;

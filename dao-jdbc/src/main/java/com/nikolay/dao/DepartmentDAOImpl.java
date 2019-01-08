@@ -1,6 +1,5 @@
 package com.nikolay.dao;
 
-import com.nikolay.dao.DepartmentDAO;
 import com.nikolay.dao.mapper.DepartmentMapper;
 import com.nikolay.model.Department;
 import java.math.BigDecimal;
@@ -94,7 +93,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
         LOGGER.debug("saveDepartment(department): departmentName = {}",
                 department.getDepartmentName());
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.getJdbcTemplate().update(
+        this.namedParameterJdbcTemplate.getJdbcTemplate().update(
                 connection -> {
                     PreparedStatement ps = connection.prepareStatement(ADD_DEPARTMENT,
                             new String[]{PARAMETER_DEPARTMENT_ID});

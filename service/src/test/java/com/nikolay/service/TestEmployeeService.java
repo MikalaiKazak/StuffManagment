@@ -1,28 +1,28 @@
 package com.nikolay.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
 import com.nikolay.dao.EmployeeDAO;
 import com.nikolay.model.Employee;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-service-mock.xml"})
@@ -44,9 +44,12 @@ public class TestEmployeeService {
     @Before
     public void setUp() {
         LOGGER.error("execute: setUp()");
-        emp3 = new Employee(3L, "Nikolay Kozak", LocalDate.of(1999, 2, 28), BigDecimal.valueOf(350));
-        emp1 = new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28), BigDecimal.valueOf(350));
-        emp2 = new Employee(2L, 1L, "Dmitry Kozak", LocalDate.of(2000, 12, 5), BigDecimal.valueOf(300));
+        emp3 = new Employee(3L, "Nikolay Kozak", LocalDate.of(1999, 2, 28),
+                BigDecimal.valueOf(350));
+        emp1 = new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28),
+                BigDecimal.valueOf(350));
+        emp2 = new Employee(2L, 1L, "Dmitry Kozak", LocalDate.of(2000, 12, 5),
+                BigDecimal.valueOf(300));
         employees = Arrays.asList(emp1, emp2);
     }
 
@@ -113,7 +116,8 @@ public class TestEmployeeService {
     public void testGetEmployeeByDateOfBirthday() {
         LOGGER.debug("test Service: run testGetEmployeeByDateOfBirthday()");
         LocalDate date = LocalDate.of(1999, 2, 28);
-        when(employeeDAOMock.getEmployeeByDateOfBirthday(date)).thenReturn(Collections.singletonList(emp1));
+        when(employeeDAOMock.getEmployeeByDateOfBirthday(date))
+                .thenReturn(Collections.singletonList(emp1));
         List<Employee> employees = employeeService.getEmployeeByDateOfBirthday(date);
         verify(employeeDAOMock).getEmployeeByDateOfBirthday(date);
         assertNotNull(employees);
@@ -126,8 +130,10 @@ public class TestEmployeeService {
         LOGGER.debug("test Service: run testGetEmployeeBetweenDatesOfBirthday()");
         LocalDate dateFrom = LocalDate.of(1999, 2, 28);
         LocalDate dateTo = LocalDate.of(2000, 12, 5);
-        when(employeeDAOMock.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo)).thenReturn(employees);
-        List<Employee> employees = employeeService.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
+        when(employeeDAOMock.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo))
+                .thenReturn(employees);
+        List<Employee> employees = employeeService
+                .getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
         verify(employeeDAOMock).getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
         assertNotNull(employees);
         assertEquals(2, employees.size());
