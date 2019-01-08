@@ -13,6 +13,7 @@
         <module>dao</module>
         <module>service</module>
         <module>rest</module>
+        <module>dao-jdbc</module>
     </modules>
 
     <properties>
@@ -30,7 +31,6 @@
 
     <dependencyManagement>
         <dependencies>
-
             <!--Project-->
             <dependency>
                 <groupId>com.nikolay.department-app</groupId>
@@ -41,6 +41,12 @@
             <dependency>
                 <groupId>com.nikolay.department-app</groupId>
                 <artifactId>dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.nikolay.department-app</groupId>
+                <artifactId>dao-jdbc</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

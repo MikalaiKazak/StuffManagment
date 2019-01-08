@@ -111,7 +111,7 @@ public class TestDepartmentService {
     @Test
     public void testUpdateDepartment() {
         LOGGER.debug("test Service: run testUpdateDepartment()");
-        doNothing().when(departmentDAOMock).updateDepartment(dep2);
+        when(departmentDAOMock.updateDepartment(dep2)).thenReturn(1L);
         departmentService.updateDepartment(dep2);
         verify(departmentDAOMock).updateDepartment(dep2);
     }
@@ -119,7 +119,7 @@ public class TestDepartmentService {
     @Test
     public void testDeleteDepartment() {
         LOGGER.debug("test Service: run testDeleteDepartment()");
-        doNothing().when(departmentDAOMock).deleteDepartment(anyLong());
+        when(departmentDAOMock.deleteDepartment(anyLong())).thenReturn(1L);
         departmentService.deleteDepartment(14L);
         departmentService.deleteDepartment(13L);
         verify(departmentDAOMock, times(2)).deleteDepartment(anyLong());

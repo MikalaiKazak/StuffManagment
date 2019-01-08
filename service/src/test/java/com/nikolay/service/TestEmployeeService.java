@@ -86,7 +86,7 @@ public class TestEmployeeService {
     @Test
     public void testUpdateEmployee() {
         LOGGER.debug("test Service: run testUpdateEmployee()");
-        doNothing().when(employeeDAOMock).updateEmployee(emp1);
+        when(employeeDAOMock.updateEmployee(emp1)).thenReturn(1L);
         employeeService.updateEmployee(emp1);
         verify(employeeDAOMock).updateEmployee(emp1);
     }
@@ -94,7 +94,7 @@ public class TestEmployeeService {
     @Test
     public void testDeleteEmployee() {
         LOGGER.debug("test Service: run testDeleteEmployee()");
-        doNothing().when(employeeDAOMock).deleteEmployee(2L);
+        when(employeeDAOMock.deleteEmployee(2L)).thenReturn(1L);
         employeeService.deleteEmployee(2L);
         verify(employeeDAOMock).deleteEmployee(2L);
     }

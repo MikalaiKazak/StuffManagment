@@ -28,11 +28,11 @@
         <jdbc:script location="classpath*:/db/init_table.sql"/>
     </jdbc:initialize-database>
 
-    <bean id="departmentDAO" class="com.nikolay.dao.impl.DepartmentDAOImpl">
+    <bean id="departmentDAO" class="com.nikolay.dao.DepartmentDAOImpl">
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="employeeDAO" class="com.nikolay.dao.impl.EmployeeDAOImpl">
+    <bean id="employeeDAO" class="com.nikolay.dao.EmployeeDAOImpl">
         <constructor-arg ref="dataSource"/>
     </bean>
 
