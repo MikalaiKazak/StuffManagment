@@ -106,9 +106,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (department.getDepartmentName() == null) {
             throw new OperationFailedException("Department name shouldn't be null");
         }
-        if (department.getAverageSalary() == null) {
-            throw new OperationFailedException("Department average salary shouldn't be null");
-        }
     }
 
 }

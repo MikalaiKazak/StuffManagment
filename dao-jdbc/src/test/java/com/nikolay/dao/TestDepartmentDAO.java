@@ -67,14 +67,6 @@ public class TestDepartmentDAO {
     }
 
     @Test
-    public void testGetDepartmentAverageSalary() {
-        LOGGER.debug("test DAO: run testGetDepartmentAverageSalary()");
-        BigDecimal averageSalary = departmentDAO.getDepartmentAverageSalary(DEPARTMENT_ID);
-        Assert.assertNotNull(averageSalary);
-        Assert.assertEquals(DEPARTMENT_AVERAGE_SALARY, averageSalary);
-    }
-
-    @Test
     public void testSaveDepartment() {
         LOGGER.debug("test DAO: run testSaveDepartment()");
         Department department = new Department(NEW_DEPARTMENT_NAME, DEPARTMENT_AVERAGE_SALARY);
