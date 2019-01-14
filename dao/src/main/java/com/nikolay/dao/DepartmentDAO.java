@@ -56,14 +56,4 @@ public interface DepartmentDAO {
      * @return the long
      */
     Long deleteDepartment(Long departmentId);
-
-
-    /**
-     * Gets department average salary.
-     *
-     * @param departmentId the department id
-     * @return the department average salary
-     */
-    BigDecimal getDepartmentAverageSalary(Long departmentId);
-
 }

@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.nikolay.dao.EmployeeDAO;
 import com.nikolay.model.Employee;
 import com.nikolay.service.EmployeeService;
 import java.math.BigDecimal;
@@ -33,14 +34,11 @@ public class TestEmployeeRestDao {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    @Value("${app.url}")
+    @Value("${employee.endpoint}")
     private String url;
 
-    @Value("${point.employees}")
-    private String employeesPoint;
-
     @Autowired
-    private EmployeeService employeeRestDao;
+    private EmployeeDAO employeeRestDao;
 
     @Autowired
     private RestTemplate mockRestTemplate;
@@ -73,40 +71,40 @@ public class TestEmployeeRestDao {
     @Test
     public void testGetEmployeeById() {
         LOGGER.debug("test TestEmployeeRestDao: run testGetEmployeeById()");
-        when(mockRestTemplate.getForObject(url + employeesPoint + 1, Employee.class))
+        when(mockRestTemplate.getForObject(url, Employee.class, 1L))
                 .thenReturn(emp2);
         Employee employee = employeeRestDao.getEmployeeById(1L);
         assertNotNull(employee);
         assertEquals(1L, employee.getId().longValue());
-        verify(mockRestTemplate, times(1)).getForObject(url + employeesPoint + 1, Employee.class);
+        verify(mockRestTemplate, times(1)).getForObject(url, Employee.class, 1L);
     }
 
     @Test
     public void testGetAllEmployee() {
         LOGGER.debug("test TestEmployeeRestDao: run testGetAllEmployee()");
-        when(mockRestTemplate.getForObject(url + employeesPoint, Employee[].class))
+        when(mockRestTemplate.getForObject(url, Employee[].class))
                 .thenReturn(new Employee[]{emp2, emp3});
         List<Employee> employees = employeeRestDao.getAllEmployees();
         assertNotNull(employees);
         assertEquals(2, employees.size());
-        verify(mockRestTemplate, times(1)).getForObject(url + employeesPoint, Employee[].class);
+        verify(mockRestTemplate, times(1)).getForObject(url, Employee[].class);
     }
 
     @Test
     public void testSaveEmployee() {
         LOGGER.debug("test TestEmployeeRestDao: run testSaveEmployee()");
-        when(mockRestTemplate.postForEntity(url + employeesPoint, emp1, Long.class))
+        when(mockRestTemplate.postForEntity(url, emp1, Long.class))
                 .thenReturn(new ResponseEntity<>(1L, HttpStatus.FOUND));
         Long employeeId = employeeRestDao.saveEmployee(emp1);
         assertNotNull(employeeId);
         assertEquals(1L, employeeId.longValue());
-        verify(mockRestTemplate, times(1)).postForEntity(url + employeesPoint, emp1, Long.class);
+        verify(mockRestTemplate, times(1)).postForEntity(url, emp1, Long.class);
     }
 
     @Test
     public void testGetEmployeeByDateOfBirthday() {
         LOGGER.debug("test TestEmployeeRestDao: run testGetEmployeeByDateOfBirthday()");
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url + employeesPoint)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("date", date);
         when(mockRestTemplate.getForObject(builder.toUriString(), Employee[].class))
                 .thenReturn(new Employee[]{emp2});
@@ -119,7 +117,7 @@ public class TestEmployeeRestDao {
     @Test
     public void testGetEmployeeWithDateOfBirthday() {
         LOGGER.debug("test TestEmployeeRestDao: run testGetEmployeeWithDateOfBirthday()");
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url + employeesPoint)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("dateFrom", dateFrom)
                 .queryParam("dateTo", dateTo);
         when(mockRestTemplate.getForObject(builder.toUriString(), Employee[].class))
@@ -134,17 +132,17 @@ public class TestEmployeeRestDao {
     @Test
     public void testDeleteEmployee() {
         LOGGER.debug("test TestEmployeeRestDao: run testDeleteEmployee()");
-        doNothing().when(mockRestTemplate).delete(url + employeesPoint + 1);
+        doNothing().when(mockRestTemplate).delete(url, 1L);
         employeeRestDao.deleteEmployee(1L);
-        verify(mockRestTemplate, times(1)).delete(url + employeesPoint + 1);
+        verify(mockRestTemplate, times(1)).delete(url, 1L);
     }
 
     @Test
     public void testUpdateEmployee() {
         LOGGER.debug("test TestEmployeeRestDao: run testUpdateEmployee()");
-        doNothing().when(mockRestTemplate).put(url + employeesPoint + 1, emp2);
+        doNothing().when(mockRestTemplate).put(url, emp2, 1L);
         employeeRestDao.updateEmployee(emp2);
-        verify(mockRestTemplate, times(1)).put(url + employeesPoint + 1, emp2);
+        verify(mockRestTemplate, times(1)).put(url, emp2, 1L);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.nikolay.client;
 
 import com.nikolay.client.exception.ServerDataAccessException;
+import com.nikolay.dao.DepartmentDAO;
 import com.nikolay.model.Department;
 import com.nikolay.service.DepartmentService;
 import java.util.Arrays;
@@ -17,18 +18,15 @@ import org.springframework.web.util.UriComponentsBuilder;
  * The type Department rest dao.
  */
 @Component
-public class DepartmentRestDaoImpl implements DepartmentService {
+public class DepartmentRestDaoImpl implements DepartmentDAO {
 
     /**
      * The constant LOGGER.
      */
     public static final Logger LOGGER = LogManager.getLogger();
 
-    @Value("${app.url}")
+    @Value("${department.endpoint}")
     private String url;
-
-    @Value("${point.departments}")
-    private String departmentsPoint;
 
     private RestTemplate restTemplate;
 
@@ -46,7 +44,7 @@ public class DepartmentRestDaoImpl implements DepartmentService {
     public List<Department> getAllDepartments() throws ServerDataAccessException {
         LOGGER.debug("getAllDepartments()");
         Department[] departmentsArray = restTemplate
-                .getForObject(url + departmentsPoint, Department[].class);
+                .getForObject(url, Department[].class);
         if (departmentsArray == null) {
             throw new ServerDataAccessException("Departments not found");
         }
@@ -57,7 +55,7 @@ public class DepartmentRestDaoImpl implements DepartmentService {
     public Department getDepartmentById(Long departmentId) throws ServerDataAccessException {
         LOGGER.debug("getDepartmentById(departmentId): departmentId = {}", departmentId);
         Department department = restTemplate
-                .getForObject(url + departmentsPoint + departmentId, Department.class);
+                .getForObject(url, Department.class, departmentId);
         if (department == null) {
             throw new ServerDataAccessException(
                     "Department by identifier " + departmentId + " not found");
@@ -69,7 +67,7 @@ public class DepartmentRestDaoImpl implements DepartmentService {
     @Override
     public Department getDepartmentByName(String departmentName) throws ServerDataAccessException {
         LOGGER.debug("getDepartmentByName(departmentName): departmentName = {}", departmentName);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url + departmentsPoint)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("name", departmentName);
         Department department = restTemplate
                 .getForObject(builder.toUriString(), Department.class);
@@ -85,7 +83,7 @@ public class DepartmentRestDaoImpl implements DepartmentService {
         LOGGER.debug("saveDepartment(department): departmentName = {}",
                 department.getDepartmentName());
         ResponseEntity<Long> responseEntity = restTemplate
-                .postForEntity(url + departmentsPoint, department, Long.class);
+                .postForEntity(url, department, Long.class);
         Long departmentId = responseEntity.getBody();
         if (departmentId == null) {
             throw new ServerDataAccessException("The employee was not saved");
@@ -95,15 +93,18 @@ public class DepartmentRestDaoImpl implements DepartmentService {
     }
 
     @Override
-    public void updateDepartment(Department department) throws ServerDataAccessException {
+    public Long updateDepartment(Department department) throws ServerDataAccessException {
         LOGGER.debug("updateDepartment(department): departmentId = {}", department.getId());
-        restTemplate.put(url + departmentsPoint + department.getId(), department);
+        Long departmentId = department.getId();
+        restTemplate.put(url, department, departmentId);
+        return departmentId;
     }
 
     @Override
-    public void deleteDepartment(Long departmentId) throws ServerDataAccessException {
+    public Long deleteDepartment(Long departmentId) throws ServerDataAccessException {
         LOGGER.debug("deleteDepartment(departmentId): departmentId = {}", departmentId);
-        restTemplate.delete(url + departmentsPoint + departmentId);
+        restTemplate.delete(url, departmentId);
+        return departmentId;
     }
 
 }

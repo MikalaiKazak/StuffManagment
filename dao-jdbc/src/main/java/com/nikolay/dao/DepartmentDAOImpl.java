@@ -52,9 +52,6 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     @Value("${department.UPDATE_DEPARTMENT}")
     private String UPDATE_DEPARTMENT_BY_ID;
 
-    @Value("${department.GET_DEPARTMENT_AVERAGE_SALARY}")
-    private String GET_DEPARTMENT_AVERAGE_SALARY;
-
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private DepartmentMapper departmentMapper = new DepartmentMapper();
@@ -124,15 +121,6 @@ public class DepartmentDAOImpl implements DepartmentDAO {
         this.namedParameterJdbcTemplate.update(DELETE_EMPLOYEE_BY_DEPARTMENT_ID, namedParameters);
         return (long) this.namedParameterJdbcTemplate
                 .update(DELETE_DEPARTMENT_BY_ID, namedParameters);
-    }
-
-    @Override
-    public BigDecimal getDepartmentAverageSalary(Long departmentId) {
-        LOGGER.debug("getDepartmentAverageSalary(departmentId): departmentId = {}", departmentId);
-        SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_DEPARTMENT_ID,
-                departmentId);
-        return this.namedParameterJdbcTemplate
-                .queryForObject(GET_DEPARTMENT_AVERAGE_SALARY, namedParameters, BigDecimal.class);
     }
 
 }

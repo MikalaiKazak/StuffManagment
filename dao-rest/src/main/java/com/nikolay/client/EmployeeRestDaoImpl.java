@@ -1,6 +1,8 @@
 package com.nikolay.client;
 
 import com.nikolay.client.exception.ServerDataAccessException;
+import com.nikolay.dao.DepartmentDAO;
+import com.nikolay.dao.EmployeeDAO;
 import com.nikolay.model.Employee;
 import com.nikolay.service.EmployeeService;
 import java.time.LocalDate;
@@ -19,18 +21,16 @@ import org.springframework.web.util.UriComponentsBuilder;
  * The type Employee rest dao.
  */
 @Component
-public class EmployeeRestDaoImpl implements EmployeeService {
+public class EmployeeRestDaoImpl implements EmployeeDAO {
 
     /**
      * The constant LOGGER.
      */
     public static final Logger LOGGER = LogManager.getLogger();
 
-    @Value("${app.url}")
+    @Value("${employee.endpoint}")
     private String url;
 
-    @Value("${point.employees}")
-    private String employeesPoint;
 
     private RestTemplate restTemplate;
 
@@ -47,7 +47,7 @@ public class EmployeeRestDaoImpl implements EmployeeService {
     public Employee getEmployeeById(Long employeeId) throws ServerDataAccessException {
         LOGGER.debug("getEmployeeById(employeeId): employeeId = {}", employeeId);
         Employee employee = restTemplate
-                .getForObject(url + employeesPoint + employeeId, Employee.class);
+                .getForObject(url, Employee.class, employeeId);
         if (employee == null) {
             throw new ServerDataAccessException(
                     "Employee by identifier " + employeeId + " not found");
@@ -60,7 +60,7 @@ public class EmployeeRestDaoImpl implements EmployeeService {
     public Long saveEmployee(Employee employee) throws ServerDataAccessException {
         LOGGER.debug("saveEmployee(employee): employeeFullName = {}", employee.getFullName());
         ResponseEntity<Long> responseEntity = restTemplate
-                .postForEntity(url + employeesPoint, employee, Long.class);
+                .postForEntity(url, employee, Long.class);
         Long employeeId = responseEntity.getBody();
         LOGGER.debug("employeeId = {}", employeeId);
         if (employeeId == null) {
@@ -71,22 +71,25 @@ public class EmployeeRestDaoImpl implements EmployeeService {
     }
 
     @Override
-    public void updateEmployee(Employee employee) throws ServerDataAccessException {
+    public Long updateEmployee(Employee employee) throws ServerDataAccessException {
         LOGGER.debug("updateEmployee(employee): employeeId = {}", employee.getId());
-        restTemplate.put(url + employeesPoint + employee.getId(), employee);
+        Long employeeId = employee.getId();
+        restTemplate.put(url, employee, employeeId);
+        return employeeId;
     }
 
     @Override
-    public void deleteEmployee(Long employeeId) throws ServerDataAccessException {
+    public Long deleteEmployee(Long employeeId) throws ServerDataAccessException {
         LOGGER.debug("deleteEmployee(employeeId): employeeId = {}", employeeId);
-        restTemplate.delete(url + employeesPoint + employeeId);
+        restTemplate.delete(url, employeeId);
+        return employeeId;
     }
 
     @Override
     public List<Employee> getAllEmployees() throws ServerDataAccessException {
         LOGGER.debug("getAllEmployees()");
         Employee[] employeesArray = restTemplate
-                .getForObject(url + employeesPoint, Employee[].class);
+                .getForObject(url, Employee[].class);
         if (employeesArray == null) {
             throw new ServerDataAccessException("Employees not found");
         }
@@ -98,7 +101,7 @@ public class EmployeeRestDaoImpl implements EmployeeService {
             throws ServerDataAccessException {
         LOGGER.debug("getEmployeeByDateOfBirthday(date): date = {}",
                 date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url + employeesPoint)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("date", date);
         Employee[] employeesArray = restTemplate
                 .getForObject(builder.toUriString(), Employee[].class);
@@ -115,7 +118,7 @@ public class EmployeeRestDaoImpl implements EmployeeService {
                 "getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo): dateFrom = {}, dateTo = {}",
                 dateFrom.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                 dateTo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url + employeesPoint)
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("dateFrom", dateFrom)
                 .queryParam("dateTo", dateTo);
         Employee[] employeesArray = restTemplate
