@@ -31,6 +31,8 @@ public class EmployeeRestDaoImpl implements EmployeeDAO {
     @Value("${employee.endpoint}")
     private String url;
 
+    @Value("${employee.endpoint.with.id}")
+    private String urlWithParamUrl;
 
     private RestTemplate restTemplate;
 
@@ -47,7 +49,7 @@ public class EmployeeRestDaoImpl implements EmployeeDAO {
     public Employee getEmployeeById(Long employeeId) throws ServerDataAccessException {
         LOGGER.debug("getEmployeeById(employeeId): employeeId = {}", employeeId);
         Employee employee = restTemplate
-                .getForObject(url, Employee.class, employeeId);
+                .getForObject(urlWithParamUrl, Employee.class, employeeId);
         if (employee == null) {
             throw new ServerDataAccessException(
                     "Employee by identifier " + employeeId + " not found");
@@ -74,14 +76,14 @@ public class EmployeeRestDaoImpl implements EmployeeDAO {
     public Long updateEmployee(Employee employee) throws ServerDataAccessException {
         LOGGER.debug("updateEmployee(employee): employeeId = {}", employee.getId());
         Long employeeId = employee.getId();
-        restTemplate.put(url, employee, employeeId);
+        restTemplate.put(urlWithParamUrl, employee, employeeId);
         return employeeId;
     }
 
     @Override
     public Long deleteEmployee(Long employeeId) throws ServerDataAccessException {
         LOGGER.debug("deleteEmployee(employeeId): employeeId = {}", employeeId);
-        restTemplate.delete(url, employeeId);
+        restTemplate.delete(urlWithParamUrl, employeeId);
         return employeeId;
     }
 

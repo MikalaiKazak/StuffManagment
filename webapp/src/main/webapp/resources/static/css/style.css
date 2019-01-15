@@ -1,0 +1,74 @@
+.section {
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+.top-section-header {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.title {
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+.link-menu {
+  margin-top: 30px;
+}
+
+.table-buttons {
+  text-align: center;
+}
+
+.none {
+  display: none;
+}
+
+.filter {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.choice {
+  display: block;
+}
+
+.form-wrap {
+  margin-top: 70px;
+  text-align: center;
+}
+
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_asc_disabled:before,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting_desc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:before {
+  bottom: .5em;
+}
+
+
+@media only screen and (max-width: 768px) {
+
+  .table-button {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    margin-left: 5px;
+    display: block;
+  }
+}
+
+

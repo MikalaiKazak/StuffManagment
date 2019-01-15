@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="60">
+  <Properties>
+    <Property name="log-path">logs</Property>
+    <Property name="archive">${log-path}/archive</Property>
+  </Properties>
+
+  <Appenders>
+    <Console name="Console-Appender" target="SYSTEM_OUT">
+      <PatternLayout>
+        <pattern>
+          [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
+        </pattern>>
+      </PatternLayout>
+    </Console>
+    <File fileName="${log-path}/webapp-log.log" name="File-Appender">
+      <PatternLayout>
+        <pattern>
+          [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
+        </pattern>
+      </PatternLayout>
+    </File>
+    <RollingFile fileName="${log-path}/server.log"
+        filePattern="${archive}/server.log.%d{yyyy-MM-dd-hh-mm}.gz"
+        name="RollingFile-Appender">
+      <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"/>
+      <Policies>
+        <TimeBasedTriggeringPolicy/>
+        <SizeBasedTriggeringPolicy size="30 MB"/>
+      </Policies>
+      <DefaultRolloverStrategy max="30"/>
+    </RollingFile>
+  </Appenders>
+
+  <Loggers>
+    <Logger level="debug" name="com.nikolay.webapp">
+      <AppenderRef level="debug" ref="File-Appender"/>
+    </Logger>
+    <Root level="debug">
+      <AppenderRef ref="Console-Appender"/>
+      <AppenderRef level="debug" ref="RollingFile-Appender"/>
+    </Root>
+  </Loggers>
+</Configuration>

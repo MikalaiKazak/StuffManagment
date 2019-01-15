@@ -28,6 +28,9 @@ public class DepartmentRestDaoImpl implements DepartmentDAO {
     @Value("${department.endpoint}")
     private String url;
 
+    @Value("${department.endpoint.with.id}")
+    private String urlWithIdParam;
+
     private RestTemplate restTemplate;
 
     /**
@@ -55,7 +58,7 @@ public class DepartmentRestDaoImpl implements DepartmentDAO {
     public Department getDepartmentById(Long departmentId) throws ServerDataAccessException {
         LOGGER.debug("getDepartmentById(departmentId): departmentId = {}", departmentId);
         Department department = restTemplate
-                .getForObject(url, Department.class, departmentId);
+                .getForObject(urlWithIdParam, Department.class, departmentId);
         if (department == null) {
             throw new ServerDataAccessException(
                     "Department by identifier " + departmentId + " not found");
@@ -96,14 +99,14 @@ public class DepartmentRestDaoImpl implements DepartmentDAO {
     public Long updateDepartment(Department department) throws ServerDataAccessException {
         LOGGER.debug("updateDepartment(department): departmentId = {}", department.getId());
         Long departmentId = department.getId();
-        restTemplate.put(url, department, departmentId);
+        restTemplate.put(urlWithIdParam, department, departmentId);
         return departmentId;
     }
 
     @Override
     public Long deleteDepartment(Long departmentId) throws ServerDataAccessException {
         LOGGER.debug("deleteDepartment(departmentId): departmentId = {}", departmentId);
-        restTemplate.delete(url, departmentId);
+        restTemplate.delete(urlWithIdParam, departmentId);
         return departmentId;
     }
 

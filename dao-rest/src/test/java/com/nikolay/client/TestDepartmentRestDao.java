@@ -38,6 +38,8 @@ public class TestDepartmentRestDao {
     @Value("${department.endpoint}")
     private String url;
 
+    @Value("${department.endpoint.with.id}")
+    private String urlWithIdParam;
 
     @Autowired
     private DepartmentDAO departmentRestDao;
@@ -61,13 +63,13 @@ public class TestDepartmentRestDao {
     @Test
     public void testGetDepartmentById() {
         LOGGER.debug("test TestDepartmentRestDao: run testGetDepartmentById()");
-        when(mockRestTemplate.getForObject(url, Department.class, 1L))
+        when(mockRestTemplate.getForObject(urlWithIdParam, Department.class, 1L))
                 .thenReturn(dep2);
         Department department = departmentRestDao.getDepartmentById(1L);
         assertNotNull(department);
         assertEquals(1L, department.getId().longValue());
         verify(mockRestTemplate, times(1))
-                .getForObject(url, Department.class, 1L);
+                .getForObject(urlWithIdParam, Department.class, 1L);
     }
 
     @Test
@@ -97,17 +99,17 @@ public class TestDepartmentRestDao {
     @Test
     public void testDeleteDepartment() {
         LOGGER.debug("test TestDepartmentRestDao: run testDeleteDepartment()");
-        doNothing().when(mockRestTemplate).delete(url, 1L);
+        doNothing().when(mockRestTemplate).delete(urlWithIdParam, 1L);
         departmentRestDao.deleteDepartment(1L);
-        verify(mockRestTemplate, times(1)).delete(url, 1L);
+        verify(mockRestTemplate, times(1)).delete(urlWithIdParam, 1L);
     }
 
     @Test
     public void testUpdateDepartment() {
         LOGGER.debug("test TestDepartmentRestDao: run testUpdateDepartment()");
-        doNothing().when(mockRestTemplate).put(url, dep2, 1L);
+        doNothing().when(mockRestTemplate).put(urlWithIdParam, dep2, 1L);
         departmentRestDao.updateDepartment(dep2);
-        verify(mockRestTemplate, times(1)).put(url, dep2, 1L);
+        verify(mockRestTemplate, times(1)).put(urlWithIdParam, dep2, 1L);
     }
 
     @Test

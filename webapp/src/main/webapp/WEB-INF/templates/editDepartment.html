@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+
+  <title>Edit department page</title>
+
+  <link href="../../resources/static/css/bootstrap.min.css"
+        rel="stylesheet"
+        th:href="@{/resources/static/css/bootstrap.min.css}">
+  <link href="../../resources/static/css/style.css"
+        rel="stylesheet"
+        th:href="@{/resources/static/css/style.css}">
+
+</head>
+
+<body class="bg-light">
+
+<header th:replace="fragments/header :: header"></header>
+
+<section class="section">
+
+  <div class="container-fluid">
+
+    <div class="top-section-header">
+
+      <div class="row justify-content-around">
+        <div>
+          <h2>Edit department</h2>
+        </div>
+
+        <div>
+          <a class="btn btn-outline-success" role="button" th:href="@{/departments}">Back</a>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="row justify-content-center">
+
+      <div class="form-wrap">
+
+        <form action="#" class="form-horizontal"
+              th:action="@{${#httpServletRequest.servletPath}}"
+              th:method="@{post}"
+              th:object="${department}">
+
+          <div class="form-group">
+            <label class="control-label" for="departmentName">Department name:</label>
+
+            <input class="form-input" id="departmentName"
+                   th:field="*{departmentName}"
+                   type="text"/>
+
+            <label class="d-block text-danger" for="departmentName"
+                   th:errors="*{departmentName}"
+                   th:if="${#fields.hasErrors('departmentName')}">Incorrect date</label>
+          </div>
+
+          <div class="form-group">
+
+            <div class="row justify-content-center">
+
+              <div class="col-auto">
+                <button class="btn btn-success" type="submit">Save</button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<script src="../../resources/static/js/jquery.min.js"
+        th:src="@{/resources/static/js/jquery.min.js}"></script>
+
+<script src="../../resources/static/js/bootstrap.min.js"
+        th:src="@{/resources/static/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

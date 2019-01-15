@@ -99,7 +99,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                             .prepareStatement(ADD_EMPLOYEE, new String[]{PARAMETER_EMPLOYEE_ID});
                     ps.setLong(1, employee.getDepartmentId());
                     ps.setString(2, employee.getFullName());
-                    ps.setDate(3, Date.valueOf(employee.getBirthday()));
+                    ps.setDate(3, Date.valueOf(employee.getBirthday().toString()));
                     ps.setBigDecimal(4, employee.getSalary());
                     return ps;
                 },
@@ -116,7 +116,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         namedParameters.addValue(PARAMETER_EMPLOYEE_ID, employee.getId());
         namedParameters.addValue(PARAMETER_DEPARTMENT_ID, employee.getDepartmentId());
         namedParameters.addValue(PARAMETER_FULL_NAME, employee.getFullName());
-        namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY, employee.getBirthday());
+        namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY, employee.getBirthday().toString());
         namedParameters.addValue(PARAMETER_EMPLOYEE_SALARY, employee.getSalary());
         return (long) this.namedParameterJdbcTemplate.update(UPDATE_EMPLOYEE, namedParameters);
     }
