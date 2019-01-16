@@ -108,8 +108,11 @@ public class EmployeeServiceImpl implements EmployeeService {
      * Check object employee for null
      */
     private void checkEmployee(Employee employee) throws OperationFailedException {
+        if(employee == null) {
+            throw new OperationFailedException("Operation fails");
+        }
         if (employee.getDepartmentId() == null) {
-            throw new OperationFailedException("Department identifier shouldn't be null");
+            throw new OperationFailedException("Employee identifier shouldn't be null");
         }
         if (employee.getFullName() == null) {
             throw new OperationFailedException("Employee full name shouldn't be null");

@@ -2,6 +2,7 @@ package com.nikolay.webapp.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,8 +13,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.nikolay.dao.DepartmentDAO;
 import com.nikolay.model.Department;
+import com.nikolay.service.DepartmentService;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Arrays;
@@ -48,7 +49,7 @@ public class TestDepartmentController {
   private DepartmentController departmentController;
 
   @Autowired
-  private DepartmentDAO mockDepartmentDao;
+  private DepartmentService mockDepartmentService;
 
   private Department dep1 = new Department();
   private Department dep2 = new Department();
@@ -81,7 +82,7 @@ public class TestDepartmentController {
    */
   @After
   public void tearDown() {
-    reset(mockDepartmentDao);
+    reset(mockDepartmentService);
     LOGGER.error("execute: afterTest()");
   }
 
@@ -93,7 +94,7 @@ public class TestDepartmentController {
   @Test
   public void testGetDepartmentById() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testGetDepartmentById()");
-    when(mockDepartmentDao.getDepartmentById(14L)).thenReturn(dep2);
+    when(mockDepartmentService.getDepartmentById(14L)).thenReturn(dep2);
     mockMvc.perform(
         get("/department/14")
             .accept(MediaType.APPLICATION_JSON))
@@ -102,7 +103,7 @@ public class TestDepartmentController {
         .andExpect(view().name("department"))
         .andExpect(model().attributeExists("department"))
         .andExpect(model().attribute("department", dep2));
-    verify(mockDepartmentDao).getDepartmentById(14L);
+    verify(mockDepartmentService).getDepartmentById(14L);
   }
 
   /**
@@ -113,7 +114,7 @@ public class TestDepartmentController {
   @Test
   public void testGetAllDepartments() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testGetAllDepartments()");
-    when(mockDepartmentDao.getAllDepartments()).thenReturn(departments);
+    when(mockDepartmentService.getAllDepartments()).thenReturn(departments);
     mockMvc.perform(
         get("/departments/")
             .accept(MediaType.APPLICATION_JSON)
@@ -122,7 +123,7 @@ public class TestDepartmentController {
         .andExpect(status().isOk())
         .andExpect(view().name("departments"))
         .andExpect(model().attributeExists("departmentList"));
-    verify(mockDepartmentDao).getAllDepartments();
+    verify(mockDepartmentService).getAllDepartments();
   }
 
   /**
@@ -150,7 +151,7 @@ public class TestDepartmentController {
   @Test
   public void testGetUpdateDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testGetAddDepartment()");
-    when(mockDepartmentDao.getDepartmentById(14L)).thenReturn(dep2);
+    when(mockDepartmentService.getDepartmentById(14L)).thenReturn(dep2);
     mockMvc.perform(get("/department/14/edit")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON))
@@ -158,7 +159,7 @@ public class TestDepartmentController {
         .andExpect(status().isOk())
         .andExpect(view().name("editDepartment"))
         .andExpect(model().attributeExists("department"));
-    verify(mockDepartmentDao).getDepartmentById(14L);
+    verify(mockDepartmentService).getDepartmentById(14L);
   }
 
   /**
@@ -169,7 +170,7 @@ public class TestDepartmentController {
   @Test
   public void testPostAddDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testPostAddDepartment()");
-    when(mockDepartmentDao.saveDepartment(any(Department.class))).thenReturn(1L);
+    when(mockDepartmentService.saveDepartment(any(Department.class))).thenReturn(1L);
     mockMvc.perform(post("/department/add")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
@@ -178,7 +179,7 @@ public class TestDepartmentController {
         .andDo(print())
         .andExpect(status().isFound())
         .andExpect(view().name("redirect:/departments"));
-    verify(mockDepartmentDao).saveDepartment(any(Department.class));
+    verify(mockDepartmentService).saveDepartment(any(Department.class));
   }
 
   /**
@@ -189,7 +190,7 @@ public class TestDepartmentController {
   @Test
   public void testPostUpdateDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testPostUpdateDepartment()");
-    when(mockDepartmentDao.updateDepartment(any(Department.class))).thenReturn(anyLong());
+    doNothing().when(mockDepartmentService).updateDepartment(any(Department.class));
     mockMvc.perform(post("/department/14/edit")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
@@ -199,7 +200,7 @@ public class TestDepartmentController {
         .andDo(print())
         .andExpect(status().isFound())
         .andExpect(view().name("redirect:/departments"));
-    verify(mockDepartmentDao).updateDepartment(any(Department.class));
+    verify(mockDepartmentService).updateDepartment(any(Department.class));
   }
 
   /**
@@ -210,11 +211,11 @@ public class TestDepartmentController {
   @Test
   public void testErrorHandler() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testErrorHandler()");
-    when(mockDepartmentDao.getDepartmentById(anyLong())).thenThrow(Exception.class);
+    when(mockDepartmentService.getDepartmentById(anyLong())).thenThrow(Exception.class);
     mockMvc.perform(get("/department/{id}", anyLong()))
         .andDo(print())
         .andExpect(view().name("_404"));
-    verify(mockDepartmentDao).getDepartmentById(anyLong());
+    verify(mockDepartmentService).getDepartmentById(anyLong());
   }
 
   /**
@@ -225,14 +226,14 @@ public class TestDepartmentController {
   @Test
   public void testRemoveDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testRemoveDepartment()");
-    when(mockDepartmentDao.deleteDepartment(1L)).thenReturn(1L);
+    doNothing().when(mockDepartmentService).deleteDepartment(1L);
     mockMvc.perform(
         get("/department/1/delete")
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(view().name("redirect:/departments"))
         .andExpect(status().isFound());
-    verify(mockDepartmentDao).deleteDepartment(1L);
+    verify(mockDepartmentService).deleteDepartment(1L);
 
   }
 

@@ -28,12 +28,21 @@
     <property name="errorHandler" ref="customResponseErrorHandler"/>
   </bean>
 
-  <bean class="com.nikolay.client.DepartmentRestDaoImpl" id="departmentRestDao">
+  <bean class="com.nikolay.client.DepartmentRestDaoImpl" id="departmentRestService">
     <constructor-arg name="restTemplate" ref="restTemplate"/>
   </bean>
 
-  <bean class="com.nikolay.client.EmployeeRestDaoImpl" id="employeeRestDao">
+  <bean class="com.nikolay.client.EmployeeRestDaoImpl" id="employeeRestService">
     <constructor-arg name="restTemplate" ref="restTemplate"/>
+  </bean>
+
+
+  <bean id="departmentService" class="com.nikolay.service.impl.DepartmentServiceImpl">
+    <property name="departmentDAO" ref="departmentRestService"/>
+  </bean>
+
+  <bean id="employeeService" class="com.nikolay.service.impl.EmployeeServiceImpl">
+    <property name="employeeDAO" ref="employeeRestService"/>
   </bean>
 
   <bean class="com.nikolay.webapp.validate.EmployeeValidator" id="employeeValidator"/>

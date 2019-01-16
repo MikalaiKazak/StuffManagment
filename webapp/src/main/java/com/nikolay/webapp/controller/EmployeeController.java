@@ -1,8 +1,8 @@
 package com.nikolay.webapp.controller;
 
-import com.nikolay.dao.DepartmentDAO;
-import com.nikolay.dao.EmployeeDAO;
 import com.nikolay.model.Employee;
+import com.nikolay.service.DepartmentService;
+import com.nikolay.service.EmployeeService;
 import java.time.LocalDate;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -34,24 +34,24 @@ public class EmployeeController {
    */
   public static final Logger LOGGER = LogManager.getLogger();
 
-  private final EmployeeDAO employeeRestDao;
+  private final EmployeeService employeeRestService;
 
-  private final DepartmentDAO departmentRestDao;
+  private final DepartmentService departmentRestService;
 
   private final Validator employeeValidator;
 
   /**
    * Instantiates a new Employee controller.
    *
-   * @param employeeRestDao the employee rest dao
-   * @param departmentRestDao the department rest dao
+   * @param employeeRestService the employee rest dao
+   * @param departmentRestService the department rest dao
    * @param employeeValidator the employee validator
    */
   @Autowired
-  public EmployeeController(EmployeeDAO employeeRestDao, DepartmentDAO departmentRestDao,
+  public EmployeeController(EmployeeService employeeRestService, DepartmentService departmentRestService,
       Validator employeeValidator) {
-    this.employeeRestDao = employeeRestDao;
-    this.departmentRestDao = departmentRestDao;
+    this.employeeRestService = employeeRestService;
+    this.departmentRestService = departmentRestService;
     this.employeeValidator = employeeValidator;
   }
 
@@ -79,11 +79,11 @@ public class EmployeeController {
     LOGGER.debug("getAllEmployees()");
     List<Employee> employeeList;
     if (dateFrom != null && dateTo != null) {
-      employeeList = employeeRestDao.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
+      employeeList = employeeRestService.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
     } else if (date != null) {
-      employeeList = employeeRestDao.getEmployeeByDateOfBirthday(date);
+      employeeList = employeeRestService.getEmployeeByDateOfBirthday(date);
     } else {
-      employeeList = employeeRestDao.getAllEmployees();
+      employeeList = employeeRestService.getAllEmployees();
     }
     model.addAttribute("employeeList", employeeList);
     return "employees";
@@ -99,7 +99,7 @@ public class EmployeeController {
   @GetMapping("/employee/{id}")
   public String getDepartmentPage(@PathVariable("id") Long id, Model model) {
     LOGGER.debug("getDepartmentPage() id = {}", id);
-    Employee employee = employeeRestDao.getEmployeeById(id);
+    Employee employee = employeeRestService.getEmployeeById(id);
     model.addAttribute("employee", employee);
     return "employee";
   }
@@ -114,7 +114,7 @@ public class EmployeeController {
   public String addEmployeePage(Model model) {
     LOGGER.debug("addEmployeePage()");
     model.addAttribute("employee", new Employee());
-    model.addAttribute("departmentList", departmentRestDao.getAllDepartments());
+    model.addAttribute("departmentList", departmentRestService.getAllDepartments());
     return "addEmployee";
   }
 
@@ -132,10 +132,10 @@ public class EmployeeController {
       BindingResult br, RedirectAttributes redirectAttributes, Model model) {
     LOGGER.debug("addEmployee()");
     if (br.hasErrors()) {
-      model.addAttribute("departmentList", departmentRestDao.getAllDepartments());
+      model.addAttribute("departmentList", departmentRestService.getAllDepartments());
       return "addEmployee";
     }
-    Long employeeId = employeeRestDao.saveEmployee(employee);
+    Long employeeId = employeeRestService.saveEmployee(employee);
     redirectAttributes.addFlashAttribute("message",
         "Employee " + employee.getFullName() + " has been saved");
     return "redirect:/employees";
@@ -151,9 +151,9 @@ public class EmployeeController {
   @GetMapping("/employee/{id}/edit")
   public String editEmployeePage(@PathVariable("id") Long id, Model model) {
     LOGGER.debug("editEmployeePage() id = {}", id);
-    Employee employee = employeeRestDao.getEmployeeById(id);
+    Employee employee = employeeRestService.getEmployeeById(id);
     model.addAttribute("employee", employee);
-    model.addAttribute("departmentList", departmentRestDao.getAllDepartments());
+    model.addAttribute("departmentList", departmentRestService.getAllDepartments());
     return "editEmployee";
   }
 
@@ -173,10 +173,10 @@ public class EmployeeController {
       BindingResult br, RedirectAttributes redirectAttributes, Model model) {
     LOGGER.debug("editEmployee() id = {]", id);
     if (br.hasErrors()) {
-      model.addAttribute("departmentList", departmentRestDao.getAllDepartments());
+      model.addAttribute("departmentList", departmentRestService.getAllDepartments());
       return "editEmployee";
     }
-    employeeRestDao.updateEmployee(employee);
+    employeeRestService.updateEmployee(employee);
     redirectAttributes.addFlashAttribute("message",
         "Employee " + employee.getFullName() + " has been updated");
     return "redirect:/employees";
@@ -193,7 +193,7 @@ public class EmployeeController {
   public String deleteDepartmentPage(@PathVariable("id") Long id,
       RedirectAttributes redirectAttributes) {
     LOGGER.debug("deleteDepartmentPage() id = {]", id);
-    employeeRestDao.deleteEmployee(id);
+    employeeRestService.deleteEmployee(id);
     redirectAttributes.addFlashAttribute("message", "Employee has been removed");
     return "redirect:/employees";
   }

@@ -1,7 +1,7 @@
 package com.nikolay.webapp.controller;
 
-import com.nikolay.dao.DepartmentDAO;
 import com.nikolay.model.Department;
+import com.nikolay.service.DepartmentService;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,20 +30,19 @@ public class DepartmentController {
    */
   public static final Logger LOGGER = LogManager.getLogger();
 
-  private final DepartmentDAO departmentRestDao;
+  private final DepartmentService departmentRestService;
 
   private final Validator departmentValidator;
 
   /**
    * Instantiates a new Department controller.
    *
-   * @param departmentRestDao the department rest dao
    * @param departmentValidator the department validator
    */
   @Autowired
-  public DepartmentController(DepartmentDAO departmentRestDao,
+  public DepartmentController(DepartmentService departmentRestService,
       Validator departmentValidator) {
-    this.departmentRestDao = departmentRestDao;
+    this.departmentRestService = departmentRestService;
     this.departmentValidator = departmentValidator;
   }
 
@@ -62,7 +61,7 @@ public class DepartmentController {
   @GetMapping("/departments")
   public String getAllDepartment(Model model) {
     LOGGER.debug("getAllDepartment()");
-    List<Department> departments = departmentRestDao.getAllDepartments();
+    List<Department> departments = departmentRestService.getAllDepartments();
     model.addAttribute("departmentList", departments);
     return "departments";
   }
@@ -91,7 +90,7 @@ public class DepartmentController {
   @GetMapping("/department/{id}")
   public String getDepartmentPage(@PathVariable("id") Long id, Model model) {
     LOGGER.debug("getDepartmentPage() id = {}", id);
-    Department department = departmentRestDao.getDepartmentById(id);
+    Department department = departmentRestService.getDepartmentById(id);
     model.addAttribute("department", department);
     return "department";
   }
@@ -111,7 +110,7 @@ public class DepartmentController {
     if (br.hasErrors()) {
       return "addDepartment";
     }
-    Long departmentId = departmentRestDao.saveDepartment(department);
+    Long departmentId = departmentRestService.saveDepartment(department);
     redirectAttributes.addFlashAttribute("message",
         "Department " + department.getDepartmentName() + " has been saved");
     return "redirect:/departments";
@@ -127,7 +126,7 @@ public class DepartmentController {
   @GetMapping("/department/{id}/edit")
   public String editDepartmentPage(@PathVariable("id") Long id, Model model) {
     LOGGER.debug("editDepartmentPage() id = {]", id);
-    Department department = departmentRestDao.getDepartmentById(id);
+    Department department = departmentRestService.getDepartmentById(id);
     model.addAttribute("department", department);
     return "editDepartment";
   }
@@ -149,7 +148,7 @@ public class DepartmentController {
     if (br.hasErrors()) {
       return "editDepartment";
     }
-    departmentRestDao.updateDepartment(department);
+    departmentRestService.updateDepartment(department);
     redirectAttributes.addFlashAttribute("message",
         "Department " + department.getDepartmentName() + " has been updated");
     return "redirect:/departments";
@@ -166,7 +165,7 @@ public class DepartmentController {
   public String deleteDepartmentPage(@PathVariable("id") Long id,
       RedirectAttributes redirectAttributes) {
     LOGGER.debug("deleteDepartmentPage() id = {}", id);
-    departmentRestDao.deleteDepartment(id);
+    departmentRestService.deleteDepartment(id);
     redirectAttributes.addFlashAttribute("message", "Department has been removed");
     return "redirect:/departments";
   }

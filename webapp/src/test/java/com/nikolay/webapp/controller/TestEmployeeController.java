@@ -2,6 +2,7 @@ package com.nikolay.webapp.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,8 +13,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.nikolay.dao.EmployeeDAO;
 import com.nikolay.model.Employee;
+import com.nikolay.service.EmployeeService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -49,7 +50,7 @@ public class TestEmployeeController {
   private EmployeeController employeeController;
 
   @Autowired
-  private EmployeeDAO mockEmployeeDao;
+  private EmployeeService mockEmployeeService;
 
   private Employee emp1;
   private Employee emp2;
@@ -81,7 +82,7 @@ public class TestEmployeeController {
    */
   @After
   public void tearDown() {
-    reset(mockEmployeeDao);
+    reset(mockEmployeeService);
     LOGGER.error("execute: afterTest()");
   }
 
@@ -93,7 +94,7 @@ public class TestEmployeeController {
   @Test
   public void testGetEmployeeById() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testGetEmployeeById()");
-    when(mockEmployeeDao.getEmployeeById(2L)).thenReturn(emp2);
+    when(mockEmployeeService.getEmployeeById(2L)).thenReturn(emp2);
     mockMvc.perform(
         get("/employee/2")
             .accept(MediaType.APPLICATION_JSON))
@@ -102,7 +103,7 @@ public class TestEmployeeController {
         .andExpect(view().name("employee"))
         .andExpect(model().attributeExists("employee"))
         .andExpect(model().attribute("employee", emp2));
-    verify(mockEmployeeDao).getEmployeeById(2L);
+    verify(mockEmployeeService).getEmployeeById(2L);
   }
 
   /**
@@ -113,7 +114,7 @@ public class TestEmployeeController {
   @Test
   public void testGetAllEmployees() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testGetAllEmployees()");
-    when(mockEmployeeDao.getAllEmployees()).thenReturn(employees);
+    when(mockEmployeeService.getAllEmployees()).thenReturn(employees);
     mockMvc.perform(
         get("/employees/")
             .accept(MediaType.APPLICATION_JSON)
@@ -122,7 +123,7 @@ public class TestEmployeeController {
         .andExpect(status().isOk())
         .andExpect(view().name("employees"))
         .andExpect(model().attributeExists("employeeList"));
-    verify(mockEmployeeDao).getAllEmployees();
+    verify(mockEmployeeService).getAllEmployees();
   }
 
   /**
@@ -150,7 +151,7 @@ public class TestEmployeeController {
   @Test
   public void testGetUpdateEmployee() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testGetUpdateEmployee()");
-    when(mockEmployeeDao.getEmployeeById(2L)).thenReturn(emp2);
+    when(mockEmployeeService.getEmployeeById(2L)).thenReturn(emp2);
     mockMvc.perform(get("/employee/2/edit")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON))
@@ -158,7 +159,7 @@ public class TestEmployeeController {
         .andExpect(status().isOk())
         .andExpect(view().name("editEmployee"))
         .andExpect(model().attributeExists("employee"));
-    verify(mockEmployeeDao).getEmployeeById(2L);
+    verify(mockEmployeeService).getEmployeeById(2L);
   }
 
   /**
@@ -169,7 +170,7 @@ public class TestEmployeeController {
   @Test
   public void testPostAddEmployee() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testPostAddEmployee()");
-    when(mockEmployeeDao.saveEmployee(any(Employee.class))).thenReturn(1L);
+    when(mockEmployeeService.saveEmployee(any(Employee.class))).thenReturn(1L);
     mockMvc.perform(post("/employee/add")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
@@ -181,7 +182,7 @@ public class TestEmployeeController {
         .andDo(print())
         .andExpect(status().isFound())
         .andExpect(view().name("redirect:/employees"));
-    verify(mockEmployeeDao).saveEmployee(any(Employee.class));
+    verify(mockEmployeeService).saveEmployee(any(Employee.class));
   }
 
   /**
@@ -192,7 +193,7 @@ public class TestEmployeeController {
   @Test
   public void testPostUpdateDepartment() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testPostUpdateDepartment()");
-    when(mockEmployeeDao.updateEmployee(any(Employee.class))).thenReturn(anyLong());
+    doNothing().when(mockEmployeeService).updateEmployee(any(Employee.class));
     mockMvc.perform(post("/employee/2/edit")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
@@ -204,7 +205,7 @@ public class TestEmployeeController {
         .andDo(print())
         .andExpect(status().isFound())
         .andExpect(view().name("redirect:/employees"));
-    verify(mockEmployeeDao).updateEmployee(any(Employee.class));
+    verify(mockEmployeeService).updateEmployee(any(Employee.class));
   }
 
   /**
@@ -215,11 +216,11 @@ public class TestEmployeeController {
   @Test
   public void testErrorHandler() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testErrorHandler()");
-    when(mockEmployeeDao.getEmployeeById(anyLong())).thenThrow(Exception.class);
+    when(mockEmployeeService.getEmployeeById(anyLong())).thenThrow(Exception.class);
     mockMvc.perform(get("/employee/{id}", anyLong()))
         .andDo(print())
         .andExpect(view().name("_404"));
-    verify(mockEmployeeDao).getEmployeeById(anyLong());
+    verify(mockEmployeeService).getEmployeeById(anyLong());
   }
 
   /**
@@ -230,14 +231,14 @@ public class TestEmployeeController {
   @Test
   public void testRemoveEmployee() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testRemoveEmployee()");
-    when(mockEmployeeDao.deleteEmployee(1L)).thenReturn(1L);
+    doNothing().when(mockEmployeeService).deleteEmployee(1L);
     mockMvc.perform(
         get("/employee/1/delete")
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(view().name("redirect:/employees"))
         .andExpect(status().isFound());
-    verify(mockEmployeeDao).deleteEmployee(1L);
+    verify(mockEmployeeService).deleteEmployee(1L);
   }
 
   /**
@@ -249,7 +250,7 @@ public class TestEmployeeController {
   public void testGetEmployeeByDateOfBirthday() throws Exception {
     LOGGER.debug("test TestEmployeeRestController: run testGetEmployeeByDateOfBirthday()");
     LocalDate date = LocalDate.of(1999, 2, 28);
-    when(mockEmployeeDao.getEmployeeByDateOfBirthday(date))
+    when(mockEmployeeService.getEmployeeByDateOfBirthday(date))
         .thenReturn(Collections.singletonList(emp1));
     mockMvc.perform(
         get("/employees/?date={date}", date)
@@ -258,7 +259,7 @@ public class TestEmployeeController {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(view().name("employees"));
-    verify(mockEmployeeDao).getEmployeeByDateOfBirthday(date);
+    verify(mockEmployeeService).getEmployeeByDateOfBirthday(date);
   }
 
   /**
@@ -271,7 +272,7 @@ public class TestEmployeeController {
     LOGGER.debug("test TestEmployeeRestController: run testGetEmployeeBetweenDatesOfBirthday()");
     LocalDate dateFrom = LocalDate.of(1999, 2, 28);
     LocalDate dateTo = LocalDate.of(2000, 12, 5);
-    when(mockEmployeeDao.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo))
+    when(mockEmployeeService.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo))
         .thenReturn(employees);
     mockMvc.perform(
         get("/employees/?dateFrom={dateFrom}&dateTo={dateTo}", dateFrom, dateTo)
@@ -280,7 +281,7 @@ public class TestEmployeeController {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(view().name("employees"));
-    verify(mockEmployeeDao).getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
+    verify(mockEmployeeService).getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
   }
 
 }

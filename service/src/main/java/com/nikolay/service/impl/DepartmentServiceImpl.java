@@ -107,5 +107,4 @@ public class DepartmentServiceImpl implements DepartmentService {
             throw new OperationFailedException("Department name shouldn't be null");
         }
     }
-
 }

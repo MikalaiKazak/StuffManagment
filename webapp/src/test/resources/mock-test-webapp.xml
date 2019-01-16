@@ -7,12 +7,13 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd">
 
-  <bean class="org.mockito.Mockito" factory-method="mock" id="mockDepartmentDao">
-    <constructor-arg value="com.nikolay.dao.DepartmentDAO"/>
+
+  <bean class="org.mockito.Mockito" factory-method="mock" id="mockDepartmentService">
+    <constructor-arg value="com.nikolay.service.DepartmentService"/>
   </bean>
 
-  <bean class="org.mockito.Mockito" factory-method="mock" id="mockEmployeeDao">
-    <constructor-arg value="com.nikolay.dao.EmployeeDAO"/>
+  <bean class="org.mockito.Mockito" factory-method="mock" id="mockEmployeeService">
+    <constructor-arg value="com.nikolay.service.EmployeeService"/>
   </bean>
 
   <context:component-scan base-package="com.nikolay.webapp"/>
