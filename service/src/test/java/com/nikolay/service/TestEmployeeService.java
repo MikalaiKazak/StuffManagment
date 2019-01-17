@@ -2,6 +2,7 @@ package com.nikolay.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -91,7 +92,7 @@ public class TestEmployeeService {
     @Test
     public void testUpdateEmployee() {
         LOGGER.debug("test Service: run testUpdateEmployee()");
-        when(employeeDAOMock.updateEmployee(emp1)).thenReturn(1L);
+        doNothing().when(employeeDAOMock).updateEmployee(emp1);
         employeeService.updateEmployee(emp1);
         verify(employeeDAOMock).updateEmployee(emp1);
     }
@@ -99,7 +100,7 @@ public class TestEmployeeService {
     @Test
     public void testDeleteEmployee() {
         LOGGER.debug("test Service: run testDeleteEmployee()");
-        when(employeeDAOMock.deleteEmployee(2L)).thenReturn(1L);
+        doNothing().when(employeeDAOMock).deleteEmployee(2L);
         employeeService.deleteEmployee(2L);
         verify(employeeDAOMock).deleteEmployee(2L);
     }

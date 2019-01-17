@@ -79,13 +79,18 @@ public class TestDepartmentDAO {
         Assert.assertEquals(department.getDepartmentName(), newDepartment.getDepartmentName());
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testDeleteDepartmentException(){
+        LOGGER.debug("test DAO: run testDeleteDepartmentException()");
+        departmentDAO.deleteDepartment(100L);
+    }
+
     @Test
     public void testDeleteDepartment() {
         LOGGER.debug("test DAO: run testDeleteDepartment()");
         long sizeBefore = departmentDAO.getAllDepartments().size();
         Assert.assertEquals(AMOUNT_DEPARTMENTS, sizeBefore);
-        Long amountDeleted = departmentDAO.deleteDepartment(sizeBefore);
-        Assert.assertEquals(1, amountDeleted.longValue());
+        departmentDAO.deleteDepartment(14L);
         long sizeAfter = departmentDAO.getAllDepartments().size();
         Assert.assertEquals(sizeBefore - 1, sizeAfter);
     }
@@ -105,8 +110,7 @@ public class TestDepartmentDAO {
         Assert.assertNotNull(department);
         Assert.assertEquals(1L, department.getId().longValue());
         department.setDepartmentName(CHANGED_DEPARTMENT_NAME);
-        Long amountUpdated = departmentDAO.updateDepartment(department);
-        Assert.assertEquals(1L, amountUpdated.longValue());
+        departmentDAO.updateDepartment(department);
         Department newDepartment = departmentDAO.getDepartmentById(DEPARTMENT_ID);
         Assert.assertEquals(CHANGED_DEPARTMENT_NAME, newDepartment.getDepartmentName());
     }

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-public class JacksonObjectMapper extends ObjectMapper {
+public class JacksonObjectMapper {
 
     @Bean
     @Primary

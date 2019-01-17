@@ -60,12 +60,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employee.getId() == null) {
             throw new OperationFailedException("Employee identifier shouldn't be null");
         }
-        Long numberOfRowsAffected = employeeDAO.updateEmployee(employee);
-        if (numberOfRowsAffected <= 0) {
-            throw new OperationFailedException(String.format(
-                    "The employee with ID=%d does not exist in the database.",
-                    employee.getId()));
-        }
+        employeeDAO.updateEmployee(employee);
     }
 
     @Override
@@ -74,12 +69,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employeeId == null || employeeId < 0) {
             throw new OperationFailedException("Employee identifier shouldn't be null");
         }
-        Long numberOfRowsAffected = employeeDAO.deleteEmployee(employeeId);
-        if (numberOfRowsAffected <= 0) {
-            throw new OperationFailedException(String.format(
-                    "The employee with ID=%d does not exist in the database.",
-                    employeeId));
-        }
+        employeeDAO.deleteEmployee(employeeId);
+
     }
 
     @Override

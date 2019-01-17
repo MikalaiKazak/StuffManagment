@@ -95,7 +95,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         namedParameters.addValue(PARAMETER_DEPARTMENT_ID, employee.getDepartmentId());
         namedParameters.addValue(PARAMETER_FULL_NAME, employee.getFullName());
         namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY, employee.getBirthday().toString());
-        namedParameters.addValue(PARAMETER_EMPLOYEE_SALARY, employee.getSalary().floatValue());
+        namedParameters.addValue(PARAMETER_EMPLOYEE_SALARY, employee.getSalary());
         this.namedParameterJdbcTemplate.update(ADD_EMPLOYEE, namedParameters, keyHolder);
         Long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         LOGGER.debug("saveEmployee(employee): id = {}", id);
@@ -103,23 +103,33 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     @Override
-    public Long updateEmployee(Employee employee) {
+    public void updateEmployee(Employee employee) {
         LOGGER.debug("updateEmployee(employee): employeeId = {}", employee.getId());
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue(PARAMETER_EMPLOYEE_ID, employee.getId());
         namedParameters.addValue(PARAMETER_DEPARTMENT_ID, employee.getDepartmentId());
         namedParameters.addValue(PARAMETER_FULL_NAME, employee.getFullName());
         namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY, employee.getBirthday().toString());
-        namedParameters.addValue(PARAMETER_EMPLOYEE_SALARY, employee.getSalary().floatValue());
-        return (long) this.namedParameterJdbcTemplate.update(UPDATE_EMPLOYEE, namedParameters);
+        namedParameters.addValue(PARAMETER_EMPLOYEE_SALARY, employee.getSalary());
+        long numberOfRowsAffected = (long) this.namedParameterJdbcTemplate.update(UPDATE_EMPLOYEE, namedParameters);
+        if (numberOfRowsAffected <= 0) {
+          throw new IllegalArgumentException(String.format(
+              "The employee with ID=%d does not exist in the database.",
+              employee.getId()));
+        }
     }
 
     @Override
-    public Long deleteEmployee(Long employeeId) {
+    public void deleteEmployee(Long employeeId) {
         LOGGER.debug("deleteEmployee(employeeId): id = {}", employeeId);
         SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_EMPLOYEE_ID,
                 employeeId);
-        return (long) this.namedParameterJdbcTemplate.update(DELETE_EMPLOYEE, namedParameters);
+        long numberOfRowsAffected = (long) this.namedParameterJdbcTemplate.update(DELETE_EMPLOYEE, namedParameters);
+        if (numberOfRowsAffected <= 0) {
+          throw new IllegalArgumentException(String.format(
+              "The employee with ID=%d does not exist in the database.",
+              employeeId));
+        }
     }
 
     @Override

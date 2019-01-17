@@ -3,6 +3,7 @@ package com.nikolay.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -105,7 +106,7 @@ public class TestDepartmentService {
     @Test
     public void testUpdateDepartment() {
         LOGGER.debug("test Service: run testUpdateDepartment()");
-        when(departmentDAOMock.updateDepartment(dep2)).thenReturn(1L);
+        doNothing().when(departmentDAOMock).updateDepartment(dep2);
         departmentService.updateDepartment(dep2);
         verify(departmentDAOMock).updateDepartment(dep2);
     }
@@ -113,7 +114,7 @@ public class TestDepartmentService {
     @Test
     public void testDeleteDepartment() {
         LOGGER.debug("test Service: run testDeleteDepartment()");
-        when(departmentDAOMock.deleteDepartment(anyLong())).thenReturn(1L);
+        doNothing().when(departmentDAOMock).deleteDepartment(anyLong());
         departmentService.deleteDepartment(14L);
         departmentService.deleteDepartment(13L);
         verify(departmentDAOMock, times(2)).deleteDepartment(anyLong());

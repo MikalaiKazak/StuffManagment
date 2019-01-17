@@ -95,18 +95,16 @@ public class DepartmentRestDaoImpl implements DepartmentDAO {
     }
 
     @Override
-    public Long updateDepartment(Department department) throws ServerDataAccessException {
+    public void updateDepartment(Department department) throws ServerDataAccessException {
         LOGGER.debug("updateDepartment(department): departmentId = {}", department.getId());
         Long departmentId = department.getId();
         restTemplate.put(urlWithIdParam, department, departmentId);
-        return 1L;
     }
 
     @Override
-    public Long deleteDepartment(Long departmentId) throws ServerDataAccessException {
+    public void deleteDepartment(Long departmentId) throws ServerDataAccessException {
         LOGGER.debug("deleteDepartment(departmentId): departmentId = {}", departmentId);
         restTemplate.delete(urlWithIdParam, departmentId);
-        return 1L;
     }
 
 }

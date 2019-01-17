@@ -31,17 +31,15 @@ public interface EmployeeDAO {
      * Update employee
      *
      * @param employee the employee that you want to change
-     * @return the long
      */
-    Long updateEmployee(Employee employee);
+    void updateEmployee(Employee employee);
 
     /**
      * Delete employee by identifier
      *
      * @param employeeId the employee identifier
-     * @return the long
      */
-    Long deleteEmployee(Long employeeId);
+    void deleteEmployee(Long employeeId);
 
     /**
      * Get the list of all employees

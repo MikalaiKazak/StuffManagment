@@ -22,10 +22,17 @@
   <bean class="org.springframework.web.client.RestTemplate" id="restTemplate">
     <property name="messageConverters">
       <list>
-        <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+        <ref bean="jsonConverter"/>
       </list>
     </property>
     <property name="errorHandler" ref="customResponseErrorHandler"/>
+  </bean>
+
+
+  <bean id="jsonConverter"
+    class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+    <property name="supportedMediaTypes" value="application/json"/>
+    <property name="prettyPrint" value="true"/>
   </bean>
 
   <bean class="com.nikolay.client.DepartmentRestDaoImpl" id="departmentRestDao">
