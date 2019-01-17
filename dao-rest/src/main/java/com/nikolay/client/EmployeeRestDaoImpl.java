@@ -75,14 +75,14 @@ public class EmployeeRestDaoImpl implements EmployeeDAO {
         LOGGER.debug("updateEmployee(employee): employeeId = {}", employee.getId());
         Long employeeId = employee.getId();
         restTemplate.put(urlWithParamUrl, employee, employeeId);
-        return employeeId;
+        return 1L;
     }
 
     @Override
     public Long deleteEmployee(Long employeeId) throws ServerDataAccessException {
         LOGGER.debug("deleteEmployee(employeeId): employeeId = {}", employeeId);
         restTemplate.delete(urlWithParamUrl, employeeId);
-        return employeeId;
+        return 1L;
     }
 
     @Override

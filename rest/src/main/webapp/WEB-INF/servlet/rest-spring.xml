@@ -58,9 +58,7 @@
       class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
         <property name="supportedMediaTypes" value="application/json"/>
         <property name="prettyPrint" value="true"/>
-        <property name="objectMapper" ref="jacksonObjectMapper"/>
+        <property name="objectMapper" ref="objectMapper"/>
     </bean>
-
-    <bean id="jacksonObjectMapper" class="com.nikolay.rest.config.JacksonObjectMapper"/>
 
 </beans>
