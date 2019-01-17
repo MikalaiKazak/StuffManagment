@@ -2,8 +2,6 @@ package com.nikolay.dao;
 
 import com.nikolay.dao.mapper.EmployeeMapper;
 import com.nikolay.model.Employee;
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -93,17 +91,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public Long saveEmployee(Employee employee) {
         LOGGER.debug("saveEmployee(employee): employeeName = {}", employee.getFullName());
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.getJdbcTemplate().update(
-                connection -> {
-                    PreparedStatement ps = connection
-                            .prepareStatement(ADD_EMPLOYEE, new String[]{PARAMETER_EMPLOYEE_ID});
-                    ps.setLong(1, employee.getDepartmentId());
-                    ps.setString(2, employee.getFullName());
-                    ps.setDate(3, Date.valueOf(employee.getBirthday().toString()));
-                    ps.setBigDecimal(4, employee.getSalary());
-                    return ps;
-                },
-                keyHolder);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue(PARAMETER_DEPARTMENT_ID, employee.getDepartmentId());
+        namedParameters.addValue(PARAMETER_FULL_NAME, employee.getFullName());
+        namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY, employee.getBirthday().toString());
+        namedParameters.addValue(PARAMETER_EMPLOYEE_SALARY, employee.getSalary().floatValue());
+        this.namedParameterJdbcTemplate.update(ADD_EMPLOYEE, namedParameters, keyHolder);
         Long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         LOGGER.debug("saveEmployee(employee): id = {}", id);
         return id;
@@ -117,7 +110,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         namedParameters.addValue(PARAMETER_DEPARTMENT_ID, employee.getDepartmentId());
         namedParameters.addValue(PARAMETER_FULL_NAME, employee.getFullName());
         namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY, employee.getBirthday().toString());
-        namedParameters.addValue(PARAMETER_EMPLOYEE_SALARY, employee.getSalary());
+        namedParameters.addValue(PARAMETER_EMPLOYEE_SALARY, employee.getSalary().floatValue());
         return (long) this.namedParameterJdbcTemplate.update(UPDATE_EMPLOYEE, namedParameters);
     }
 

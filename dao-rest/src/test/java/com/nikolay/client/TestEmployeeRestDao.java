@@ -1,6 +1,5 @@
 package com.nikolay.client;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.doNothing;
@@ -10,7 +9,6 @@ import static org.mockito.Mockito.when;
 
 import com.nikolay.dao.EmployeeDAO;
 import com.nikolay.model.Employee;
-import com.nikolay.service.EmployeeService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;

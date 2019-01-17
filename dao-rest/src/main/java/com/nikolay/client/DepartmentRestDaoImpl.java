@@ -3,7 +3,6 @@ package com.nikolay.client;
 import com.nikolay.client.exception.ServerDataAccessException;
 import com.nikolay.dao.DepartmentDAO;
 import com.nikolay.model.Department;
-import com.nikolay.service.DepartmentService;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;

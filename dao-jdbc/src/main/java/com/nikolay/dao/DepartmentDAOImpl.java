@@ -2,7 +2,6 @@ package com.nikolay.dao;
 
 import com.nikolay.dao.mapper.DepartmentMapper;
 import com.nikolay.model.Department;
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Objects;

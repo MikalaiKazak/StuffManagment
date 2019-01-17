@@ -1,11 +1,8 @@
 package com.nikolay.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * The type Employee.
@@ -21,9 +18,6 @@ public class Employee {
     private String fullName;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDate birthday;
 
     private BigDecimal salary;

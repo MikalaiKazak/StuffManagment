@@ -3,7 +3,9 @@ package com.nikolay.webapp.controller;
 import com.nikolay.model.Employee;
 import com.nikolay.service.DepartmentService;
 import com.nikolay.service.EmployeeService;
+import java.beans.PropertyEditorSupport;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,6 +60,12 @@ public class EmployeeController {
   @InitBinder
   private void initBinder(WebDataBinder binder) {
     LOGGER.debug("initBinder()");
+    binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+      @Override
+      public void setAsText(String text) throws IllegalArgumentException {
+        setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+      }
+    });
     binder.setValidator(employeeValidator);
   }
 

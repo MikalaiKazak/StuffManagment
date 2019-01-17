@@ -1,7 +1,6 @@
 package com.nikolay.dao;
 
 import com.nikolay.model.Department;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**

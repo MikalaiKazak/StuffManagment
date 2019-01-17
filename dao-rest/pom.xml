@@ -17,15 +17,20 @@
             <groupId>com.nikolay.department-app</groupId>
             <artifactId>model</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>com.nikolay.department-app</groupId>
-            <artifactId>service</artifactId>
+            <artifactId>dao</artifactId>
         </dependency>
         
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
         </dependency>
         
         <dependency>

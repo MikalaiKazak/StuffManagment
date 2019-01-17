@@ -45,4 +45,22 @@
         <property name="employeeDAO" ref="employeeDAO"/>
     </bean>
 
+
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonConverter"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="jsonConverter"
+      class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes" value="application/json"/>
+        <property name="prettyPrint" value="true"/>
+        <property name="objectMapper" ref="jacksonObjectMapper"/>
+    </bean>
+
+    <bean id="jacksonObjectMapper" class="com.nikolay.rest.config.JacksonObjectMapper"/>
+
 </beans>

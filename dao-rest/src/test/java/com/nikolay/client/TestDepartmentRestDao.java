@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 
 import com.nikolay.dao.DepartmentDAO;
 import com.nikolay.model.Department;
-import com.nikolay.service.DepartmentService;
 import java.math.BigDecimal;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;

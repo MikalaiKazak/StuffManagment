@@ -1,10 +1,8 @@
 package com.nikolay.client;
 
 import com.nikolay.client.exception.ServerDataAccessException;
-import com.nikolay.dao.DepartmentDAO;
 import com.nikolay.dao.EmployeeDAO;
 import com.nikolay.model.Employee;
-import com.nikolay.service.EmployeeService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;

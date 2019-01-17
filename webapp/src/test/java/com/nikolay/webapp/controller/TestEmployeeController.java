@@ -191,7 +191,7 @@ public class TestEmployeeController {
    * @throws Exception the exception
    */
   @Test
-  public void testPostUpdateDepartment() throws Exception {
+  public void testPostUpdateEmployee() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testPostUpdateDepartment()");
     doNothing().when(mockEmployeeService).updateEmployee(any(Employee.class));
     mockMvc.perform(post("/employee/2/edit")

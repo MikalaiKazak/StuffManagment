@@ -37,7 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getEmployeeById(Long employeeId) {
         LOGGER.debug("getEmployeeById(employeeId): employeeId = {}", employeeId);
-        if (employeeId == null) {
+        if (employeeId == null || employeeId < 0) {
             throw new OperationFailedException("Employee identifier shouldn't be null");
         }
         return employeeDAO.getEmployeeById(employeeId);
@@ -71,7 +71,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteEmployee(Long employeeId) {
         LOGGER.debug("deleteEmployee(employeeId): employeeId = {}", employeeId);
-        if (employeeId == null) {
+        if (employeeId == null || employeeId < 0) {
             throw new OperationFailedException("Employee identifier shouldn't be null");
         }
         Long numberOfRowsAffected = employeeDAO.deleteEmployee(employeeId);

@@ -21,11 +21,6 @@
 
         <dependency>
             <groupId>com.nikolay.department-app</groupId>
-            <artifactId>dao</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.nikolay.department-app</groupId>
             <artifactId>dao-jdbc</artifactId>
         </dependency>
 
@@ -95,6 +90,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

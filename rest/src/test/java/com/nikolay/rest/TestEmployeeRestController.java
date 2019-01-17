@@ -23,6 +23,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.nikolay.rest.config.JacksonConverter.createJacksonMessageConverter;
+import static com.nikolay.rest.config.JacksonConverter.createObjectMapperWithJacksonConverter;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -56,7 +58,7 @@ public class TestEmployeeRestController {
         emp2 = new Employee(2L, 1L, "Dmitry Kozak", LocalDate.of(2000, 12, 5), BigDecimal.valueOf(300));
         employees = Arrays.asList(emp1, emp2);
         mockMvc = standaloneSetup(employeeRestController)
-            .setMessageConverters(new MappingJackson2HttpMessageConverter())
+            .setMessageConverters(createJacksonMessageConverter())
             .build();
     }
 
@@ -84,12 +86,12 @@ public class TestEmployeeRestController {
     public void testAddEmployee() throws Exception {
         LOGGER.debug("test TestEmployeeRestController: run testAddEmployee()");
         when(mockEmployeeService.saveEmployee(any(Employee.class))).thenReturn(1L);
-        String employee = new ObjectMapper().writeValueAsString(emp3);
+        String employeeJson = createObjectMapperWithJacksonConverter().writeValueAsString(emp3);
         mockMvc.perform(
             post("/employee/")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(employee))
+                .content(employeeJson))
             .andDo(print())
             .andExpect(status().isCreated())
             .andExpect(content().string("1"));
@@ -101,11 +103,12 @@ public class TestEmployeeRestController {
         LOGGER.debug("test TestEmployeeRestController: run testUpdateEmployee()");
         when((mockEmployeeService.getEmployeeById(1L))).thenReturn(emp1);
         doNothing().when(mockEmployeeService).updateEmployee(emp1);
-        String department = new ObjectMapper().writeValueAsString(emp1);
+        String employeeJson = createObjectMapperWithJacksonConverter().writeValueAsString(emp1);
+
         mockMvc.perform(
             put("/employee/1")
                 .accept(MediaType.APPLICATION_JSON)
-                .content(department)
+                .content(employeeJson)
                 .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isAccepted());
@@ -117,12 +120,13 @@ public class TestEmployeeRestController {
     public void testGetEmployeeById() throws Exception {
         LOGGER.debug("test TestEmployeeRestController: run testGetEmployeeById()");
         when(mockEmployeeService.getEmployeeById(1L)).thenReturn(emp1);
+        ObjectMapper mapper = createObjectMapperWithJacksonConverter();
         mockMvc.perform(
             get("/employee/{id}", 1L)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
-            .andExpect(jsonPath("$.id").value("1"))
+            .andExpect(content().string(mapper.writeValueAsString(emp1)))
             .andExpect(status().isFound());
         verify(mockEmployeeService).getEmployeeById(1L);
     }

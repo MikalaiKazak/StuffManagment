@@ -21,6 +21,8 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.nikolay.rest.config.JacksonConverter.createJacksonMessageConverter;
+import static com.nikolay.rest.config.JacksonConverter.createObjectMapperWithJacksonConverter;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -52,7 +54,7 @@ public class TestDepartmentRestController {
         dep2 = new Department(14L, "Services", BigDecimal.valueOf(3249));
         departments = Arrays.asList(dep1, dep2);
         mockMvc = standaloneSetup(departmentRestController)
-            .setMessageConverters(new MappingJackson2HttpMessageConverter())
+            .setMessageConverters(createJacksonMessageConverter())
             .build();
     }
 
@@ -67,12 +69,13 @@ public class TestDepartmentRestController {
     public void testGetDepartmentById() throws Exception {
         LOGGER.debug("test TestDepartmentRestController: run testGetDepartmentById()");
         when(mockDepartmentService.getDepartmentById(14L)).thenReturn(dep2);
+        ObjectMapper mapper = createObjectMapperWithJacksonConverter();
         mockMvc.perform(
             get("/department/14")
                 .accept(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isFound())
-            .andExpect(jsonPath("$.departmentName").value("Services"));
+            .andExpect(content().string(mapper.writeValueAsString(dep2)));
         verify(mockDepartmentService).getDepartmentById(14L);
     }
 
@@ -92,12 +95,12 @@ public class TestDepartmentRestController {
     public void testAddDepartment() throws Exception {
         LOGGER.debug("test TestDepartmentRestController: run testAddDepartment()");
         when(mockDepartmentService.saveDepartment(any(Department.class))).thenReturn(1L);
-        String department = new ObjectMapper().writeValueAsString(dep1);
+        String departmentJson = createObjectMapperWithJacksonConverter().writeValueAsString(dep1);
         mockMvc.perform(
             post("/department/")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(department))
+                .content(departmentJson))
             .andDo(print())
             .andExpect(status().isCreated())
             .andExpect(content().string("1"));
@@ -122,11 +125,11 @@ public class TestDepartmentRestController {
         LOGGER.debug("test TestDepartmentRestController: run testUpdateDepartment()");
         when((mockDepartmentService.getDepartmentById(14L))).thenReturn(dep2);
         doNothing().when(mockDepartmentService).updateDepartment(dep2);
-        String department = new ObjectMapper().writeValueAsString(dep2);
+        String departmentJson = createObjectMapperWithJacksonConverter().writeValueAsString(dep1);
         mockMvc.perform(
             put("/department/14")
                 .accept(MediaType.APPLICATION_JSON)
-                .content(department)
+                .content(departmentJson)
                 .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isAccepted());
