@@ -3,8 +3,8 @@ A project for departments and employees management
 
 ## Built With
 * JDK 8
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [Tomcat](http://tomcat.apache.org/) - Tomcat
+* [Maven 3.6.0](https://maven.apache.org/) - Dependency Management
+* [Apache Tomcat 9.0.13](http://tomcat.apache.org/) - Tomcat
 
 
 ## Tomcat 
@@ -37,30 +37,30 @@ A project for departments and employees management
 ## Explore Rest APIs
 
 ```
-curl -X GET -v localhost:8080/department/ --- Return all departments
+curl -X GET -v http://localhost:8080/rest/department/ --- Return all departments
 
-curl -X GET -v localhost:8080/department/1
+curl -X GET -v http://localhost:8080/rest/department/0
 
-curl -X DELETE -v localhost:8080/department/1
+curl -X DELETE -v http://localhost:8080/rest/department/0
 
-curl -X GET -v localhost:8080/employee/ --- Return all employees
+curl -X GET -v http://localhost:8080/employee/ --- Return all employees
 
-curl -X GET -v localhost:8080/employee/1
+curl -X GET -v http://localhost:8080/rest/employee/0
 
 ```
 
 | URL | Description |
 | --- | --- |
-  | GET /department/ |                                    Return all departments
-  | GET /department/{id} |                                Return department by identifier
-  | DELETE /department/{id} |                             Delete department by identifier
-  | POST /department/ |                                   Create new department (The values are sent in the request body)
-  | PUT /department/ |                                    Update department (The values are sent in the request body)
-  | GET /employee/ |                                      Return all employees          
-  | GET /employee/{id} |                                  Return employee by identifier  
-  | GET /employee/?date={date} |                          Return employees by date of birthday
-  | GET /employee/?dateFrom={dateFrom}&dateTo={dateTo} |  Return employees with day of birthday in interval
-  | DELETE /employee/{id} |                               Delete employee by edintifier
-  | POST /employee/ |                                     Add new employee (The values are sent in the request body)
-  | PUT /employee/ |                                      Update employee (The values are sent in the request body)
+  | GET http://localhost:8080/rest/department/ |                                    Return all departments
+  | GET http://localhost:8080/rest/department/{id} |                                Return department by identifier
+  | DELETE http://localhost:8080/rest/department/{id} |                             Delete department by identifier
+  | POST http://localhost:8080/rest/department/ |                                   Create new department (The values are sent in the request body)
+  | PUT http://localhost:8080/rest/department/ |                                    Update department (The values are sent in the request body)
+  | GET http://localhost:8080/rest/employee/ |                                      Return all employees          
+  | GET http://localhost:8080/rest/employee/{id} |                                  Return employee by identifier  
+  | GET http://localhost:8080/rest/employee/?date={date} |                          Return employees by date of birthday
+  | GET http://localhost:8080/rest/employee/?dateFrom={dateFrom}&dateTo={dateTo} |  Return employees with day of birthday in interval
+  | DELETE http://localhost:8080/rest/employee/{id} |                               Delete employee by edintifier
+  | POST http://localhost:8080/rest/employee/ |                                     Add new employee (The values are sent in the request body)
+  | PUT http://localhost:8080/rest/employee/ |                                      Update employee (The values are sent in the request body)
   
