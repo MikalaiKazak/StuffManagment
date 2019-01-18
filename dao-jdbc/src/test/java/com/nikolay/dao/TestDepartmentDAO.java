@@ -32,7 +32,7 @@ public class TestDepartmentDAO {
     private final static String DEPARTMENT_NAME = "Accounting";
     private final static String NEW_DEPARTMENT_NAME = "New department";
     private final static String CHANGED_DEPARTMENT_NAME = "Department";
-    private final static BigDecimal DEPARTMENT_AVERAGE_SALARY = BigDecimal.valueOf(2399);
+    private final static BigDecimal DEPARTMENT_AVERAGE_SALARY = new BigDecimal(2399.50).setScale(2, BigDecimal.ROUND_FLOOR);
 
     @Autowired
     private DepartmentDAO departmentDAO;
