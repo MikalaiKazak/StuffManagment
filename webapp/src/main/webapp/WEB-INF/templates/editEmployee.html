@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+
+  <title>Edit employee page</title>
+
+  <link href="../../resources/static/css/bootstrap.min.css"
+        rel="stylesheet"
+        th:href="@{/resources/static/css/bootstrap.min.css}">
+  <link href="../../resources/static/css/style.css"
+        rel="stylesheet"
+        th:href="@{/resources/static/css/style.css}">
+
+</head>
+
+<body class="bg-light">
+
+<header th:replace="fragments/header :: header"></header>
+
+<section class="section">
+
+  <div class="container-fluid">
+
+    <div class="top-section-header">
+
+      <div class="row justify-content-around">
+        <div>
+          <h2>Edit employee</h2>
+        </div>
+
+        <div>
+          <a class="btn btn-outline-success" role="button" th:href="@{/employees}">Back</a>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="row justify-content-center">
+
+      <div class="form-wrap">
+
+        <form action="#" class="form-horizontal"
+              th:action="@{${#httpServletRequest.servletPath}}"
+              th:method="@{post}"
+              th:object="${employee}">
+
+          <div class="form-group">
+            <input class="form-input" th:field="*{id}" type="hidden">
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="inputGroupSelect01">Department</label>
+            <select class="custom-select" id="inputGroupSelect01" th:field="*{departmentId}">
+              <option th:each="department : ${departmentList}"
+                      th:utext="${department.departmentName}"
+                      th:value="${department.id}">
+              </option>
+            </select>
+            <label class="d-block text-danger" for="inputGroupSelect01" th:errors="*{departmentId}"
+                   th:if="${#fields.hasErrors('departmentId')}">Incorrect date
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="fullName">Employee full name:</label>
+            <input class="form-input" id="fullName" th:field="*{fullName}" type="text">
+            <label class="d-block text-danger" for="fullName" th:errors="*{fullName}"
+                   th:if="${#fields.hasErrors('fullName')}">Incorrect date</label>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="birthday">Date of birthday:</label>
+            <input class="form-input" id="birthday" th:field="*{birthday}" type="date">
+            <label class="d-block text-danger" for="birthday" th:errors="*{birthday}"
+                   th:if="${#fields.hasErrors('birthday')}">Incorrect
+              date</label>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label" for="salary">Salary:</label>
+            <input class="form-input" id="salary" th:field="*{salary}" type="text">
+            <label class="d-block text-danger" for="salary" th:errors="*{salary}"
+                   th:if="${#fields.hasErrors('salary')}">Incorrect
+              date</label>
+          </div>
+
+          <div class="form-group">
+
+            <div class="row justify-content-center">
+
+              <div class="col-auto">
+                <button class="btn btn-success" type="submit">Save</button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<script src="../../resources/static/js/jquery.min.js"
+        th:src="@{/resources/static/js/jquery.min.js}"></script>
+
+<script src="../../resources/static/js/bootstrap.min.js"
+        th:src="@{/resources/static/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

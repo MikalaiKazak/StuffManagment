@@ -83,8 +83,7 @@ public class TestEmployeeDAO {
     public void testDeleteEmployee() {
         LOGGER.debug("test DAO: run testDeleteEmployee()");
         long sizeBefore = employeeDAO.getAllEmployees().size();
-        Long amountDeleted = employeeDAO.deleteEmployee(14L);
-        Assert.assertEquals(1L, amountDeleted.longValue());
+        employeeDAO.deleteEmployee(14L);
         long sizeAfter = employeeDAO.getAllEmployees().size();
         Assert.assertEquals(sizeBefore - 1, sizeAfter);
     }
@@ -111,8 +110,7 @@ public class TestEmployeeDAO {
         Assert.assertEquals(1L, employee.getId().longValue());
         employee.setDepartmentId(NEW_DEPARTMENT_ID);
         employee.setSalary(EMPLOYEE_SALARY);
-        Long amountUpdated = employeeDAO.updateEmployee(employee);
-        Assert.assertEquals(1L, amountUpdated.longValue());
+        employeeDAO.updateEmployee(employee);
         Employee newEmployee = employeeDAO.getEmployeeById(EMPLOYEE_ID);
         Assert.assertNotNull(newEmployee);
         Assert.assertEquals(NEW_DEPARTMENT_ID, newEmployee.getDepartmentId().byteValue());

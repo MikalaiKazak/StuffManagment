@@ -1,10 +1,8 @@
 package com.nikolay.client;
 
 import com.nikolay.client.exception.ServerDataAccessException;
-import com.nikolay.dao.DepartmentDAO;
 import com.nikolay.dao.EmployeeDAO;
 import com.nikolay.model.Employee;
-import com.nikolay.service.EmployeeService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -31,6 +29,8 @@ public class EmployeeRestDaoImpl implements EmployeeDAO {
     @Value("${employee.endpoint}")
     private String url;
 
+    @Value("${employee.endpoint.with.id}")
+    private String urlWithParamUrl;
 
     private RestTemplate restTemplate;
 
@@ -47,7 +47,7 @@ public class EmployeeRestDaoImpl implements EmployeeDAO {
     public Employee getEmployeeById(Long employeeId) throws ServerDataAccessException {
         LOGGER.debug("getEmployeeById(employeeId): employeeId = {}", employeeId);
         Employee employee = restTemplate
-                .getForObject(url, Employee.class, employeeId);
+                .getForObject(urlWithParamUrl, Employee.class, employeeId);
         if (employee == null) {
             throw new ServerDataAccessException(
                     "Employee by identifier " + employeeId + " not found");
@@ -71,18 +71,16 @@ public class EmployeeRestDaoImpl implements EmployeeDAO {
     }
 
     @Override
-    public Long updateEmployee(Employee employee) throws ServerDataAccessException {
+    public void updateEmployee(Employee employee) throws ServerDataAccessException {
         LOGGER.debug("updateEmployee(employee): employeeId = {}", employee.getId());
         Long employeeId = employee.getId();
-        restTemplate.put(url, employee, employeeId);
-        return employeeId;
+        restTemplate.put(urlWithParamUrl, employee, employeeId);
     }
 
     @Override
-    public Long deleteEmployee(Long employeeId) throws ServerDataAccessException {
+    public void deleteEmployee(Long employeeId) throws ServerDataAccessException {
         LOGGER.debug("deleteEmployee(employeeId): employeeId = {}", employeeId);
-        restTemplate.delete(url, employeeId);
-        return employeeId;
+        restTemplate.delete(urlWithParamUrl, employeeId);
     }
 
     @Override

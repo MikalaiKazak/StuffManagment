@@ -2,8 +2,6 @@ package com.nikolay.dao;
 
 import com.nikolay.dao.mapper.EmployeeMapper;
 import com.nikolay.model.Employee;
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -93,40 +91,45 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public Long saveEmployee(Employee employee) {
         LOGGER.debug("saveEmployee(employee): employeeName = {}", employee.getFullName());
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.getJdbcTemplate().update(
-                connection -> {
-                    PreparedStatement ps = connection
-                            .prepareStatement(ADD_EMPLOYEE, new String[]{PARAMETER_EMPLOYEE_ID});
-                    ps.setLong(1, employee.getDepartmentId());
-                    ps.setString(2, employee.getFullName());
-                    ps.setDate(3, Date.valueOf(employee.getBirthday()));
-                    ps.setBigDecimal(4, employee.getSalary());
-                    return ps;
-                },
-                keyHolder);
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue(PARAMETER_DEPARTMENT_ID, employee.getDepartmentId());
+        namedParameters.addValue(PARAMETER_FULL_NAME, employee.getFullName());
+        namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY, employee.getBirthday().toString());
+        namedParameters.addValue(PARAMETER_EMPLOYEE_SALARY, employee.getSalary());
+        this.namedParameterJdbcTemplate.update(ADD_EMPLOYEE, namedParameters, keyHolder);
         Long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         LOGGER.debug("saveEmployee(employee): id = {}", id);
         return id;
     }
 
     @Override
-    public Long updateEmployee(Employee employee) {
+    public void updateEmployee(Employee employee) {
         LOGGER.debug("updateEmployee(employee): employeeId = {}", employee.getId());
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue(PARAMETER_EMPLOYEE_ID, employee.getId());
         namedParameters.addValue(PARAMETER_DEPARTMENT_ID, employee.getDepartmentId());
         namedParameters.addValue(PARAMETER_FULL_NAME, employee.getFullName());
-        namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY, employee.getBirthday());
+        namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY, employee.getBirthday().toString());
         namedParameters.addValue(PARAMETER_EMPLOYEE_SALARY, employee.getSalary());
-        return (long) this.namedParameterJdbcTemplate.update(UPDATE_EMPLOYEE, namedParameters);
+        long numberOfRowsAffected = (long) this.namedParameterJdbcTemplate.update(UPDATE_EMPLOYEE, namedParameters);
+        if (numberOfRowsAffected <= 0) {
+          throw new IllegalArgumentException(String.format(
+              "The employee with ID=%d does not exist in the database.",
+              employee.getId()));
+        }
     }
 
     @Override
-    public Long deleteEmployee(Long employeeId) {
+    public void deleteEmployee(Long employeeId) {
         LOGGER.debug("deleteEmployee(employeeId): id = {}", employeeId);
         SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_EMPLOYEE_ID,
                 employeeId);
-        return (long) this.namedParameterJdbcTemplate.update(DELETE_EMPLOYEE, namedParameters);
+        long numberOfRowsAffected = (long) this.namedParameterJdbcTemplate.update(DELETE_EMPLOYEE, namedParameters);
+        if (numberOfRowsAffected <= 0) {
+          throw new IllegalArgumentException(String.format(
+              "The employee with ID=%d does not exist in the database.",
+              employeeId));
+        }
     }
 
     @Override

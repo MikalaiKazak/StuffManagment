@@ -1,7 +1,6 @@
 package com.nikolay.dao;
 
 import com.nikolay.model.Department;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -45,15 +44,13 @@ public interface DepartmentDAO {
      * Update department.
      *
      * @param department the department
-     * @return the long
      */
-    Long updateDepartment(Department department);
+    void updateDepartment(Department department);
 
     /**
      * Delete department.
      *
      * @param departmentId the department id
-     * @return the long
      */
-    Long deleteDepartment(Long departmentId);
+    void deleteDepartment(Long departmentId);
 }

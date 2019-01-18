@@ -74,12 +74,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (department.getId() == null) {
             throw new OperationFailedException("Department identifier shouldn't be null");
         }
-        Long numberOfRowsAffected = departmentDAO.updateDepartment(department);
-        if (numberOfRowsAffected <= 0) {
-            throw new OperationFailedException(String.format(
-                    "The department with ID=%d does not exist in the database.",
-                    department.getId()));
-        }
+        departmentDAO.updateDepartment(department);
     }
 
     @Override
@@ -88,12 +83,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (departmentId == null || departmentId < 0) {
             throw new OperationFailedException("Department identifier shouldn't be null");
         }
-        Long numberOfRowsAffected = departmentDAO.deleteDepartment(departmentId);
-        if (numberOfRowsAffected <= 0) {
-            throw new OperationFailedException(String.format(
-                    "The department with ID=%d does not exist in the database.",
-                    departmentId));
-        }
+         departmentDAO.deleteDepartment(departmentId);
     }
 
     /**
@@ -107,5 +97,4 @@ public class DepartmentServiceImpl implements DepartmentService {
             throw new OperationFailedException("Department name shouldn't be null");
         }
     }
-
 }

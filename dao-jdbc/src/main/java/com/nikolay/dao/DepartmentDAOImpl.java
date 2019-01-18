@@ -2,7 +2,6 @@ package com.nikolay.dao;
 
 import com.nikolay.dao.mapper.DepartmentMapper;
 import com.nikolay.model.Department;
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Objects;
@@ -104,23 +103,33 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     }
 
     @Override
-    public Long updateDepartment(Department department) {
+    public void updateDepartment(Department department) {
         LOGGER.debug("updateDepartment(department): departmentId = {}", department.getId());
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue(PARAMETER_DEPARTMENT_ID, department.getId());
         namedParameters.addValue(PARAMETER_DEPARTMENT_NAME, department.getDepartmentName());
-        return (long) this.namedParameterJdbcTemplate
-                .update(UPDATE_DEPARTMENT_BY_ID, namedParameters);
+        long numberOfRowsAffected =  (long) this.namedParameterJdbcTemplate
+            .update(UPDATE_DEPARTMENT_BY_ID, namedParameters);
+        if (numberOfRowsAffected <= 0) {
+            throw new IllegalArgumentException(String.format(
+                "The department with ID=%d does not exist in the database.",
+                department.getId()));
+        }
+
     }
 
     @Override
-    public Long deleteDepartment(Long departmentId) {
+    public void deleteDepartment(Long departmentId) {
         LOGGER.debug("deleteDepartment(id): id = {}", departmentId);
         SqlParameterSource namedParameters = new MapSqlParameterSource(PARAMETER_DEPARTMENT_ID,
                 departmentId);
         this.namedParameterJdbcTemplate.update(DELETE_EMPLOYEE_BY_DEPARTMENT_ID, namedParameters);
-        return (long) this.namedParameterJdbcTemplate
-                .update(DELETE_DEPARTMENT_BY_ID, namedParameters);
+        long numberOfRowsAffected = (long) this.namedParameterJdbcTemplate.update(DELETE_DEPARTMENT_BY_ID, namedParameters);
+        if (numberOfRowsAffected <= 0) {
+            throw new IllegalArgumentException(String.format(
+                "The department with ID=%d does not exist in the database.",
+                departmentId));
+        }
     }
 
 }

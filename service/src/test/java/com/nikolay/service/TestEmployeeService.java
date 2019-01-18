@@ -2,13 +2,16 @@ package com.nikolay.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.nikolay.dao.EmployeeDAO;
 import com.nikolay.model.Employee;
+import com.nikolay.service.exception.OperationFailedException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -89,7 +92,7 @@ public class TestEmployeeService {
     @Test
     public void testUpdateEmployee() {
         LOGGER.debug("test Service: run testUpdateEmployee()");
-        when(employeeDAOMock.updateEmployee(emp1)).thenReturn(1L);
+        doNothing().when(employeeDAOMock).updateEmployee(emp1);
         employeeService.updateEmployee(emp1);
         verify(employeeDAOMock).updateEmployee(emp1);
     }
@@ -97,7 +100,7 @@ public class TestEmployeeService {
     @Test
     public void testDeleteEmployee() {
         LOGGER.debug("test Service: run testDeleteEmployee()");
-        when(employeeDAOMock.deleteEmployee(2L)).thenReturn(1L);
+        doNothing().when(employeeDAOMock).deleteEmployee(2L);
         employeeService.deleteEmployee(2L);
         verify(employeeDAOMock).deleteEmployee(2L);
     }
@@ -140,5 +143,13 @@ public class TestEmployeeService {
         assertEquals(emp1.getFullName(), employees.get(0).getFullName());
         assertEquals(emp2.getFullName(), employees.get(1).getFullName());
     }
+    @Test(expected = OperationFailedException.class)
+    public void testGetEmployeeByIdException() {
+        LOGGER.debug("test Service: run testGetEmployeeByIdException()");
+        when(employeeDAOMock.getEmployeeById(-1L)).thenReturn(emp1);
+        Employee employee = employeeService.getEmployeeById(-1L);
+        verifyZeroInteractions(employeeDAOMock.getEmployeeById(1L));
+    }
+
 }
 

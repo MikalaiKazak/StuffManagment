@@ -1,6 +1,5 @@
 package com.nikolay.client;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.doNothing;
@@ -10,7 +9,6 @@ import static org.mockito.Mockito.when;
 
 import com.nikolay.dao.EmployeeDAO;
 import com.nikolay.model.Employee;
-import com.nikolay.service.EmployeeService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -36,6 +34,9 @@ public class TestEmployeeRestDao {
 
     @Value("${employee.endpoint}")
     private String url;
+
+    @Value("${employee.endpoint.with.id}")
+    private String urlWithParamUrl;
 
     @Autowired
     private EmployeeDAO employeeRestDao;
@@ -71,12 +72,12 @@ public class TestEmployeeRestDao {
     @Test
     public void testGetEmployeeById() {
         LOGGER.debug("test TestEmployeeRestDao: run testGetEmployeeById()");
-        when(mockRestTemplate.getForObject(url, Employee.class, 1L))
+        when(mockRestTemplate.getForObject(urlWithParamUrl, Employee.class, 1L))
                 .thenReturn(emp2);
         Employee employee = employeeRestDao.getEmployeeById(1L);
         assertNotNull(employee);
         assertEquals(1L, employee.getId().longValue());
-        verify(mockRestTemplate, times(1)).getForObject(url, Employee.class, 1L);
+        verify(mockRestTemplate, times(1)).getForObject(urlWithParamUrl, Employee.class, 1L);
     }
 
     @Test
@@ -132,17 +133,17 @@ public class TestEmployeeRestDao {
     @Test
     public void testDeleteEmployee() {
         LOGGER.debug("test TestEmployeeRestDao: run testDeleteEmployee()");
-        doNothing().when(mockRestTemplate).delete(url, 1L);
+        doNothing().when(mockRestTemplate).delete(urlWithParamUrl, 1L);
         employeeRestDao.deleteEmployee(1L);
-        verify(mockRestTemplate, times(1)).delete(url, 1L);
+        verify(mockRestTemplate, times(1)).delete(urlWithParamUrl, 1L);
     }
 
     @Test
     public void testUpdateEmployee() {
         LOGGER.debug("test TestEmployeeRestDao: run testUpdateEmployee()");
-        doNothing().when(mockRestTemplate).put(url, emp2, 1L);
+        doNothing().when(mockRestTemplate).put(urlWithParamUrl, emp2, 1L);
         employeeRestDao.updateEmployee(emp2);
-        verify(mockRestTemplate, times(1)).put(url, emp2, 1L);
+        verify(mockRestTemplate, times(1)).put(urlWithParamUrl, emp2, 1L);
     }
 
 }

@@ -37,7 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getEmployeeById(Long employeeId) {
         LOGGER.debug("getEmployeeById(employeeId): employeeId = {}", employeeId);
-        if (employeeId == null) {
+        if (employeeId == null || employeeId < 0) {
             throw new OperationFailedException("Employee identifier shouldn't be null");
         }
         return employeeDAO.getEmployeeById(employeeId);
@@ -60,26 +60,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employee.getId() == null) {
             throw new OperationFailedException("Employee identifier shouldn't be null");
         }
-        Long numberOfRowsAffected = employeeDAO.updateEmployee(employee);
-        if (numberOfRowsAffected <= 0) {
-            throw new OperationFailedException(String.format(
-                    "The employee with ID=%d does not exist in the database.",
-                    employee.getId()));
-        }
+        employeeDAO.updateEmployee(employee);
     }
 
     @Override
     public void deleteEmployee(Long employeeId) {
         LOGGER.debug("deleteEmployee(employeeId): employeeId = {}", employeeId);
-        if (employeeId == null) {
+        if (employeeId == null || employeeId < 0) {
             throw new OperationFailedException("Employee identifier shouldn't be null");
         }
-        Long numberOfRowsAffected = employeeDAO.deleteEmployee(employeeId);
-        if (numberOfRowsAffected <= 0) {
-            throw new OperationFailedException(String.format(
-                    "The employee with ID=%d does not exist in the database.",
-                    employeeId));
-        }
+        employeeDAO.deleteEmployee(employeeId);
+
     }
 
     @Override
@@ -108,8 +99,11 @@ public class EmployeeServiceImpl implements EmployeeService {
      * Check object employee for null
      */
     private void checkEmployee(Employee employee) throws OperationFailedException {
+        if(employee == null) {
+            throw new OperationFailedException("Operation fails");
+        }
         if (employee.getDepartmentId() == null) {
-            throw new OperationFailedException("Department identifier shouldn't be null");
+            throw new OperationFailedException("Employee identifier shouldn't be null");
         }
         if (employee.getFullName() == null) {
             throw new OperationFailedException("Employee full name shouldn't be null");

@@ -21,11 +21,6 @@
 
     <dependency>
       <groupId>com.nikolay.department-app</groupId>
-      <artifactId>dao-jdbc</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.nikolay.department-app</groupId>
       <artifactId>model</artifactId>
     </dependency>
 

@@ -15,6 +15,7 @@
         <module>rest</module>
         <module>dao-jdbc</module>
         <module>dao-rest</module>
+	<module>webapp</module>
     </modules>
     
     <properties>
@@ -25,11 +26,12 @@
         <hsqldb.version>2.4.0</hsqldb.version>
         <mocito.version>2.10.0</mocito.version>
         <servlet.version>3.1.0</servlet.version>
-        <jackson-databind.version>2.9.7</jackson-databind.version>
+        <jackson-databind.version>2.9.8</jackson-databind.version>
         <json-path.version>2.4.0</json-path.version>
         <log4j.version>2.11.1</log4j.version>
         <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
         <checkstyle.version>8.15</checkstyle.version>
+ 	<thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
     </properties>
     
     <dependencyManagement>
@@ -70,6 +72,18 @@
                 <artifactId>dao-rest</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+	          <dependency>
+                <groupId>org.thymeleaf</groupId>
+                <artifactId>thymeleaf</artifactId>
+                <version>${thymeleaf.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.thymeleaf</groupId>
+                <artifactId>thymeleaf-spring5</artifactId>
+                <version>${thymeleaf.version}</version>
+            </dependency>
             
             <dependency>
                 <groupId>com.jayway.jsonpath</groupId>
@@ -80,6 +94,12 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
+                <version>${jackson-databind.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
                 <version>${jackson-databind.version}</version>
             </dependency>
             

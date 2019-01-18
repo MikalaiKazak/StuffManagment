@@ -3,14 +3,17 @@ package com.nikolay.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.nikolay.dao.DepartmentDAO;
 import com.nikolay.model.Department;
+import com.nikolay.service.exception.OperationFailedException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -103,7 +106,7 @@ public class TestDepartmentService {
     @Test
     public void testUpdateDepartment() {
         LOGGER.debug("test Service: run testUpdateDepartment()");
-        when(departmentDAOMock.updateDepartment(dep2)).thenReturn(1L);
+        doNothing().when(departmentDAOMock).updateDepartment(dep2);
         departmentService.updateDepartment(dep2);
         verify(departmentDAOMock).updateDepartment(dep2);
     }
@@ -111,9 +114,25 @@ public class TestDepartmentService {
     @Test
     public void testDeleteDepartment() {
         LOGGER.debug("test Service: run testDeleteDepartment()");
-        when(departmentDAOMock.deleteDepartment(anyLong())).thenReturn(1L);
+        doNothing().when(departmentDAOMock).deleteDepartment(anyLong());
         departmentService.deleteDepartment(14L);
         departmentService.deleteDepartment(13L);
         verify(departmentDAOMock, times(2)).deleteDepartment(anyLong());
+    }
+
+    @Test(expected = OperationFailedException.class)
+    public void testSaveDepartmentException() {
+        LOGGER.debug("test Service: run testSaveDepartmentException()");
+        when(departmentDAOMock.saveDepartment(dep2)).thenReturn(0L);
+        Long departmentId = departmentService.saveDepartment(dep2);
+        verifyZeroInteractions(departmentDAOMock.saveDepartment(dep2));
+    }
+
+    @Test(expected = OperationFailedException.class)
+    public void testGetDepartmentByIdException() {
+        LOGGER.debug("test Service: run testGetDepartmentByIdException()");
+        when(departmentDAOMock.getDepartmentById(-1L)).thenReturn(dep1);
+        Department department = departmentService.getDepartmentById(-1L);
+        verifyZeroInteractions(departmentDAOMock.getDepartmentById(-1L));
     }
 }

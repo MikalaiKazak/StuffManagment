@@ -28,7 +28,7 @@
         <property name="errorHandler" ref="customResponseErrorHandler"/>
     </bean>
     
-    <bean class="com.nikolay.client.DepartmentRestDaoImpl" id="employeeRestDao">
+    <bean class="com.nikolay.client.EmployeeRestDaoImpl" id="employeeRestDao">
         <constructor-arg name="restTemplate" ref="mockRestTemplate"/>
     </bean>
     
