@@ -1,5 +1,6 @@
 package com.nikolay.webapp.controller;
 
+import com.nikolay.model.Department;
 import com.nikolay.model.Employee;
 import com.nikolay.service.DepartmentService;
 import com.nikolay.service.EmployeeService;
@@ -105,10 +106,12 @@ public class EmployeeController {
    * @return the department page
    */
   @GetMapping("/employee/{id}")
-  public String getDepartmentPage(@PathVariable("id") Long id, Model model) {
-    LOGGER.debug("getDepartmentPage() id = {}", id);
+  public String getEmployeePage(@PathVariable("id") Long id, Model model) {
+    LOGGER.debug("getEmployeePage() id = {}", id);
     Employee employee = employeeRestService.getEmployeeById(id);
+    Department department = departmentRestService.getDepartmentById(employee.getDepartmentId());
     model.addAttribute("employee", employee);
+    model.addAttribute("departmentName", department.getDepartmentName());
     return "employee";
   }
 

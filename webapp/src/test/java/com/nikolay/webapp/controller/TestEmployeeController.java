@@ -13,7 +13,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.nikolay.model.Department;
 import com.nikolay.model.Employee;
+import com.nikolay.service.DepartmentService;
 import com.nikolay.service.EmployeeService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -50,8 +52,12 @@ public class TestEmployeeController {
   private EmployeeController employeeController;
 
   @Autowired
+  private DepartmentService mockDepartmentService;
+
+  @Autowired
   private EmployeeService mockEmployeeService;
 
+  private Department dep1;
   private Employee emp1;
   private Employee emp2;
   private List<Employee> employees;
@@ -67,6 +73,7 @@ public class TestEmployeeController {
     InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
     viewResolver.setSuffix(".html");
     viewResolver.setPrefix("/WEB-INF/templates/");
+    dep1 = new Department(1L, "Services", BigDecimal.valueOf(200));
     emp1 = new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28),
         BigDecimal.valueOf(350));
     emp2 = new Employee(2L, 1L, "Dmitry Kozak", LocalDate.of(2000, 12, 5),
@@ -95,6 +102,7 @@ public class TestEmployeeController {
   public void testGetEmployeeById() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testGetEmployeeById()");
     when(mockEmployeeService.getEmployeeById(2L)).thenReturn(emp2);
+    when(mockDepartmentService.getDepartmentById(1L)).thenReturn(dep1);
     mockMvc.perform(
         get("/employee/2")
             .accept(MediaType.APPLICATION_JSON))
@@ -102,6 +110,7 @@ public class TestEmployeeController {
         .andExpect(status().isOk())
         .andExpect(view().name("employee"))
         .andExpect(model().attributeExists("employee"))
+        .andExpect(model().attributeExists("departmentName"))
         .andExpect(model().attribute("employee", emp2));
     verify(mockEmployeeService).getEmployeeById(2L);
   }
