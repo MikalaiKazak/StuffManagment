@@ -96,7 +96,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         namedParameters.addValue(PARAMETER_DEPARTMENT_ID, employee.getDepartmentId());
         namedParameters.addValue(PARAMETER_FULL_NAME, employee.getFullName());
         namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY, employee.getBirthday().toString());
-        namedParameters.addValue(PARAMETER_EMPLOYEE_SALARY, employee.getSalary().setScale(2, BigDecimal.ROUND_DOWN));
+        namedParameters.addValue(PARAMETER_EMPLOYEE_SALARY, employee.getSalary());
         this.namedParameterJdbcTemplate.update(ADD_EMPLOYEE, namedParameters, keyHolder);
         Long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         LOGGER.debug("saveEmployee(employee): id = {}", id);
@@ -111,7 +111,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         namedParameters.addValue(PARAMETER_DEPARTMENT_ID, employee.getDepartmentId());
         namedParameters.addValue(PARAMETER_FULL_NAME, employee.getFullName());
         namedParameters.addValue(PARAMETER_EMPLOYEE_BIRTHDAY, employee.getBirthday().toString());
-        namedParameters.addValue(PARAMETER_EMPLOYEE_SALARY, employee.getSalary().setScale(2, BigDecimal.ROUND_DOWN));
+        namedParameters.addValue(PARAMETER_EMPLOYEE_SALARY, employee.getSalary());
         long numberOfRowsAffected = (long) this.namedParameterJdbcTemplate.update(UPDATE_EMPLOYEE, namedParameters);
         if (numberOfRowsAffected <= 0) {
           throw new IllegalArgumentException(String.format(

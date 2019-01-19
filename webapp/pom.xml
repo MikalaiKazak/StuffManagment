@@ -92,5 +92,17 @@
 
   <build>
     <finalName>webapp</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.tomcat.maven</groupId>
+        <artifactId>tomcat7-maven-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+          <contextFile>WEB-INF/web.xml</contextFile>
+          <path>/</path>
+          <port>8070</port>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 </project>

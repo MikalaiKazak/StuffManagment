@@ -113,7 +113,7 @@ public class TestEmployeeDAO {
         Assert.assertEquals(sizeBefore + 1, sizeAfter);
         Employee newEmployee = employeeDAO.getEmployeeById(employeeId);
         Assert.assertNotNull(newEmployee);
-        Assert.assertEquals(employee.getSalary(), newEmployee.getSalary());
+        Assert.assertEquals(employee.getSalary(), newEmployee.getSalary().stripTrailingZeros());
         Assert.assertEquals(2L, newEmployee.getDepartmentId().longValue());
     }
 
@@ -129,6 +129,6 @@ public class TestEmployeeDAO {
         Employee newEmployee = employeeDAO.getEmployeeById(EMPLOYEE_ID);
         Assert.assertNotNull(newEmployee);
         Assert.assertEquals(NEW_DEPARTMENT_ID, newEmployee.getDepartmentId().byteValue());
-        Assert.assertEquals(EMPLOYEE_SALARY, newEmployee.getSalary());
+        Assert.assertEquals(EMPLOYEE_SALARY, newEmployee.getSalary().stripTrailingZeros());
     }
 }

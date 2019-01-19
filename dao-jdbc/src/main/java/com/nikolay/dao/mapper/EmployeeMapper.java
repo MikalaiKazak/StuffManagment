@@ -24,7 +24,7 @@ public class EmployeeMapper implements RowMapper<Employee> {
             employee.setBirthday(date.toLocalDate());
         }
 
-        employee.setSalary(rs.getBigDecimal("EMPLOYEE_SALARY"));
+        employee.setSalary(rs.getBigDecimal("EMPLOYEE_SALARY").stripTrailingZeros());
         return employee;
     }
 }
