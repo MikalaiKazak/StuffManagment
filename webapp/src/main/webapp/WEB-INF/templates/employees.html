@@ -70,10 +70,9 @@
 
         <div class="none" id="twoDate_div">
           <form th:action="@{${#httpServletRequest.servletPath}}" th:method="@{get}">
-            <label>Date from: <input class="form-input" id="dateFrom" name="dateFrom" type="date"  r
-                equired="true"/></label>
+            <label>Date from: <input class="form-input" id="dateFrom" name="dateFrom" required="true" type="date"/></label>
             <label>Date to: <input class="form-input" id="dateTo" name="dateTo"
-                                   type="date"  required="true" /></label><br>
+                                   type="date" required="true" /></label><br>
             <button class="btn btn-primary" type="submit">Filter</button>
           </form>
         </div>
