@@ -208,20 +208,6 @@ public class TestEmployeeController {
     verify(mockEmployeeService).updateEmployee(any(Employee.class));
   }
 
-  /**
-   * Test error handler.
-   *
-   * @throws Exception the exception
-   */
-  @Test
-  public void testErrorHandler() throws Exception {
-    LOGGER.debug("test TestEmployeeController: run testErrorHandler()");
-    when(mockEmployeeService.getEmployeeById(anyLong())).thenThrow(Exception.class);
-    mockMvc.perform(get("/employee/{id}", anyLong()))
-        .andDo(print())
-        .andExpect(view().name("_404"));
-    verify(mockEmployeeService).getEmployeeById(anyLong());
-  }
 
   /**
    * Test remove employee.
