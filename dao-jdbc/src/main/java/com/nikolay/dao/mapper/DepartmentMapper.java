@@ -20,7 +20,8 @@ public class DepartmentMapper implements RowMapper<Department> {
         if(avgSalary == null) {
             department.setAverageSalary(BigDecimal.ZERO);
         } else {
-            department.setAverageSalary(avgSalary.stripTrailingZeros());
+            department
+                .setAverageSalary(new BigDecimal(avgSalary.stripTrailingZeros().toPlainString()));
         }
         return department;
     }
