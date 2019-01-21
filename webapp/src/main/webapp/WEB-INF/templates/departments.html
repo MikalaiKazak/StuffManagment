@@ -19,12 +19,6 @@
 
 <header th:replace="fragments/header :: header"></header>
 
-<c:if test="${not empty message}">
-  <div class="alert alert-success" id="messageSuccessful" role="alert">
-    <span th:text="${message}"></span>
-  </div>
-</c:if>
-
 <section class="main-section">
 
   <div class="container">
@@ -66,8 +60,8 @@
                  th:href="@{|/department/${department.id}|}">Show</a>
               <a class="table-button btn btn-info" role="button"
                  th:href="@{|/department/${department.id}/edit|}">Edit</a>
-              <a class="table-button btn btn-info" role="button"
-                 th:href="@{|/department/${department.id}/delete|}">Delete</a>
+              <a class="table-button btn btn-info"
+                 th:onclick="|deleteButton('@{|/department/${department.id}/delete|}');|">Delete</a>
             </td>
           </tr>
           </tbody>
@@ -82,18 +76,31 @@
 <script src="../../resources/static/js/jquery.min.js"
         th:src="@{/resources/static/js/jquery.min.js}"></script>
 
-
 <script src="../../resources/static/js/bootstrap.min.js"
         th:src="@{/resources/static/js/bootstrap.min.js}"></script>
 
-<script type="text/javascript">
-  $(document).ready(function () {
-    setTimeout(function () {
-      $("#messageSuccessful").hide('blind', {}, 500)
-    }, 5000);
-  });
-</script>
+<script src="../../resources/static/js/bootbox.min.js"
+        th:src="@{/resources/static/js/bootbox.min.js}"></script>
 
+<script src="../../resources/static/js/bootstrap-notify.min.js"
+        th:src="@{/resources/static/js/bootstrap-notify.min.js}"></script>
+
+<script src="../../resources/static/js/script.js"
+        th:src="@{/resources/static/js/script.js}"></script>
+
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var message = [[${message}]];
+  if(message) {
+    $.notify({
+      message: message
+    },{
+      type: 'success'
+    });
+  }
+  /*]]>*/
+</script>
 
 </body>
 </html>

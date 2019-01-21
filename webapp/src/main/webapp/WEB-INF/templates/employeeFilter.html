@@ -29,48 +29,16 @@
       <div class="row justify-content-between">
 
         <div>
-          <h2>Employees</h2>
+          <h2 th:text="${message}"></h2>
         </div>
 
         <div>
-          <p><a class="btn btn-outline-success" role="button" th:href="@{/employee/add}">Add New</a>
+          <p><a class="btn btn-outline-success" role="button" th:href="@{/employees}">Back</a>
           </p>
         </div>
 
       </div>
 
-    </div>
-
-    <div class="filter">
-      <div class="choose-filter">
-        <div>
-          <label>Filter by date: <input id="oneDate" name="action" onclick="showOneDate()"
-                                        type="radio" value="Filter by date"></label>
-        </div>
-        <div>
-          <label>Filter between dates: <input d="twoDate" name="action"
-                                              onclick="showTwoDate()" type="radio"
-                                              value="Filter between dates"></label>
-        </div>
-      </div>
-
-      <div class="input-filter">
-        <div class="none" id="oneDate_div">
-          <form th:action="@{${#httpServletRequest.servletPath}}" th:method="@{get}">
-            <label>Date: <input class="form-input" id="date" name="date" type="date" required="true" /></label>
-            <button class="btn btn-primary" type="submit">Filter</button>
-          </form>
-        </div>
-
-        <div class="none" id="twoDate_div">
-          <form th:action="@{${#httpServletRequest.servletPath}}" th:method="@{get}">
-            <label>Date from: <input class="form-input" id="dateFrom" name="dateFrom" required="true" type="date"/></label>
-            <label>Date to: <input class="form-input" id="dateTo" name="dateTo"
-                                   type="date" required="true" /></label><br>
-            <button class="btn btn-primary" type="submit">Filter</button>
-          </form>
-        </div>
-      </div>
     </div>
 
     <div class="row">
