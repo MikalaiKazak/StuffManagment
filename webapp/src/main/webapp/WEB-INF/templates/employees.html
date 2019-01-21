@@ -20,12 +20,6 @@
 
 <header th:replace="fragments/header :: header"></header>
 
-<c:if test="${not empty message}">
-  <div class="alert alert-success" id="messageSuccessful" role="alert">
-    <span th:text="${message}"></span>
-  </div>
-</c:if>
-
 <section class="main-section">
 
   <div class="container">
@@ -126,8 +120,26 @@
 <script src="../../resources/static/js/bootbox.min.js"
         th:src="@{/resources/static/js/bootbox.min.js}"></script>
 
+<script src="../../resources/static/js/bootstrap-notify.min.js"
+        th:src="@{/resources/static/js/bootstrap-notify.min.js}"></script>
+
 <script src="../../resources/static/js/script.js"
         th:src="@{/resources/static/js/script.js}"></script>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  var message = [[${message}]];
+  if(message) {
+    $.notify({
+      // options
+      message: message
+    },{
+      // settings
+      type: 'success'
+    });
+  }
+  /*]]>*/
+</script>
 
 </body>
 </html>

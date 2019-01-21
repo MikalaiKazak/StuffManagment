@@ -98,7 +98,6 @@ public class EmployeeController {
       model.addAttribute("employeeList", employeeList);
       return "employeeFilter";
     } else {
-      model.addAttribute("message", "List of all employees");
       employeeList = employeeRestService.getAllEmployees();
       model.addAttribute("employeeList", employeeList);
       return "employees";

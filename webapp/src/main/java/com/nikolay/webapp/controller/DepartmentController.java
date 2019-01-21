@@ -63,7 +63,6 @@ public class DepartmentController {
     LOGGER.debug("getAllDepartment()");
     List<Department> departments = departmentRestService.getAllDepartments();
     model.addAttribute("departmentList", departments);
-    model.addAttribute("message", "List of all departments");
     return "departments";
   }
 

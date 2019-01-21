@@ -1,15 +1,3 @@
-$(document).ready(function () {
-  setTimeout(function () {
-    $("#messageSuccessful").hide('blind', {}, 500)
-  }, 5000);
-});
-
-$(document).ready(function () {
-  setTimeout(function () {
-    $("#messageSuccessful").hide('blind', {}, 500)
-  }, 5000);
-});
-
 function showOneDate() {
   $("#oneDate_div").removeClass("none");
   $("#oneDate_div").addClass("choice");
@@ -47,7 +35,7 @@ function deleteButton(url) {
       }
     }
   });
-}
+};
 
 $('form').submit(function (e) {
   var currentForm = this;
@@ -58,3 +46,4 @@ $('form').submit(function (e) {
     }
   });
 });
+
