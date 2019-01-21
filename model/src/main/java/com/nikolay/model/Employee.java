@@ -15,6 +15,8 @@ public class Employee {
 
     private Long departmentId;
 
+    private String departmentName;
+
     private String fullName;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -33,14 +35,16 @@ public class Employee {
      *
      * @param id the id
      * @param departmentId the department id
+     * @param departmentName the department name
      * @param fullName the full name
      * @param birthday the birthday
      * @param salary the salary
      */
-    public Employee(Long id, Long departmentId, String fullName, LocalDate birthday,
+    public Employee(Long id, Long departmentId, String departmentName, String fullName, LocalDate birthday,
             BigDecimal salary) {
         this.id = id;
         this.departmentId = departmentId;
+        this.departmentName = departmentName;
         this.fullName = fullName;
         this.birthday = birthday;
         this.salary = salary;
@@ -50,12 +54,14 @@ public class Employee {
      * Instantiates a new Employee.
      *
      * @param departmentId the department id
+     * @param departmentName the department name
      * @param fullName the full name
      * @param birthday the birthday
      * @param salary the salary
      */
-    public Employee(Long departmentId, String fullName, LocalDate birthday, BigDecimal salary) {
+    public Employee(Long departmentId,  String departmentName, String fullName, LocalDate birthday, BigDecimal salary) {
         this.departmentId = departmentId;
+        this.departmentName = departmentName;
         this.fullName = fullName;
         this.birthday = birthday;
         this.salary = salary;
@@ -95,6 +101,24 @@ public class Employee {
      */
     public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
+    }
+
+    /**
+     * Gets department name.
+     *
+     * @return the department name
+     */
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    /**
+     * Sets department name.
+     *
+     * @param departmentName the department name
+     */
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
     /**

@@ -74,9 +74,9 @@ public class TestEmployeeController {
     viewResolver.setSuffix(".html");
     viewResolver.setPrefix("/WEB-INF/templates/");
     dep1 = new Department(1L, "Services", BigDecimal.valueOf(200));
-    emp1 = new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28),
+    emp1 = new Employee(1L, 1L, "Services", "Nikolay Kozak", LocalDate.of(1999, 2, 28),
         BigDecimal.valueOf(350));
-    emp2 = new Employee(2L, 1L, "Dmitry Kozak", LocalDate.of(2000, 12, 5),
+    emp2 = new Employee(2L, 1L, "Services", "Dmitry Kozak", LocalDate.of(2000, 12, 5),
         BigDecimal.valueOf(300));
     employees = Arrays.asList(emp1, emp2);
     mockMvc = MockMvcBuilders.standaloneSetup(new ErrorController(), employeeController)
@@ -102,7 +102,6 @@ public class TestEmployeeController {
   public void testGetEmployeeById() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testGetEmployeeById()");
     when(mockEmployeeService.getEmployeeById(2L)).thenReturn(emp2);
-    when(mockDepartmentService.getDepartmentById(1L)).thenReturn(dep1);
     mockMvc.perform(
         get("/employee/2")
             .accept(MediaType.APPLICATION_JSON))

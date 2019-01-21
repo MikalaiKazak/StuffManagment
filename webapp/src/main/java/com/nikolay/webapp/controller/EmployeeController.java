@@ -111,7 +111,7 @@ public class EmployeeController {
     Employee employee = employeeRestService.getEmployeeById(id);
     Department department = departmentRestService.getDepartmentById(employee.getDepartmentId());
     model.addAttribute("employee", employee);
-    model.addAttribute("departmentName", department.getDepartmentName());
+    model.addAttribute("departmentName", employee.getDepartmentName());
     return "employee";
   }
 
