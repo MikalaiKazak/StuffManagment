@@ -5,9 +5,9 @@ import com.nikolay.client.exception.ServerDataAccessException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.ui.Model;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 
 /**
  * The type Error controller.
@@ -28,7 +28,7 @@ public class ErrorController extends RuntimeException {
    * @return the string
    */
   @ExceptionHandler(IllegalArgumentException.class)
-  public final String exceptionHandler(final IllegalArgumentException ex,
+  public final String handlerIllegalArgumentException(final IllegalArgumentException ex,
       final Model model) {
     LOGGER.debug("exceptionHandler() msg = {}", ex.getLocalizedMessage());
     model.addAttribute("Text", ex.getMessage());
@@ -36,7 +36,7 @@ public class ErrorController extends RuntimeException {
   }
 
   @ExceptionHandler(NullPointerException.class)
-  public final String exceptionHandler(final NullPointerException ex,
+  public final String handlerNullPointerException(final NullPointerException ex,
       final Model model) {
     LOGGER.debug("exceptionHandler() msg = {}", ex.getLocalizedMessage());
     model.addAttribute("Text", ex.getMessage());
@@ -44,7 +44,7 @@ public class ErrorController extends RuntimeException {
   }
 
   @ExceptionHandler(ServerDataAccessException.class)
-  public final String exceptionHandler(final ServerDataAccessException ex,
+  public final String handlerServerDataAccessException(final ServerDataAccessException ex,
       final Model model) {
     LOGGER.debug("exceptionHandler() msg = {}", ex.getLocalizedMessage());
     model.addAttribute("Text", ex.getMessage());
@@ -52,11 +52,18 @@ public class ErrorController extends RuntimeException {
   }
 
   @ExceptionHandler(Exception.class)
-  public final String exceptionHandler(final Exception ex,
+  public final String handlerException(final Exception ex,
       final Model model) {
     LOGGER.debug("exceptionHandler() msg = {}", ex.getLocalizedMessage());
-    model.addAttribute("Text", ex.getMessage());
+    model.addAttribute("Text", ex.getLocalizedMessage());
     return "errorPages/generalErrorPage";
   }
 
+  @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+  public String handleError405(final HttpRequestMethodNotSupportedException ex,
+      final Model model) {
+    LOGGER.debug("handleError405() msg = {}", ex.getLocalizedMessage());
+    model.addAttribute("Text", ex.getLocalizedMessage());
+    return "errorPages/error405";
+  }
 }
