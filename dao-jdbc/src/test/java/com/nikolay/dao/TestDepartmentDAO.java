@@ -32,7 +32,7 @@ public class TestDepartmentDAO {
     private final static String DEPARTMENT_NAME = "Accounting";
     private final static String NEW_DEPARTMENT_NAME = "New department";
     private final static String CHANGED_DEPARTMENT_NAME = "Department";
-    private final static BigDecimal DEPARTMENT_AVERAGE_SALARY = BigDecimal.valueOf(2399);
+    private final static BigDecimal DEPARTMENT_AVERAGE_SALARY = new BigDecimal(2399.5);
 
     @Autowired
     private DepartmentDAO departmentDAO;
@@ -53,7 +53,7 @@ public class TestDepartmentDAO {
         Department department = departmentDAO.getDepartmentById(DEPARTMENT_ID);
         Assert.assertNotNull(department);
         Assert.assertEquals(DEPARTMENT_NAME, department.getDepartmentName());
-        Assert.assertEquals(DEPARTMENT_AVERAGE_SALARY, department.getAverageSalary());
+        Assert.assertEquals(DEPARTMENT_AVERAGE_SALARY, department.getAverageSalary().stripTrailingZeros());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class TestDepartmentDAO {
         Assert.assertNotNull(department);
         Assert.assertEquals(DEPARTMENT_ID, department.getId().longValue());
         Assert.assertEquals(DEPARTMENT_NAME, department.getDepartmentName());
-        Assert.assertEquals(DEPARTMENT_AVERAGE_SALARY, department.getAverageSalary());
+        Assert.assertEquals(DEPARTMENT_AVERAGE_SALARY, department.getAverageSalary().stripTrailingZeros());
     }
 
     @Test

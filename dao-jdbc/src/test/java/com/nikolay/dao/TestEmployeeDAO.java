@@ -30,7 +30,7 @@ public class TestEmployeeDAO {
     private final static long NEW_DEPARTMENT_ID = 2L;
     private final static LocalDate DATE_FROM = LocalDate.of(1982, 4, 2);
     private final static LocalDate DATE_TO = LocalDate.of(1991, 7, 20);
-    private final static BigDecimal EMPLOYEE_SALARY = BigDecimal.valueOf(200);
+    private final static BigDecimal EMPLOYEE_SALARY = BigDecimal.valueOf(200.12);
     private final static String EMPLOYEE_FULL_NAME = "Clem Hudspith";
     @Autowired
     private EmployeeDAO employeeDAO;
@@ -103,6 +103,21 @@ public class TestEmployeeDAO {
     }
 
     @Test
+    public void testSaveEmployeeWithFloatSalary(){
+        LOGGER.debug("test DAO: run testSaveEmployeeWithFloatSalary()");
+        long sizeBefore = employeeDAO.getAllEmployees().size();
+        Employee employee = new Employee(sizeBefore + 1, 2L, "Nikolay Kozak",
+            LocalDate.of(1999, 12, 28), BigDecimal.valueOf(245.51));
+        long employeeId = employeeDAO.saveEmployee(employee);
+        long sizeAfter = employeeDAO.getAllEmployees().size();
+        Assert.assertEquals(sizeBefore + 1, sizeAfter);
+        Employee newEmployee = employeeDAO.getEmployeeById(employeeId);
+        Assert.assertNotNull(newEmployee);
+        Assert.assertEquals(employee.getSalary(), newEmployee.getSalary().stripTrailingZeros());
+        Assert.assertEquals(2L, newEmployee.getDepartmentId().longValue());
+    }
+
+    @Test
     public void testUpdateEmployee() {
         LOGGER.debug("test DAO: run testUpdateEmployee()");
         Employee employee = employeeDAO.getEmployeeById(EMPLOYEE_ID);
@@ -114,6 +129,6 @@ public class TestEmployeeDAO {
         Employee newEmployee = employeeDAO.getEmployeeById(EMPLOYEE_ID);
         Assert.assertNotNull(newEmployee);
         Assert.assertEquals(NEW_DEPARTMENT_ID, newEmployee.getDepartmentId().byteValue());
-        Assert.assertEquals(EMPLOYEE_SALARY, newEmployee.getSalary());
+        Assert.assertEquals(EMPLOYEE_SALARY, newEmployee.getSalary().stripTrailingZeros());
     }
 }

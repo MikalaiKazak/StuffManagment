@@ -1,6 +1,7 @@
 package com.nikolay.dao.mapper;
 
 import com.nikolay.model.Employee;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,8 +24,9 @@ public class EmployeeMapper implements RowMapper<Employee> {
         if (date != null) {
             employee.setBirthday(date.toLocalDate());
         }
-
-        employee.setSalary(rs.getBigDecimal("EMPLOYEE_SALARY"));
+        BigDecimal bigDecimal = new BigDecimal(
+            rs.getBigDecimal("EMPLOYEE_SALARY").stripTrailingZeros().toPlainString());
+        employee.setSalary(bigDecimal);
         return employee;
     }
 }
