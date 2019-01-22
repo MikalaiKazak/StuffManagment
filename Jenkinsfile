@@ -1,10 +1,19 @@
-node {
-   stage 'Checkout'
+pipeline {
+    agent any
+    stages {
+        stage ('Initialize') {
+            steps {
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                '''
+            }
+        }
 
-   checkout scm
-
-   def mvnHome = tool 'M3'
-
-   stage 'Build'
-   sh "${mvnHome}/bin/mvn clean install"
+        stage ('Build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+    }
 }
