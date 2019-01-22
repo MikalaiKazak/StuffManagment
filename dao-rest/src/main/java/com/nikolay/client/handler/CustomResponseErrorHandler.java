@@ -2,8 +2,11 @@ package com.nikolay.client.handler;
 
 import com.nikolay.client.exception.ServerDataAccessException;
 import java.io.IOException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.DefaultResponseErrorHandler;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResponseErrorHandler;
 
 /**
@@ -11,15 +14,22 @@ import org.springframework.web.client.ResponseErrorHandler;
  */
 public class CustomResponseErrorHandler implements ResponseErrorHandler {
 
+    private static final Logger LOGGER = LogManager.getLogger();
+
     private ResponseErrorHandler errorHandler = new DefaultResponseErrorHandler();
 
+    @Override
     public boolean hasError(ClientHttpResponse response) throws IOException {
         return errorHandler.hasError(response);
     }
 
+    @Override
     public void handleError(ClientHttpResponse response) throws IOException {
-        throw new ServerDataAccessException(
-                response.getStatusCode() + ": " + response.getStatusText() + ": " + response
-                        .getBody());
+        LOGGER.debug("CustomResponseErrorHandler - handleError()");
+        try{
+            errorHandler.handleError(response);
+        }catch(HttpStatusCodeException e){
+            throw new ServerDataAccessException(e.getResponseBodyAsString());
+        }
     }
 }

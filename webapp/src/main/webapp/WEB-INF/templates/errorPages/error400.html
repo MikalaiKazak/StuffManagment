@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+
+    <title>Error page</title>
+
+    <link href="../../../resources/static/css/bootstrap.min.css"
+          rel="stylesheet"
+          th:href="@{/resources/static/css/bootstrap.min.css}">
+    <link href="../../../resources/static/css/style.css"
+          rel="stylesheet"
+          th:href="@{/resources/static/css/style.css}">
+
+</head>
+
+<body>
+
+<header th:replace="fragments/header :: header"></header>
+
+<section align="center" class="section">
+    <div class="container">
+        <p>Application has encountered an error.</p>
+
+        <div class="card alert alert-info">
+            <p>
+                <b>Message:
+                </b> <p>The 400 (Bad Request) status code indicates that the server cannot or
+                       will not process the request due to something that is perceived to be
+                       a client error (e.g., malformed request syntax, invalid request
+                       message framing, or deceptive request routing).</p>
+                <span th:text="${Text}"></span>
+            </p>
+        </div>
+    </div>
+</section>
+
+
+<script src="../../../resources/static/js/jquery.min.js"
+        th:src="@{/resources/static/js/jquery.min.js}"></script>
+
+<script src="../../../resources/static/js/bootstrap.min.js"
+        th:src="@{/resources/static/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

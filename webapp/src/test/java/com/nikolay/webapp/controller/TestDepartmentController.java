@@ -204,21 +204,6 @@ public class TestDepartmentController {
   }
 
   /**
-   * Test error handler.
-   *
-   * @throws Exception the exception
-   */
-  @Test
-  public void testErrorHandler() throws Exception {
-    LOGGER.debug("test TestDepartmentRestController: run testErrorHandler()");
-    when(mockDepartmentService.getDepartmentById(anyLong())).thenThrow(Exception.class);
-    mockMvc.perform(get("/department/{id}", anyLong()))
-        .andDo(print())
-        .andExpect(view().name("_404"));
-    verify(mockDepartmentService).getDepartmentById(anyLong());
-  }
-
-  /**
    * Test remove department.
    *
    * @throws Exception the exception
