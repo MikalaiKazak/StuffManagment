@@ -55,9 +55,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Value("${employee.GET_EMPLOYEE_BY_ID}")
     private String GET_EMPLOYEE_BY_ID;
 
-    @Value("${employee.GET_EMPLOYEE_BY_DEPARTMENT_ID}")
-    private String GET_EMPLOYEE_BY_DEPARTMENT_ID;
-
     @Value("${employee.GET_EMPLOYEE_BY_DATE_OF_BIRTHDAY}")
     private String GET_EMPLOYEE_BY_DATE_OF_BIRTHDAY;
 

@@ -57,11 +57,11 @@ public class TestEmployeeRestDao {
      */
     @Before
     public void setUp() {
-        emp1 = new Employee(3L, "Nikolay Kozak", LocalDate.of(1999, 2, 28),
+        emp1 = new Employee(3L, "Services", "Nikolay Kozak", LocalDate.of(1999, 2, 28),
                 BigDecimal.valueOf(350));
-        emp2 = new Employee(1L, 1L, "Nikolay", LocalDate.of(1999, 2, 28),
+        emp2 = new Employee(1L, 1L, "Services", "Nikolay", LocalDate.of(1999, 2, 28),
                 BigDecimal.valueOf(350));
-        emp3 = new Employee(2L, 1L, "Dmitry Kozak", LocalDate.of(2000, 12, 5),
+        emp3 = new Employee(2L, 1L, "Services", "Dmitry Kozak", LocalDate.of(2000, 12, 5),
                 BigDecimal.valueOf(300));
         date = LocalDate.of(1999, 2, 28);
         dateFrom = LocalDate.of(1998, 2, 2);
