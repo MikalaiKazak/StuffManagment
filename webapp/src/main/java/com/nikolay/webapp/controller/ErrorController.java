@@ -48,7 +48,7 @@ public class ErrorController extends RuntimeException {
       final Model model) {
     LOGGER.debug("exceptionHandler() msg = {}", ex.getLocalizedMessage());
     model.addAttribute("Text", ex.getMessage());
-    return "errorPages/error500";
+    return "errorPages/error400";
   }
 
   @ExceptionHandler(Exception.class)
@@ -66,4 +66,5 @@ public class ErrorController extends RuntimeException {
     model.addAttribute("Text", ex.getLocalizedMessage());
     return "errorPages/error405";
   }
+
 }

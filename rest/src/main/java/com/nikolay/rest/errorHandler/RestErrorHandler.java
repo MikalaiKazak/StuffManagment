@@ -57,10 +57,10 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleDataAccessException(DataAccessException ex,
             WebRequest request) {
         LOGGER.error("handleDataAccessException() message: " + ex.getLocalizedMessage());
-        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR,
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,
             Collections.singletonList(ex.getMessage()), request.getDescription(true));
         return handleExceptionInternal(ex, apiError, new HttpHeaders(),
-            HttpStatus.INTERNAL_SERVER_ERROR,
+            HttpStatus.BAD_REQUEST,
                 request);
     }
 
@@ -75,10 +75,10 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleEmptyResultDataAccessException(
             EmptyResultDataAccessException ex, WebRequest request) {
         LOGGER.error("handleEmptyResultDataAccessException() message: " + ex.getLocalizedMessage());
-        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR,
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,
             Collections.singletonList(ex.getMessage()), request.getDescription(true));
         return handleExceptionInternal(ex, apiError, new HttpHeaders(),
-            HttpStatus.INTERNAL_SERVER_ERROR,
+            HttpStatus.BAD_REQUEST,
                 request);
     }
 
