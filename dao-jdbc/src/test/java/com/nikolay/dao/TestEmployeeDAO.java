@@ -92,7 +92,7 @@ public class TestEmployeeDAO {
     public void testSaveEmployee() {
         LOGGER.debug("test DAO: run testSaveEmployee()");
         long sizeBefore = employeeDAO.getAllEmployees().size();
-        Employee employee = new Employee(sizeBefore + 1, 2L, "Sales", "Nikolay Kozak",
+        Employee employee = new Employee(2L, "Sales", "Nikolay Kozak",
                 LocalDate.of(1999, 12, 28), BigDecimal.valueOf(300));
         long employeeId = employeeDAO.saveEmployee(employee);
         long sizeAfter = employeeDAO.getAllEmployees().size();
@@ -107,7 +107,7 @@ public class TestEmployeeDAO {
     public void testSaveEmployeeWithFloatSalary(){
         LOGGER.debug("test DAO: run testSaveEmployeeWithFloatSalary()");
         long sizeBefore = employeeDAO.getAllEmployees().size();
-        Employee employee = new Employee(sizeBefore + 1, 2L, "Nikolay Kozak",
+        Employee employee = new Employee(2L, "Sales", "Nikolay Kozak",
             LocalDate.of(1999, 12, 28), BigDecimal.valueOf(245.51));
         long employeeId = employeeDAO.saveEmployee(employee);
         long sizeAfter = employeeDAO.getAllEmployees().size();
