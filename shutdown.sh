@@ -1,4 +1,4 @@
  #!/usr/bin/env bash
 
- docker-compose down
- mvn clean 
+sudo docker-compose down
+mvn clean 
