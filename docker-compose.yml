@@ -6,6 +6,7 @@ services:
     container_name: rest-server
     volumes:
       - ./rest/target/rest.war:/usr/local/tomcat/webapps/rest.war
+      - ./rest/logs:/usr/local/tomcat/logs/rest_logs
     ports:
       - "8081:8080"
   rest-client:
@@ -15,6 +16,7 @@ services:
       - "JAVA_OPTS=-Dprofile=docker"
     volumes:
        - ./webapp/target/webapp.war:/usr/local/tomcat/webapps/webapp.war
+       - ./webapp/logs:/usr/local/tomcat/logs/webapp_logs
     ports:
       - "8082:8080"
     depends_on:
