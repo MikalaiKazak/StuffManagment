@@ -3,11 +3,15 @@ A project for departments and employees management
 
 ## Built With
 * JDK 8
+* [Docker 18.09.1](https://www.docker.com/) - Docker
+* [Docker compose 1.23.2](https://docs.docker.com/compose/) - Docker Compose
 * [Maven 3.6.0](https://maven.apache.org/) - Dependency Management
 * [Apache Tomcat 9.0.13](http://tomcat.apache.org/) - Tomcat
 
+## Get project
+* Clone this project, ``` git clone https://github.com/MikalaiKazak/department-app.git ```
 
-## Tomcat 
+## Run through tomcat 
 1. Install Tomcat --- sudo apt-get install tomcat9
 2. Modify tomcat-users.xml file accordingly
 ```
@@ -19,20 +23,18 @@ A project for departments and employees management
 ```
 3. Start the Tomcat server:sudo service tomcat run
 
-## Usage
-1. Clone this project, git clone https://github.com/MikalaiKazak/department-app.git
-2. Build the war file with maven, mvn clean install
-3. Copy war-files which you can find in ``` /rest/target/rest.war ``` and ``` /webapp/target/web.war``` to your tomcat server webapps folder.
-4. Restart the Tomcat server: sudo service tomcat restart
-5. And then you can see result in browser: ```http://localhost:8080/web/``` For REST service:``` http://localhost:8080/rest/department/```
+## Deploy on tomcat
+1. Build the war file with maven, mvn clean install
+2. Copy war-files which you can find in ``` /rest/target/rest.war ``` and ``` /webapp/target/webapp.war``` to your tomcat server webapps folder.
+3. Restart the Tomcat server: sudo service tomcat restart
+4. And then you can see result in browser: http://localhost:8080/webapp/ For REST service: http://localhost:8080/rest/department/ or http://localhost:8080/rest/employee
 
-
-## Explore Webapp Content
-| URL | Description |
-| --- | --- |
-  | http://localhost:8080/webapp/ |                    Main page
-  | http://localhost:8080/webapp/departments |         Page view all departments
-  | http://localhost:8080/webapp/employees |           Page view all employees
+## Run through docker
+1. Install docker --- sudo apt install docker-ce
+2. Install docker-compose --- sudo apt install docker-compose
+3. sudo chmod +x build.sh
+4. ./build.sh
+5. And then you can see result in browser: http://localhost:8082/webapp/ For Rest service: http://localhost:8081/rest/department or http://localhost:8081/rest/employee
 
 ## Explore Rest APIs
 
