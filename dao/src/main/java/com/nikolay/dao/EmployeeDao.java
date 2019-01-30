@@ -1,13 +1,13 @@
-package com.nikolay.service;
+package com.nikolay.dao;
 
 import com.nikolay.model.Employee;
 import java.time.LocalDate;
 import java.util.List;
 
 /**
- * The interface Employee service.
+ * The interface Employee dao.
  */
-public interface EmployeeService {
+public interface EmployeeDao {
 
   /**
    * Gets employee by id.

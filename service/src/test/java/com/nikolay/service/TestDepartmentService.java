@@ -2,6 +2,8 @@ package com.nikolay.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
@@ -11,7 +13,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.nikolay.dao.DepartmentDAO;
+import com.nikolay.dao.DepartmentDao;
 import com.nikolay.model.Department;
 import com.nikolay.service.exception.OperationFailedException;
 import java.math.BigDecimal;
@@ -31,108 +33,135 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"classpath*:/test-service-mock.xml"})
 public class TestDepartmentService {
 
-    public static final Logger LOGGER = LogManager.getLogger();
+  public static final Logger LOGGER = LogManager.getLogger();
+  private static final long CORRECT_AMOUNT_DEPARTMENTS = 2L;
+  private static final long CORRECT_DEPARTMENT_ID = 1L;
+  private static final String CORRECT_DEPARTMENT_NAME = "Accounting";
+  private static final BigDecimal CORRECT_DEPARTMENT_AVERAGE_SALARY = new BigDecimal(2399.5);
+  private static final long NEW_DEPARTMENT_ID = 2L;
+  private static final String NEW_DEPARTMENT_NAME = "DWBI";
+  private static final BigDecimal NEW_DEPARTMENT_AVERAGE_SALARY = new BigDecimal(300.25);
 
-    @Autowired
-    private DepartmentDAO departmentDAOMock;
+  @Autowired
+  private DepartmentDao departmentDaoMock;
+  @Autowired
 
-    @Autowired
-    private DepartmentService departmentService;
+  private DepartmentService departmentService;
+  private Department saveDepartment;
+  private Department correctDepartment;
+  private List<Department> departments;
 
-    private Department dep1;
-    private Department dep2;
-    private List<Department> departments;
+  @Before
+  public void setUp() {
+    LOGGER.error("execute: beforeTest()");
 
-    @Before
-    public void setUp() {
-        LOGGER.error("execute: beforeTest()");
-        dep1 = new Department("New Department", BigDecimal.valueOf(500));
-        dep2 = new Department(14L, "Services", BigDecimal.valueOf(3249));
-        departments = Arrays.asList(dep1, dep2);
-    }
+    saveDepartment = new Department(
+        NEW_DEPARTMENT_NAME,
+        NEW_DEPARTMENT_AVERAGE_SALARY);
 
-    /**
-     * After test.
-     */
-    @After
-    public void afterTest() {
-        verifyNoMoreInteractions(departmentDAOMock);
-        reset(departmentDAOMock);
-        LOGGER.error("execute: afterTest()");
-    }
+    correctDepartment = new Department(
+        CORRECT_DEPARTMENT_ID,
+        CORRECT_DEPARTMENT_NAME,
+        CORRECT_DEPARTMENT_AVERAGE_SALARY);
 
-    @Test
-    public void testGetDepartmentById() {
-        LOGGER.debug("test Service: run testGetDepartmentById()");
-        when(departmentDAOMock.getDepartmentById(14L)).thenReturn(dep2);
-        Department department = departmentService.getDepartmentById(14L);
-        verify(departmentDAOMock).getDepartmentById(14L);
-        assertNotNull(department);
-        assertEquals(14L, department.getId().longValue());
-        assertEquals("Services", department.getDepartmentName());
-        assertEquals(BigDecimal.valueOf(3249), department.getAverageSalary());
-    }
+    departments = Arrays.asList(saveDepartment, correctDepartment);
+  }
 
-    @Test
-    public void testGetDepartmentByName() {
-        LOGGER.debug("test Service: run testGetDepartmentByName()");
-        when(departmentDAOMock.getDepartmentByName("Services")).thenReturn(dep2);
-        Department department = departmentService.getDepartmentByName("Services");
-        verify(departmentDAOMock).getDepartmentByName("Services");
-        assertNotNull(department);
-        assertEquals("Services", department.getDepartmentName());
-    }
+  /**
+   * After test.
+   */
+  @After
+  public void afterTest() {
+    verifyNoMoreInteractions(departmentDaoMock);
+    reset(departmentDaoMock);
+    LOGGER.error("execute: afterTest()");
+  }
 
-    @Test
-    public void testGetAllDepartment() {
-        LOGGER.debug("test Service: run testGetAllDepartment()");
-        when(departmentDAOMock.getAllDepartments()).thenReturn(departments);
-        List<Department> departmentList = departmentService.getAllDepartments();
-        verify(departmentDAOMock).getAllDepartments();
-        assertNotNull(departmentList);
-        assertEquals(2, departmentList.size());
-    }
+  @Test
+  public void testGetDepartmentById() {
+    LOGGER.debug("test Service: run testGetDepartmentById()");
+    when(departmentDaoMock.getDepartmentById(CORRECT_DEPARTMENT_ID)).thenReturn(correctDepartment);
+    Department newDepartment = departmentService.getDepartmentById(CORRECT_DEPARTMENT_ID);
+    verify(departmentDaoMock).getDepartmentById(CORRECT_DEPARTMENT_ID);
+    assertNotNull(newDepartment);
+    assertEquals(CORRECT_DEPARTMENT_ID, newDepartment.getId().longValue());
+    assertEquals(CORRECT_DEPARTMENT_NAME, newDepartment.getDepartmentName());
+    assertEquals(CORRECT_DEPARTMENT_AVERAGE_SALARY, newDepartment.getAverageSalary());
+  }
 
-    @Test
-    public void testSaveDepartment() {
-        LOGGER.debug("test Service: run testSaveDepartment()");
-        when(departmentDAOMock.saveDepartment(dep1)).thenReturn(15L);
-        Long departmentId = departmentService.saveDepartment(dep1);
-        verify(departmentDAOMock).saveDepartment(dep1);
-        assertNotNull(departmentId);
-        assertEquals(15L, departmentId.longValue());
-    }
+  @Test
+  public void testGetDepartmentByName() {
+    LOGGER.debug("test Service: run testGetDepartmentByName()");
+    when(departmentDaoMock.getDepartmentByName(CORRECT_DEPARTMENT_NAME))
+        .thenReturn(correctDepartment);
+    Department newDepartment = departmentService.getDepartmentByName(CORRECT_DEPARTMENT_NAME);
+    verify(departmentDaoMock).getDepartmentByName(CORRECT_DEPARTMENT_NAME);
+    assertNotNull(newDepartment);
+    assertEquals(CORRECT_DEPARTMENT_ID, newDepartment.getId().longValue());
+    assertEquals(CORRECT_DEPARTMENT_NAME, newDepartment.getDepartmentName());
+    assertEquals(CORRECT_DEPARTMENT_AVERAGE_SALARY, newDepartment.getAverageSalary());
+  }
 
-    @Test
-    public void testUpdateDepartment() {
-        LOGGER.debug("test Service: run testUpdateDepartment()");
-        doNothing().when(departmentDAOMock).updateDepartment(dep2);
-        departmentService.updateDepartment(dep2);
-        verify(departmentDAOMock).updateDepartment(dep2);
-    }
+  @Test
+  public void testGetAllDepartment() {
+    LOGGER.debug("test Service: run testGetAllDepartment()");
+    when(departmentDaoMock.getAllDepartments()).thenReturn(departments);
+    List<Department> departmentList = departmentService.getAllDepartments();
+    verify(departmentDaoMock).getAllDepartments();
+    assertNotNull(departmentList);
+    assertEquals(CORRECT_AMOUNT_DEPARTMENTS, departmentList.size());
+  }
 
-    @Test
-    public void testDeleteDepartment() {
-        LOGGER.debug("test Service: run testDeleteDepartment()");
-        doNothing().when(departmentDAOMock).deleteDepartment(anyLong());
-        departmentService.deleteDepartment(14L);
-        departmentService.deleteDepartment(13L);
-        verify(departmentDAOMock, times(2)).deleteDepartment(anyLong());
-    }
+  @Test
+  public void testSaveDepartment() {
+    LOGGER.debug("test Service: run testSaveDepartment()");
+    when(departmentDaoMock.saveDepartment(saveDepartment)).thenReturn(NEW_DEPARTMENT_ID);
+    Long departmentId = departmentService.saveDepartment(saveDepartment);
+    verify(departmentDaoMock).saveDepartment(saveDepartment);
+    assertNotNull(departmentId);
+    assertEquals(NEW_DEPARTMENT_ID, departmentId.longValue());
+  }
 
-    @Test(expected = OperationFailedException.class)
-    public void testSaveDepartmentException() {
-        LOGGER.debug("test Service: run testSaveDepartmentException()");
-        when(departmentDAOMock.saveDepartment(dep2)).thenReturn(0L);
-        Long departmentId = departmentService.saveDepartment(dep2);
-        verifyZeroInteractions(departmentDAOMock.saveDepartment(dep2));
-    }
+  @Test
+  public void testUpdateDepartment() {
+    LOGGER.debug("test Service: run testUpdateDepartment()");
+    doNothing().when(departmentDaoMock).updateDepartment(correctDepartment);
+    departmentService.updateDepartment(correctDepartment);
+    verify(departmentDaoMock).updateDepartment(correctDepartment);
+  }
 
-    @Test(expected = OperationFailedException.class)
-    public void testGetDepartmentByIdException() {
-        LOGGER.debug("test Service: run testGetDepartmentByIdException()");
-        when(departmentDAOMock.getDepartmentById(-1L)).thenReturn(dep1);
-        Department department = departmentService.getDepartmentById(-1L);
-        verifyZeroInteractions(departmentDAOMock.getDepartmentById(-1L));
-    }
+  @Test
+  public void testDeleteDepartment() {
+    LOGGER.debug("test Service: run testDeleteDepartment()");
+    doNothing().when(departmentDaoMock).deleteDepartment(anyLong());
+    departmentService.deleteDepartment(anyLong());
+    departmentService.deleteDepartment(anyLong());
+    verify(departmentDaoMock, times(2)).deleteDepartment(anyLong());
+  }
+
+  @Test(expected = OperationFailedException.class)
+  public void testSaveDepartmentException() {
+    LOGGER.debug("test Service: run testSaveDepartmentException()");
+    when(departmentDaoMock.saveDepartment(correctDepartment)).thenReturn(0L);
+    Long departmentId = departmentService.saveDepartment(correctDepartment);
+    assertNull(departmentId);
+    verifyZeroInteractions(departmentDaoMock.saveDepartment(correctDepartment));
+  }
+
+  @Test(expected = OperationFailedException.class)
+  public void testUpdateDepartmentException() {
+    LOGGER.debug("test Service: run testUpdateDepartmentException()");
+    doNothing().when(departmentDaoMock).updateDepartment(any(Department.class));
+    departmentService.updateDepartment(new Department());
+    verifyNoMoreInteractions(departmentDaoMock);
+  }
+
+  @Test(expected = OperationFailedException.class)
+  public void testGetDepartmentByIdException() {
+    LOGGER.debug("test Service: run testGetDepartmentByIdException()");
+    when(departmentDaoMock.getDepartmentById(-1L)).thenThrow(OperationFailedException.class);
+    Department department = departmentService.getDepartmentById(-1L);
+    assertNull(department);
+    verifyZeroInteractions(departmentDaoMock.getDepartmentById(-1L));
+  }
 }

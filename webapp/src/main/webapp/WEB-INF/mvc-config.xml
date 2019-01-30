@@ -1,7 +1,7 @@
 <beans xmlns:mvc="http://www.springframework.org/schema/mvc"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://www.springframework.org/schema/beans"
-    xsi:schemaLocation="http://www.springframework.org/schema/mvc
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.springframework.org/schema/beans"
+  xsi:schemaLocation="http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
@@ -12,14 +12,14 @@
   <mvc:resources location="/resources/" mapping="/resources/**"/>
 
   <bean class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver"
-      id="templateResolver">
+    id="templateResolver">
     <property name="prefix" value="/WEB-INF/templates/"/>
     <property name="suffix" value=".html"/>
     <property name="templateMode" value="HTML"/>
   </bean>
 
   <bean class="org.thymeleaf.spring5.SpringTemplateEngine"
-      id="templateEngine">
+    id="templateEngine">
     <property name="templateResolver" ref="templateResolver"/>
     <property name="enableSpringELCompiler" value="true"/>
   </bean>

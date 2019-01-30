@@ -11,20 +11,28 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+/**
+ * The type Jackson object mapper.
+ */
 @Configuration
 public class JacksonObjectMapper {
 
-    @Bean
-    @Primary
-    public ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.configure(Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
-        mapper.configure(Feature.IGNORE_UNKNOWN, true);
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
-        mapper.setSerializationInclusion(Include.NON_NULL);
-        return mapper;
-    }
+  /**
+   * Object mapper object mapper.
+   *
+   * @return the object mapper
+   */
+  @Bean
+  @Primary
+  public ObjectMapper objectMapper() {
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.registerModule(new JavaTimeModule());
+    mapper.configure(Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
+    mapper.configure(Feature.IGNORE_UNKNOWN, true);
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+    mapper.setSerializationInclusion(Include.NON_NULL);
+    return mapper;
+  }
 }

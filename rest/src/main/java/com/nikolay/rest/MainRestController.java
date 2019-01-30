@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class MainRestController {
 
-    public static final Logger LOGGER = LogManager.getLogger();
+  public static final Logger LOGGER = LogManager.getLogger();
 
-    @RequestMapping("/")
-    public ResponseEntity<Void> main() {
-        LOGGER.debug("run main()");
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+  @RequestMapping("/")
+  public ResponseEntity<Void> main() {
+    LOGGER.debug("run main()");
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 
 }

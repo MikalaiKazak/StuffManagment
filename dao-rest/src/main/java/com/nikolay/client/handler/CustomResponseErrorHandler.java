@@ -14,22 +14,22 @@ import org.springframework.web.client.ResponseErrorHandler;
  */
 public class CustomResponseErrorHandler implements ResponseErrorHandler {
 
-    private static final Logger LOGGER = LogManager.getLogger();
+  private static final Logger LOGGER = LogManager.getLogger();
 
-    private ResponseErrorHandler errorHandler = new DefaultResponseErrorHandler();
+  private ResponseErrorHandler errorHandler = new DefaultResponseErrorHandler();
 
-    @Override
-    public boolean hasError(ClientHttpResponse response) throws IOException {
-        return errorHandler.hasError(response);
+  @Override
+  public boolean hasError(ClientHttpResponse response) throws IOException {
+    return errorHandler.hasError(response);
+  }
+
+  @Override
+  public void handleError(ClientHttpResponse response) throws IOException {
+    LOGGER.debug("CustomResponseErrorHandler - handleError()");
+    try {
+      errorHandler.handleError(response);
+    } catch (HttpStatusCodeException e) {
+      throw new ServerDataAccessException(e.getResponseBodyAsString());
     }
-
-    @Override
-    public void handleError(ClientHttpResponse response) throws IOException {
-        LOGGER.debug("CustomResponseErrorHandler - handleError()");
-        try{
-            errorHandler.handleError(response);
-        }catch(HttpStatusCodeException e){
-            throw new ServerDataAccessException(e.getResponseBodyAsString());
-        }
-    }
+  }
 }

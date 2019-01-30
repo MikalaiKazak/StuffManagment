@@ -51,7 +51,8 @@ public class EmployeeController {
    * @param employeeValidator the employee validator
    */
   @Autowired
-  public EmployeeController(EmployeeService employeeRestService, DepartmentService departmentRestService,
+  public EmployeeController(EmployeeService employeeRestService,
+      DepartmentService departmentRestService,
       Validator employeeValidator) {
     this.employeeRestService = employeeRestService;
     this.departmentRestService = departmentRestService;
@@ -89,8 +90,8 @@ public class EmployeeController {
     List<Employee> employeeList;
     if (dateFrom != null && dateTo != null) {
       employeeList = employeeRestService.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
-      model.addAttribute("message", "List of employees born between " + 
-          dateFrom.toString() + " and " + dateTo.toString());
+      model.addAttribute("message", "List of employees born between "
+          + dateFrom.toString() + " and " + dateTo.toString());
       model.addAttribute("employeeList", employeeList);
       return "employeeFilter";
     } else if (date != null) {

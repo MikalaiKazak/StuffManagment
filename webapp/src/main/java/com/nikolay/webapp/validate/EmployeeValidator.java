@@ -32,8 +32,5 @@ public class EmployeeValidator implements Validator {
     ValidationUtils.rejectIfEmptyOrWhitespace(err, "fullName", "employee.name.empty");
     ValidationUtils.rejectIfEmptyOrWhitespace(err, "birthday", "employee.birthday.empty");
     ValidationUtils.rejectIfEmptyOrWhitespace(err, "salary", "employee.salary.empty");
-
-    Employee employee = (Employee) obj;
-
   }
 }

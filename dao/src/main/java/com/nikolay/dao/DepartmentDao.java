@@ -1,12 +1,12 @@
-package com.nikolay.service;
+package com.nikolay.dao;
 
 import com.nikolay.model.Department;
 import java.util.List;
 
 /**
- * The interface Department service.
+ * The interface Department dao.
  */
-public interface DepartmentService {
+public interface DepartmentDao {
 
   /**
    * Gets all departments.
@@ -52,5 +52,4 @@ public interface DepartmentService {
    * @param departmentId the department id
    */
   void deleteDepartment(Long departmentId);
-
 }

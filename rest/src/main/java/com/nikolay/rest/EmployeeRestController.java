@@ -28,108 +28,108 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/employee")
 public class EmployeeRestController {
 
-    public static final Logger LOGGER = LogManager.getLogger();
+  public static final Logger LOGGER = LogManager.getLogger();
 
-    /**
-     * The Employee service.
-     */
-    private EmployeeService employeeService;
+  /**
+   * The Employee service.
+   */
+  private EmployeeService employeeService;
 
-    /**
-     * Instantiates a new Employee rest controller.
-     *
-     * @param employeeService the employee service
-     */
-    @Autowired
-    public EmployeeRestController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
+  /**
+   * Instantiates a new Employee rest controller.
+   *
+   * @param employeeService the employee service
+   */
+  @Autowired
+  public EmployeeRestController(EmployeeService employeeService) {
+    this.employeeService = employeeService;
+  }
+
+  /**
+   * Gets all employees.
+   *
+   * @return the all employees
+   */
+  @GetMapping("/")
+  public ResponseEntity<List<Employee>> getAllEmployees(
+      @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+      @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
+      @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo) {
+    LOGGER.debug("getAllEmployees()");
+    if (dateFrom != null && dateTo != null) {
+      LOGGER.debug("getAllEmployees(dateFrom, dateTo): dateFrom = {}, dateTo = {}",
+          dateFrom.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+          dateTo.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+      List<Employee> employees = employeeService
+          .getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
+      return new ResponseEntity<>(employees, HttpStatus.FOUND);
+    } else if (date != null) {
+      LOGGER.debug("getAllEmployees(date): date = {}",
+          date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+      List<Employee> employees = employeeService.getEmployeeByDateOfBirthday(date);
+      return new ResponseEntity<>(employees, HttpStatus.FOUND);
     }
+    List<Employee> employees = employeeService.getAllEmployees();
+    return new ResponseEntity<>(employees, HttpStatus.OK);
+  }
 
-    /**
-     * Gets all employees.
-     *
-     * @return the all employees
-     */
-    @GetMapping("/")
-    public ResponseEntity<List<Employee>> getAllEmployees(
-            @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
-            @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
-            @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo) {
-        LOGGER.debug("getAllEmployees()");
-        if (dateFrom != null && dateTo != null) {
-            LOGGER.debug("getAllEmployees(dateFrom, dateTo): dateFrom = {}, dateTo = {}",
-                    dateFrom.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                    dateTo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            List<Employee> employees = employeeService
-                    .getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
-            return new ResponseEntity<>(employees, HttpStatus.FOUND);
-        } else if (date != null) {
-            LOGGER.debug("getAllEmployees(date): date = {}",
-                    date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            List<Employee> employees = employeeService.getEmployeeByDateOfBirthday(date);
-            return new ResponseEntity<>(employees, HttpStatus.FOUND);
-        }
-        List<Employee> employees = employeeService.getAllEmployees();
-        return new ResponseEntity<>(employees, HttpStatus.OK);
-    }
+  /**
+   * Gets employee by id.
+   *
+   * @param id the id
+   * @return the employee by id
+   */
+  @GetMapping("/{id}")
+  public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Long id) {
+    LOGGER.debug("getEmployeeById(id): id = {}", id);
+    Employee employee = employeeService.getEmployeeById(id);
+    return new ResponseEntity<>(employee, HttpStatus.FOUND);
+  }
 
-    /**
-     * Gets employee by id.
-     *
-     * @param id the id
-     * @return the employee by id
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Long id) {
-        LOGGER.debug("getEmployeeById(id): id = {}", id);
-        Employee employee = employeeService.getEmployeeById(id);
-        return new ResponseEntity<>(employee, HttpStatus.FOUND);
-    }
+  /**
+   * Add employee response entity.
+   *
+   * @param employee the employee
+   * @return the response entity
+   */
+  @PostMapping("/")
+  public ResponseEntity<Long> addEmployee(@RequestBody Employee employee) {
+    LOGGER.debug("addEmployee(employee): employeeName = {}", employee.getFullName());
+    Long id = employeeService.saveEmployee(employee);
+    employee.setId(id);
+    return new ResponseEntity<>(id, HttpStatus.CREATED);
+  }
 
-    /**
-     * Add employee response entity.
-     *
-     * @param employee the employee
-     * @return the response entity
-     */
-    @PostMapping("/")
-    public ResponseEntity<Long> addEmployee(@RequestBody Employee employee) {
-        LOGGER.debug("addEmployee(employee): employeeName = {}", employee.getFullName());
-        Long id = employeeService.saveEmployee(employee);
-        employee.setId(id);
-        return new ResponseEntity<>(id, HttpStatus.CREATED);
-    }
+  /**
+   * Remove employee response entity.
+   *
+   * @param id the id
+   * @return the response entity
+   */
+  @DeleteMapping("/{id}")
+  public ResponseEntity removeEmployee(@PathVariable("id") Long id) {
+    LOGGER.debug("removeEmployee(id): id = {}", id);
+    employeeService.deleteEmployee(id);
+    return new ResponseEntity(HttpStatus.OK);
+  }
 
-    /**
-     * Remove employee response entity.
-     *
-     * @param id the id
-     * @return the response entity
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity removeEmployee(@PathVariable("id") Long id) {
-        LOGGER.debug("removeEmployee(id): id = {}", id);
-        employeeService.deleteEmployee(id);
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    /**
-     * Update employee response entity.
-     *
-     * @param newEmployee the new employee
-     * @param id the id
-     * @return the response entity
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity updateEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
-        LOGGER.debug("updateEmployee(id, employee): id = {}, employeeName = {}", id,
-                newEmployee.getFullName());
-        Employee employee = employeeService.getEmployeeById(id);
-        employee.setDepartmentId(newEmployee.getDepartmentId());
-        employee.setFullName(newEmployee.getFullName());
-        employee.setBirthday(newEmployee.getBirthday());
-        employee.setSalary(newEmployee.getSalary());
-        employeeService.updateEmployee(employee);
-        return new ResponseEntity(HttpStatus.ACCEPTED);
-    }
+  /**
+   * Update employee response entity.
+   *
+   * @param newEmployee the new employee
+   * @param id the id
+   * @return the response entity
+   */
+  @PutMapping("/{id}")
+  public ResponseEntity updateEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
+    LOGGER.debug("updateEmployee(id, employee): id = {}, employeeName = {}", id,
+        newEmployee.getFullName());
+    Employee employee = employeeService.getEmployeeById(id);
+    employee.setDepartmentId(newEmployee.getDepartmentId());
+    employee.setFullName(newEmployee.getFullName());
+    employee.setBirthday(newEmployee.getBirthday());
+    employee.setSalary(newEmployee.getSalary());
+    employeeService.updateEmployee(employee);
+    return new ResponseEntity(HttpStatus.ACCEPTED);
+  }
 }

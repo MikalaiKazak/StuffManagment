@@ -7,20 +7,23 @@
 
   <context:component-scan base-package="com.nikolay.service"/>
 
-  <bean class="org.mockito.Mockito" factory-method="mock" id="departmentDAO">
-    <constructor-arg value="com.nikolay.dao.DepartmentDAO"/>
+  <context:property-placeholder
+    location="classpath*:/messages.properties"/>
+
+  <bean class="org.mockito.Mockito" factory-method="mock" id="departmentDao">
+    <constructor-arg value="com.nikolay.dao.DepartmentDao"/>
   </bean>
 
   <bean class="com.nikolay.service.impl.DepartmentServiceImpl" id="departmentService">
-    <property name="departmentDAO" ref="departmentDAO"/>
+    <property name="departmentDao" ref="departmentDao"/>
   </bean>
 
-  <bean class="org.mockito.Mockito" factory-method="mock" id="employeeDAO">
-    <constructor-arg value="com.nikolay.dao.EmployeeDAO"/>
+  <bean class="org.mockito.Mockito" factory-method="mock" id="employeeDao">
+    <constructor-arg value="com.nikolay.dao.EmployeeDao"/>
   </bean>
 
   <bean class="com.nikolay.service.impl.EmployeeServiceImpl" id="employeeService">
-    <property name="employeeDAO" ref="employeeDAO"/>
+    <property name="employeeDao" ref="employeeDao"/>
   </bean>
 
 </beans>

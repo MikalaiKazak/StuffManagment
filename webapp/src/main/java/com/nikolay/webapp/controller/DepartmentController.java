@@ -37,6 +37,7 @@ public class DepartmentController {
   /**
    * Instantiates a new Department controller.
    *
+   * @param departmentRestService the department rest service
    * @param departmentValidator the department validator
    */
   @Autowired

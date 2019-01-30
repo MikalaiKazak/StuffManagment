@@ -21,8 +21,8 @@
       </PatternLayout>
     </File>
     <RollingFile fileName="${log-path}/server.log"
-        filePattern="${archive}/server.log.%d{yyyy-MM-dd-hh-mm}.gz"
-        name="RollingFile-Appender">
+      filePattern="${archive}/server.log.%d{yyyy-MM-dd-hh-mm}.gz"
+      name="RollingFile-Appender">
       <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"/>
       <Policies>
         <TimeBasedTriggeringPolicy/>
