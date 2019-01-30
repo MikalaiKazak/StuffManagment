@@ -21,7 +21,6 @@ public class MainController {
   /**
    * Main page string.
    *
-   * @param model the model
    * @return the string
    */
   @GetMapping

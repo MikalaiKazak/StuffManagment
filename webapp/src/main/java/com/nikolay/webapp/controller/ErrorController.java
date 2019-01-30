@@ -1,6 +1,5 @@
 package com.nikolay.webapp.controller;
 
-
 import com.nikolay.client.exception.ServerDataAccessException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,6 +34,13 @@ public class ErrorController extends RuntimeException {
     return "errorPages/error400";
   }
 
+  /**
+   * Handler null pointer exception string.
+   *
+   * @param ex the ex
+   * @param model the model
+   * @return the string
+   */
   @ExceptionHandler(NullPointerException.class)
   public final String handlerNullPointerException(final NullPointerException ex,
       final Model model) {
@@ -43,6 +49,13 @@ public class ErrorController extends RuntimeException {
     return "errorPages/error500";
   }
 
+  /**
+   * Handler server data access exception string.
+   *
+   * @param ex the ex
+   * @param model the model
+   * @return the string
+   */
   @ExceptionHandler(ServerDataAccessException.class)
   public final String handlerServerDataAccessException(final ServerDataAccessException ex,
       final Model model) {
@@ -51,6 +64,13 @@ public class ErrorController extends RuntimeException {
     return "errorPages/error400";
   }
 
+  /**
+   * Handler exception string.
+   *
+   * @param ex the ex
+   * @param model the model
+   * @return the string
+   */
   @ExceptionHandler(Exception.class)
   public final String handlerException(final Exception ex,
       final Model model) {
@@ -59,6 +79,13 @@ public class ErrorController extends RuntimeException {
     return "errorPages/generalErrorPage";
   }
 
+  /**
+   * Handle error 405 string.
+   *
+   * @param ex the ex
+   * @param model the model
+   * @return the string
+   */
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   public String handleError405(final HttpRequestMethodNotSupportedException ex,
       final Model model) {

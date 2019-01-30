@@ -59,7 +59,6 @@ table.dataTable thead .sorting_desc_disabled:before {
   bottom: .5em;
 }
 
-
 @media only screen and (max-width: 768px) {
 
   .table-button {

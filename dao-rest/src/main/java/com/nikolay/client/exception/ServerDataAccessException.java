@@ -8,25 +8,25 @@ import org.apache.logging.log4j.Logger;
  */
 public class ServerDataAccessException extends RuntimeException {
 
-    /**
-     * The constant LOGGER.
-     */
-    public static final Logger LOGGER = LogManager.getLogger();
+  /**
+   * The constant LOGGER.
+   */
+  public static final Logger LOGGER = LogManager.getLogger();
 
-    /**
-     * Instantiates a new Server data access exception.
-     */
-    public ServerDataAccessException() {
-        LOGGER.error("ServerDataAccessException()");
-    }
+  /**
+   * Instantiates a new Server data access exception.
+   */
+  public ServerDataAccessException() {
+    LOGGER.error("ServerDataAccessException()");
+  }
 
-    /**
-     * Instantiates a new Server data access exception.
-     *
-     * @param message the message
-     */
-    public ServerDataAccessException(String message) {
-        super(message);
-        LOGGER.error(message);
-    }
+  /**
+   * Instantiates a new Server data access exception.
+   *
+   * @param message the message
+   */
+  public ServerDataAccessException(String message) {
+    super(message);
+    LOGGER.error(message);
+  }
 }

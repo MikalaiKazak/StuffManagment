@@ -2,6 +2,7 @@ package com.nikolay.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -9,7 +10,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.nikolay.dao.EmployeeDAO;
+import com.nikolay.dao.EmployeeDao;
 import com.nikolay.model.Employee;
 import com.nikolay.service.exception.OperationFailedException;
 import java.math.BigDecimal;
@@ -31,125 +32,151 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"classpath*:/test-service-mock.xml"})
 public class TestEmployeeService {
 
-    public static final Logger LOGGER = LogManager.getLogger();
+  public static final Logger LOGGER = LogManager.getLogger();
+  private static final long CORRECT_AMOUNT_EMPLOYEES = 2L;
+  private static final long CORRECT_EMPLOYEE_ID = 1L;
+  private static final long CORRECT_EMPLOYEE_DEPARTMENT_ID = 3L;
+  private static final String CORRECT_EMPLOYEE_DEPARTMENT_NAME = "Engineering";
+  private static final String CORRECT_EMPLOYEE_FULL_NAME = "Clem Hudspith";
+  private static final LocalDate CORRECT_EMPLOYEE_BIRTHDAY = LocalDate.of(1982, 4, 2);
+  private static final BigDecimal CORRECT_EMPLOYEE_SALARY = BigDecimal.valueOf(810);
+  private static final long NEW_EMPLOYEE_ID = 3L;
+  private static final long NEW_EMPLOYEE_DEPARTMENT_ID = 2L;
+  private static final String NEW_EMPLOYEE_DEPARTMENT_NAME = "DWBI";
+  private static final String NEW_EMPLOYEE_FULL_NAME = "Jeck Hudspith";
+  private static final LocalDate NEW_EMPLOYEE_BIRTHDAY = LocalDate.of(1982, 4, 2);
+  private static final BigDecimal NEW_EMPLOYEE_SALARY = BigDecimal.valueOf(200.12);
+  private static final LocalDate DATE = LocalDate.of(1982, 4, 2);
+  private static final LocalDate DATE_FROM = LocalDate.of(1982, 4, 2);
+  private static final LocalDate DATE_TO = LocalDate.of(1991, 7, 20);
+  private static final Long INCORRECT_EMPLOYEE_ID = -20L;
 
-    @Autowired
-    EmployeeDAO employeeDAOMock;
+  @Autowired
+  EmployeeDao employeeDaoMock;
 
-    @Autowired
-    EmployeeService employeeService;
+  @Autowired
+  EmployeeService employeeService;
 
-    private Employee emp1;
-    private Employee emp2;
-    private Employee emp3;
-    private List<Employee> employees;
+  private Employee correctEmployee;
+  private Employee saveEmployee;
+  private List<Employee> employees;
 
-    @Before
-    public void setUp() {
-        LOGGER.error("execute: setUp()");
-        emp3 = new Employee(3L, "Nikolay Kozak", "Services", LocalDate.of(1999, 2, 28),
-                BigDecimal.valueOf(350));
-        emp1 = new Employee(1L, 1L, "Services", "Nikolay Kozak", LocalDate.of(1999, 2, 28),
-                BigDecimal.valueOf(350));
-        emp2 = new Employee(2L, 1L, "Services","Dmitry Kozak", LocalDate.of(2000, 12, 5),
-                BigDecimal.valueOf(300));
-        employees = Arrays.asList(emp1, emp2);
-    }
+  @Before
+  public void setUp() {
+    saveEmployee = new Employee(
+        NEW_EMPLOYEE_DEPARTMENT_ID,
+        NEW_EMPLOYEE_FULL_NAME,
+        NEW_EMPLOYEE_DEPARTMENT_NAME,
+        NEW_EMPLOYEE_BIRTHDAY,
+        NEW_EMPLOYEE_SALARY
+    );
 
-    /**
-     * After test.
-     */
-    @After
-    public void afterTest() {
-        verifyNoMoreInteractions(employeeDAOMock);
-        reset(employeeDAOMock);
-        LOGGER.error("execute: afterTest()");
-    }
+    correctEmployee = new Employee(
+        CORRECT_EMPLOYEE_ID,
+        CORRECT_EMPLOYEE_DEPARTMENT_ID,
+        CORRECT_EMPLOYEE_DEPARTMENT_NAME,
+        CORRECT_EMPLOYEE_FULL_NAME,
+        CORRECT_EMPLOYEE_BIRTHDAY,
+        CORRECT_EMPLOYEE_SALARY
+    );
 
-    @Test
-    public void testGetEmployeeById() {
-        LOGGER.debug("test Service: run testGetEmployeeById()");
-        when(employeeDAOMock.getEmployeeById(1L)).thenReturn(emp1);
-        Employee employee = employeeService.getEmployeeById(1L);
-        verify(employeeDAOMock).getEmployeeById(1L);
-        assertNotNull(employee);
-        assertEquals(1L, employee.getId().longValue());
-        assertEquals("Nikolay Kozak", employee.getFullName());
-        assertEquals(1L, employee.getDepartmentId().longValue());
-        assertEquals(LocalDate.of(1999, 2, 28), employee.getBirthday());
-    }
+    employees = Arrays.asList(saveEmployee, correctEmployee);
 
-    @Test
-    public void testSaveEmployee() {
-        LOGGER.debug("test Service: run testSaveEmployee()");
-        when(employeeDAOMock.saveEmployee(emp3)).thenReturn(3L);
-        Long employeeId = employeeService.saveEmployee(emp3);
-        verify(employeeDAOMock).saveEmployee(emp3);
-        assertNotNull(employeeId);
-        assertEquals(3L, employeeId.longValue());
-    }
+    LOGGER.error("execute: setUp()");
+  }
 
-    @Test
-    public void testUpdateEmployee() {
-        LOGGER.debug("test Service: run testUpdateEmployee()");
-        doNothing().when(employeeDAOMock).updateEmployee(emp1);
-        employeeService.updateEmployee(emp1);
-        verify(employeeDAOMock).updateEmployee(emp1);
-    }
+  /**
+   * After test.
+   */
+  @After
+  public void afterTest() {
+    verifyNoMoreInteractions(employeeDaoMock);
+    reset(employeeDaoMock);
+    LOGGER.error("execute: afterTest()");
+  }
 
-    @Test
-    public void testDeleteEmployee() {
-        LOGGER.debug("test Service: run testDeleteEmployee()");
-        doNothing().when(employeeDAOMock).deleteEmployee(2L);
-        employeeService.deleteEmployee(2L);
-        verify(employeeDAOMock).deleteEmployee(2L);
-    }
+  @Test
+  public void testGetEmployeeById() {
+    LOGGER.debug("test Service: run testGetEmployeeById()");
+    when(employeeDaoMock.getEmployeeById(CORRECT_EMPLOYEE_ID)).thenReturn(correctEmployee);
+    Employee newEmployee = employeeService.getEmployeeById(CORRECT_EMPLOYEE_ID);
+    verify(employeeDaoMock).getEmployeeById(CORRECT_EMPLOYEE_ID);
+    assertNotNull(newEmployee);
+    assertEquals(CORRECT_EMPLOYEE_ID, newEmployee.getId().longValue());
+    assertEquals(CORRECT_EMPLOYEE_FULL_NAME, newEmployee.getFullName());
+    assertEquals(CORRECT_EMPLOYEE_DEPARTMENT_ID, newEmployee.getDepartmentId().longValue());
+    assertEquals(CORRECT_EMPLOYEE_DEPARTMENT_NAME, newEmployee.getDepartmentName());
+    assertEquals(CORRECT_EMPLOYEE_SALARY, newEmployee.getSalary());
+    assertEquals(CORRECT_EMPLOYEE_BIRTHDAY, newEmployee.getBirthday());
+  }
 
-    @Test
-    public void testGetAllEmployee() {
-        LOGGER.debug("test Service: run testGetAllEmployee()");
-        when(employeeDAOMock.getAllEmployees()).thenReturn(employees);
-        List<Employee> employees = employeeService.getAllEmployees();
-        verify(employeeDAOMock).getAllEmployees();
-        assertNotNull(employees);
-        assertEquals(2, employees.size());
-    }
+  @Test
+  public void testSaveEmployee() {
+    LOGGER.debug("test Service: run testSaveEmployee()");
+    when(employeeDaoMock.saveEmployee(saveEmployee)).thenReturn(NEW_EMPLOYEE_ID);
+    Long employeeId = employeeService.saveEmployee(saveEmployee);
+    verify(employeeDaoMock).saveEmployee(saveEmployee);
+    assertNotNull(employeeId);
+    assertEquals(NEW_EMPLOYEE_ID, employeeId.longValue());
+  }
 
-    @Test
-    public void testGetEmployeeByDateOfBirthday() {
-        LOGGER.debug("test Service: run testGetEmployeeByDateOfBirthday()");
-        LocalDate date = LocalDate.of(1999, 2, 28);
-        when(employeeDAOMock.getEmployeeByDateOfBirthday(date))
-                .thenReturn(Collections.singletonList(emp1));
-        List<Employee> employees = employeeService.getEmployeeByDateOfBirthday(date);
-        verify(employeeDAOMock).getEmployeeByDateOfBirthday(date);
-        assertNotNull(employees);
-        assertEquals(1, employees.size());
-        assertEquals(emp1.getFullName(), employees.get(0).getFullName());
-    }
+  @Test
+  public void testUpdateEmployee() {
+    LOGGER.debug("test Service: run testUpdateEmployee()");
+    doNothing().when(employeeDaoMock).updateEmployee(correctEmployee);
+    employeeService.updateEmployee(correctEmployee);
+    verify(employeeDaoMock).updateEmployee(correctEmployee);
+  }
 
-    @Test
-    public void testGetEmployeeBetweenDatesOfBirthday() {
-        LOGGER.debug("test Service: run testGetEmployeeBetweenDatesOfBirthday()");
-        LocalDate dateFrom = LocalDate.of(1999, 2, 28);
-        LocalDate dateTo = LocalDate.of(2000, 12, 5);
-        when(employeeDAOMock.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo))
-                .thenReturn(employees);
-        List<Employee> employees = employeeService
-                .getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
-        verify(employeeDAOMock).getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
-        assertNotNull(employees);
-        assertEquals(2, employees.size());
-        assertEquals(emp1.getFullName(), employees.get(0).getFullName());
-        assertEquals(emp2.getFullName(), employees.get(1).getFullName());
-    }
-    @Test(expected = OperationFailedException.class)
-    public void testGetEmployeeByIdException() {
-        LOGGER.debug("test Service: run testGetEmployeeByIdException()");
-        when(employeeDAOMock.getEmployeeById(-1L)).thenReturn(emp1);
-        Employee employee = employeeService.getEmployeeById(-1L);
-        verifyZeroInteractions(employeeDAOMock.getEmployeeById(1L));
-    }
+  @Test
+  public void testDeleteEmployee() {
+    LOGGER.debug("test Service: run testDeleteEmployee()");
+    doNothing().when(employeeDaoMock).deleteEmployee(CORRECT_EMPLOYEE_ID);
+    employeeService.deleteEmployee(CORRECT_EMPLOYEE_ID);
+    verify(employeeDaoMock).deleteEmployee(CORRECT_EMPLOYEE_ID);
+  }
+
+  @Test
+  public void testGetAllEmployee() {
+    LOGGER.debug("test Service: run testGetAllEmployee()");
+    when(employeeDaoMock.getAllEmployees()).thenReturn(employees);
+    List<Employee> employees = employeeService.getAllEmployees();
+    verify(employeeDaoMock).getAllEmployees();
+    assertNotNull(employees);
+    assertEquals(CORRECT_AMOUNT_EMPLOYEES, employees.size());
+  }
+
+  @Test
+  public void testGetEmployeeByDateOfBirthday() {
+    LOGGER.debug("test Service: run testGetEmployeeByDateOfBirthday()");
+    when(employeeDaoMock.getEmployeeByDateOfBirthday(DATE))
+        .thenReturn(Collections.singletonList(correctEmployee));
+    List<Employee> employees = employeeService.getEmployeeByDateOfBirthday(DATE);
+    assertNotNull(employees);
+    verify(employeeDaoMock).getEmployeeByDateOfBirthday(DATE);
+  }
+
+  @Test
+  public void testGetEmployeeBetweenDatesOfBirthday() {
+    LOGGER.debug("test Service: run testGetEmployeeBetweenDatesOfBirthday()");
+    when(employeeDaoMock.getEmployeeBetweenDatesOfBirthday(DATE_FROM, DATE_TO))
+        .thenReturn(employees);
+    List<Employee> employees = employeeService
+        .getEmployeeBetweenDatesOfBirthday(DATE_FROM, DATE_TO);
+    verify(employeeDaoMock).getEmployeeBetweenDatesOfBirthday(DATE_FROM, DATE_TO);
+    assertNotNull(employees);
+    assertEquals(CORRECT_AMOUNT_EMPLOYEES, employees.size());
+  }
+
+  @Test(expected = OperationFailedException.class)
+  public void testGetEmployeeByIdException() {
+    LOGGER.debug("test Service: run testGetEmployeeByIdException()");
+    when(employeeDaoMock.getEmployeeById(INCORRECT_EMPLOYEE_ID))
+        .thenThrow(OperationFailedException.class);
+    Employee employee = employeeService.getEmployeeById(INCORRECT_EMPLOYEE_ID);
+    assertNull(employee);
+    verifyZeroInteractions(employeeDaoMock.getEmployeeById(CORRECT_EMPLOYEE_ID));
+  }
 
 }
 

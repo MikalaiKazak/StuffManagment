@@ -1,64 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+<beans xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+  xmlns:mvc="http://www.springframework.org/schema/mvc"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.springframework.org/schema/beans"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-    <context:component-scan base-package="com.nikolay.rest"/>
+  <context:component-scan base-package="com.nikolay.rest"/>
 
-    <mvc:annotation-driven/>
+  <mvc:annotation-driven/>
 
-    <context:property-placeholder
-            location="classpath*:/sql.properties,
-                      classpath*:/database.properties"/>
+  <context:property-placeholder
+    location="classpath*:/sql.properties,
+              classpath*:/messages.properties,
+              classpath*:/database.properties"/>
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${jdbc.driverClassName}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-    </bean>
+  <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+    <property name="driverClassName" value="${jdbc.driverClassName}"/>
+    <property name="url" value="${jdbc.url}"/>
+    <property name="username" value="${jdbc.username}"/>
+    <property name="password" value="${jdbc.password}"/>
+  </bean>
 
-    <jdbc:initialize-database>
-        <jdbc:script location="classpath*:/db/create_table.sql"/>
-    </jdbc:initialize-database>
+  <jdbc:initialize-database>
+    <jdbc:script location="classpath*:/db/create_table.sql"/>
+  </jdbc:initialize-database>
 
-    <bean id="departmentDAO" class="com.nikolay.dao.DepartmentDAOImpl">
-        <constructor-arg ref="dataSource"/>
-    </bean>
+  <bean class="com.nikolay.dao.DepartmentDaoImpl" id="departmentDao">
+    <constructor-arg ref="dataSource"/>
+  </bean>
 
-    <bean id="employeeDAO" class="com.nikolay.dao.EmployeeDAOImpl">
-        <constructor-arg ref="dataSource"/>
-    </bean>
+  <bean class="com.nikolay.dao.EmployeeDaoImpl" id="employeeDao">
+    <constructor-arg ref="dataSource"/>
+  </bean>
 
-    <bean id="departmentService" class="com.nikolay.service.impl.DepartmentServiceImpl">
-        <property name="departmentDAO" ref="departmentDAO"/>
-    </bean>
+  <bean class="com.nikolay.service.impl.DepartmentServiceImpl" id="departmentService">
+    <property name="departmentDao" ref="departmentDao"/>
+  </bean>
 
-    <bean id="employeeService" class="com.nikolay.service.impl.EmployeeServiceImpl">
-        <property name="employeeDAO" ref="employeeDAO"/>
-    </bean>
+  <bean class="com.nikolay.service.impl.EmployeeServiceImpl" id="employeeService">
+    <property name="employeeDao" ref="employeeDao"/>
+  </bean>
 
+  <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+    <property name="messageConverters">
+      <list>
+        <ref bean="jsonConverter"/>
+      </list>
+    </property>
+  </bean>
 
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-        <property name="messageConverters">
-            <list>
-                <ref bean="jsonConverter"/>
-            </list>
-        </property>
-    </bean>
-
-    <bean id="jsonConverter"
-      class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-        <property name="supportedMediaTypes" value="application/json"/>
-        <property name="prettyPrint" value="true"/>
-        <property name="objectMapper" ref="objectMapper"/>
-    </bean>
+  <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"
+    id="jsonConverter">
+    <property name="supportedMediaTypes" value="application/json"/>
+    <property name="prettyPrint" value="true"/>
+    <property name="objectMapper" ref="objectMapper"/>
+  </bean>
 
 </beans>

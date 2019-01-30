@@ -14,6 +14,7 @@
 
   <context:property-placeholder ignore-resource-not-found="true"
       location="classpath*:/url.properties,
+                classpath*:/messages.properties,
                 classpath*:/url-${profile}.properties"/>
 
 
@@ -44,13 +45,12 @@
     <constructor-arg name="restTemplate" ref="restTemplate"/>
   </bean>
 
-
   <bean id="departmentService" class="com.nikolay.service.impl.DepartmentServiceImpl">
-    <property name="departmentDAO" ref="departmentRestDao"/>
+    <property name="departmentDao" ref="departmentRestDao"/>
   </bean>
 
   <bean id="employeeService" class="com.nikolay.service.impl.EmployeeServiceImpl">
-    <property name="employeeDAO" ref="employeeRestDao"/>
+    <property name="employeeDao" ref="employeeRestDao"/>
   </bean>
 
   <bean class="com.nikolay.webapp.validate.EmployeeValidator" id="employeeValidator"/>

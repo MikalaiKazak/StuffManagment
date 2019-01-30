@@ -1,40 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+<beans xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.springframework.org/schema/beans"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/jdbc
        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.nikolay.dao"/>
+  <context:component-scan base-package="com.nikolay.dao"/>
 
-    <context:property-placeholder
-            location="classpath*:/sql.properties,
+  <context:property-placeholder
+    location="classpath*:/sql.properties,
                       classpath*:/test-database.properties"/>
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${jdbc.driverClassName}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-    </bean>
+  <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+    <property name="driverClassName" value="${jdbc.driverClassName}"/>
+    <property name="url" value="${jdbc.url}"/>
+    <property name="username" value="${jdbc.username}"/>
+    <property name="password" value="${jdbc.password}"/>
+  </bean>
 
-    <jdbc:initialize-database>
-        <jdbc:script location="classpath*:/db/create_table.sql"/>
-        <jdbc:script location="classpath*:/db/init_table.sql"/>
-    </jdbc:initialize-database>
+  <jdbc:initialize-database>
+    <jdbc:script location="classpath*:/db/create_table.sql"/>
+    <jdbc:script location="classpath*:/db/init_table.sql"/>
+  </jdbc:initialize-database>
 
-    <bean id="departmentDAO" class="com.nikolay.dao.DepartmentDAOImpl">
-        <constructor-arg ref="dataSource"/>
-    </bean>
+  <bean class="com.nikolay.dao.mapper.DepartmentMapper" id="departmentMapper"/>
 
-    <bean id="employeeDAO" class="com.nikolay.dao.EmployeeDAOImpl">
-        <constructor-arg ref="dataSource"/>
-    </bean>
+  <bean class="com.nikolay.dao.mapper.EmployeeMapper" id="employeeMapper"/>
+
+  <bean class="com.nikolay.dao.DepartmentDaoImpl" id="departmentDao">
+    <constructor-arg ref="dataSource"/>
+  </bean>
+
+  <bean class="com.nikolay.dao.EmployeeDaoImpl" id="employeeDao">
+    <constructor-arg ref="dataSource"/>
+  </bean>
 
 </beans>
 
