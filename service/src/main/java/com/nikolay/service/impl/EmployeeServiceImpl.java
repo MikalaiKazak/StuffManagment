@@ -32,13 +32,13 @@ public class EmployeeServiceImpl implements EmployeeService {
   @Value("${employeeService.incorrectDepartmentId}")
   private String incorrectDepartmentId;
 
-  @Value("${employeeService.incorrectId}")
+  @Value("${employeeService.incorrectFullName}")
   private String incorrectFullName;
 
-  @Value("${employeeService.incorrectId}")
+  @Value("${employeeService.incorrectBirthday}")
   private String incorrectBirthday;
 
-  @Value("${employeeService.incorrectId}")
+  @Value("${employeeService.incorrectSalary}")
   private String incorrectSalary;
 
   private EmployeeDao employeeDao;

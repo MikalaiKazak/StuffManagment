@@ -44,9 +44,10 @@ public class TestDepartmentService {
 
   @Autowired
   private DepartmentDao departmentDaoMock;
+  
   @Autowired
-
   private DepartmentService departmentService;
+
   private Department saveDepartment;
   private Department correctDepartment;
   private List<Department> departments;

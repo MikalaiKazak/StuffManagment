@@ -24,11 +24,8 @@ public class DepartmentServiceImpl implements DepartmentService {
   @Value("${departmentService.incorrectId}")
   private String incorrectId;
 
-  @Value("${departmentService.incorrectId}")
+  @Value("${departmentService.incorrectDepartment}")
   private String incorrectDepartment;
-
-  @Value("${departmentService.incorrectId}")
-  private String incorrectDepartmentName;
 
   private DepartmentDao departmentDao;
 
