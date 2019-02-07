@@ -10,6 +10,10 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -71,16 +75,27 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public void updateEmployee(Employee employee) throws ServerDataAccessException {
+  public Boolean updateEmployee(Employee employee) throws ServerDataAccessException {
     LOGGER.debug("updateEmployee(employee): employeeId = {}", employee.getId());
     Long employeeId = employee.getId();
     restTemplate.put(urlWithParamUrl, employee, employeeId);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<?> entity = new HttpEntity<>(employee, headers);
+    ResponseEntity<Boolean> response = restTemplate
+        .exchange(urlWithParamUrl, HttpMethod.PUT, entity, Boolean.class, employeeId);
+    return response.getBody();
   }
 
   @Override
-  public void deleteEmployee(Long employeeId) throws ServerDataAccessException {
+  public Boolean deleteEmployee(Long employeeId) throws ServerDataAccessException {
     LOGGER.debug("deleteEmployee(employeeId): employeeId = {}", employeeId);
-    restTemplate.delete(urlWithParamUrl, employeeId);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<?> entity = new HttpEntity<>(headers);
+    ResponseEntity<Boolean> response = restTemplate
+        .exchange(urlWithParamUrl, HttpMethod.DELETE, entity, Boolean.class, employeeId);
+    return response.getBody();
   }
 
   @Override
@@ -95,9 +110,9 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public List<Employee> getEmployeeByDateOfBirthday(LocalDate date)
+  public List<Employee> getEmployeesByDateOfBirthday(LocalDate date)
       throws ServerDataAccessException {
-    LOGGER.debug("getEmployeeByDateOfBirthday(date): date = {}",
+    LOGGER.debug("getEmployeesByDateOfBirthday(date): date = {}",
         date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
         .queryParam("date", date);
@@ -110,10 +125,10 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public List<Employee> getEmployeeBetweenDatesOfBirthday(LocalDate dateFrom, LocalDate dateTo)
+  public List<Employee> getEmployeesBetweenDatesOfBirthday(LocalDate dateFrom, LocalDate dateTo)
       throws ServerDataAccessException {
     LOGGER.debug(
-        "getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo): dateFrom = {}, dateTo = {}",
+        "getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo): dateFrom = {}, dateTo = {}",
         dateFrom.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
         dateTo.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)

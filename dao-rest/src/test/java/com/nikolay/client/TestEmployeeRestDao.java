@@ -2,7 +2,7 @@ package com.nikolay.client;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.doNothing;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -19,7 +19,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -109,7 +113,7 @@ public class TestEmployeeRestDao {
         .queryParam("date", date);
     when(mockRestTemplate.getForObject(builder.toUriString(), Employee[].class))
         .thenReturn(new Employee[]{emp2});
-    List<Employee> employeeList = employeeRestDao.getEmployeeByDateOfBirthday(date);
+    List<Employee> employeeList = employeeRestDao.getEmployeesByDateOfBirthday(date);
     assertNotNull(employeeList);
     assertEquals(1, employeeList.size());
     verify(mockRestTemplate, times(1)).getForObject(builder.toUriString(), Employee[].class);
@@ -124,7 +128,7 @@ public class TestEmployeeRestDao {
     when(mockRestTemplate.getForObject(builder.toUriString(), Employee[].class))
         .thenReturn(new Employee[]{emp2, emp3});
     List<Employee> employeeList = employeeRestDao
-        .getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
+        .getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo);
     assertNotNull(employeeList);
     assertEquals(2, employeeList.size());
     verify(mockRestTemplate, times(1)).getForObject(builder.toUriString(), Employee[].class);
@@ -133,17 +137,28 @@ public class TestEmployeeRestDao {
   @Test
   public void testDeleteEmployee() {
     LOGGER.debug("test TestEmployeeRestDao: run testDeleteEmployee()");
-    doNothing().when(mockRestTemplate).delete(urlWithParamUrl, 1L);
-    employeeRestDao.deleteEmployee(1L);
-    verify(mockRestTemplate, times(1)).delete(urlWithParamUrl, 1L);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<?> entity = new HttpEntity<>(headers);
+    ResponseEntity<Boolean> responseEntity = new ResponseEntity<>(true, HttpStatus.OK);
+    when(mockRestTemplate.exchange(urlWithParamUrl, HttpMethod.DELETE, entity, Boolean.class, 1L))
+        .thenReturn(responseEntity);
+    assertTrue(employeeRestDao.deleteEmployee(1L));
+    verify(mockRestTemplate)
+        .exchange(urlWithParamUrl, HttpMethod.DELETE, entity, Boolean.class, 1L);
   }
 
   @Test
   public void testUpdateEmployee() {
     LOGGER.debug("test TestEmployeeRestDao: run testUpdateEmployee()");
-    doNothing().when(mockRestTemplate).put(urlWithParamUrl, emp2, 1L);
-    employeeRestDao.updateEmployee(emp2);
-    verify(mockRestTemplate, times(1)).put(urlWithParamUrl, emp2, 1L);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<?> entity = new HttpEntity<>(emp2, headers);
+    ResponseEntity<Boolean> responseEntity = new ResponseEntity<>(true, HttpStatus.OK);
+    when(mockRestTemplate.exchange(urlWithParamUrl, HttpMethod.PUT, entity, Boolean.class, 1L))
+        .thenReturn(responseEntity);
+    assertTrue(employeeRestDao.updateEmployee(emp2));
+    verify(mockRestTemplate).exchange(urlWithParamUrl, HttpMethod.PUT, entity, Boolean.class, 1L);
   }
 
 }

@@ -1,7 +1,6 @@
 package com.nikolay.webapp.controller;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -200,7 +199,7 @@ public class TestEmployeeController {
   @Test
   public void testPostUpdateEmployee() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testPostUpdateDepartment()");
-    doNothing().when(mockEmployeeService).updateEmployee(any(Employee.class));
+    when(mockEmployeeService.updateEmployee(any(Employee.class))).thenReturn(true);
     mockMvc.perform(post("/employee/2/edit")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
@@ -224,7 +223,7 @@ public class TestEmployeeController {
   @Test
   public void testRemoveEmployee() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testRemoveEmployee()");
-    doNothing().when(mockEmployeeService).deleteEmployee(1L);
+    when(mockEmployeeService.deleteEmployee(1L)).thenReturn(true);
     mockMvc.perform(
         get("/employee/1/delete")
             .accept(MediaType.APPLICATION_JSON))
@@ -243,7 +242,7 @@ public class TestEmployeeController {
   public void testGetEmployeeByDateOfBirthday() throws Exception {
     LOGGER.debug("test TestEmployeeRestController: run testGetEmployeeByDateOfBirthday()");
     LocalDate date = LocalDate.of(1999, 2, 28);
-    when(mockEmployeeService.getEmployeeByDateOfBirthday(date))
+    when(mockEmployeeService.getEmployeesByDateOfBirthday(date))
         .thenReturn(Collections.singletonList(emp1));
     mockMvc.perform(
         get("/employees/?date={date}", date)
@@ -252,7 +251,7 @@ public class TestEmployeeController {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(view().name("employeeFilter"));
-    verify(mockEmployeeService).getEmployeeByDateOfBirthday(date);
+    verify(mockEmployeeService).getEmployeesByDateOfBirthday(date);
   }
 
   /**
@@ -265,7 +264,7 @@ public class TestEmployeeController {
     LOGGER.debug("test TestEmployeeRestController: run testGetEmployeeBetweenDatesOfBirthday()");
     LocalDate dateFrom = LocalDate.of(1999, 2, 28);
     LocalDate dateTo = LocalDate.of(2000, 12, 5);
-    when(mockEmployeeService.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo))
+    when(mockEmployeeService.getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo))
         .thenReturn(employees);
     mockMvc.perform(
         get("/employees/?dateFrom={dateFrom}&dateTo={dateTo}", dateFrom, dateTo)
@@ -274,7 +273,7 @@ public class TestEmployeeController {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(view().name("employeeFilter"));
-    verify(mockEmployeeService).getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
+    verify(mockEmployeeService).getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo);
   }
 
 }

@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyLong;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -44,7 +43,7 @@ public class TestDepartmentService {
 
   @Autowired
   private DepartmentDao departmentDaoMock;
-  
+
   @Autowired
   private DepartmentService departmentService;
 
@@ -126,7 +125,7 @@ public class TestDepartmentService {
   @Test
   public void testUpdateDepartment() {
     LOGGER.debug("test Service: run testUpdateDepartment()");
-    doNothing().when(departmentDaoMock).updateDepartment(correctDepartment);
+    when(departmentDaoMock.updateDepartment(correctDepartment)).thenReturn(true);
     departmentService.updateDepartment(correctDepartment);
     verify(departmentDaoMock).updateDepartment(correctDepartment);
   }
@@ -134,7 +133,7 @@ public class TestDepartmentService {
   @Test
   public void testDeleteDepartment() {
     LOGGER.debug("test Service: run testDeleteDepartment()");
-    doNothing().when(departmentDaoMock).deleteDepartment(anyLong());
+    when(departmentDaoMock.deleteDepartment(anyLong())).thenReturn(true);
     departmentService.deleteDepartment(anyLong());
     departmentService.deleteDepartment(anyLong());
     verify(departmentDaoMock, times(2)).deleteDepartment(anyLong());
@@ -152,7 +151,7 @@ public class TestDepartmentService {
   @Test(expected = OperationFailedException.class)
   public void testUpdateDepartmentException() {
     LOGGER.debug("test Service: run testUpdateDepartmentException()");
-    doNothing().when(departmentDaoMock).updateDepartment(any(Department.class));
+    when(departmentDaoMock.updateDepartment(any(Department.class))).thenReturn(true);
     departmentService.updateDepartment(new Department());
     verifyNoMoreInteractions(departmentDaoMock);
   }

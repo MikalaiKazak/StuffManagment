@@ -3,7 +3,6 @@ package com.nikolay.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -123,7 +122,7 @@ public class TestEmployeeService {
   @Test
   public void testUpdateEmployee() {
     LOGGER.debug("test Service: run testUpdateEmployee()");
-    doNothing().when(employeeDaoMock).updateEmployee(correctEmployee);
+    when(employeeDaoMock.updateEmployee(correctEmployee)).thenReturn(true);
     employeeService.updateEmployee(correctEmployee);
     verify(employeeDaoMock).updateEmployee(correctEmployee);
   }
@@ -131,7 +130,7 @@ public class TestEmployeeService {
   @Test
   public void testDeleteEmployee() {
     LOGGER.debug("test Service: run testDeleteEmployee()");
-    doNothing().when(employeeDaoMock).deleteEmployee(CORRECT_EMPLOYEE_ID);
+    when(employeeDaoMock.deleteEmployee(CORRECT_EMPLOYEE_ID)).thenReturn(true);
     employeeService.deleteEmployee(CORRECT_EMPLOYEE_ID);
     verify(employeeDaoMock).deleteEmployee(CORRECT_EMPLOYEE_ID);
   }
@@ -149,21 +148,21 @@ public class TestEmployeeService {
   @Test
   public void testGetEmployeeByDateOfBirthday() {
     LOGGER.debug("test Service: run testGetEmployeeByDateOfBirthday()");
-    when(employeeDaoMock.getEmployeeByDateOfBirthday(DATE))
+    when(employeeDaoMock.getEmployeesByDateOfBirthday(DATE))
         .thenReturn(Collections.singletonList(correctEmployee));
-    List<Employee> employees = employeeService.getEmployeeByDateOfBirthday(DATE);
+    List<Employee> employees = employeeService.getEmployeesByDateOfBirthday(DATE);
     assertNotNull(employees);
-    verify(employeeDaoMock).getEmployeeByDateOfBirthday(DATE);
+    verify(employeeDaoMock).getEmployeesByDateOfBirthday(DATE);
   }
 
   @Test
   public void testGetEmployeeBetweenDatesOfBirthday() {
     LOGGER.debug("test Service: run testGetEmployeeBetweenDatesOfBirthday()");
-    when(employeeDaoMock.getEmployeeBetweenDatesOfBirthday(DATE_FROM, DATE_TO))
+    when(employeeDaoMock.getEmployeesBetweenDatesOfBirthday(DATE_FROM, DATE_TO))
         .thenReturn(employees);
     List<Employee> employees = employeeService
-        .getEmployeeBetweenDatesOfBirthday(DATE_FROM, DATE_TO);
-    verify(employeeDaoMock).getEmployeeBetweenDatesOfBirthday(DATE_FROM, DATE_TO);
+        .getEmployeesBetweenDatesOfBirthday(DATE_FROM, DATE_TO);
+    verify(employeeDaoMock).getEmployeesBetweenDatesOfBirthday(DATE_FROM, DATE_TO);
     assertNotNull(employees);
     assertEquals(CORRECT_AMOUNT_EMPLOYEES, employees.size());
   }
@@ -177,6 +176,5 @@ public class TestEmployeeService {
     assertNull(employee);
     verifyZeroInteractions(employeeDaoMock.getEmployeeById(CORRECT_EMPLOYEE_ID));
   }
-
 }
 

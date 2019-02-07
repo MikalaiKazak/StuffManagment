@@ -25,9 +25,14 @@ public class DepartmentValidator implements Validator {
   }
 
   @Override
-  public void validate(Object o, Errors errors) {
+  public void validate(Object object, Errors errors) {
     LOGGER.debug("DepartmentValidator: validate()");
     ValidationUtils
         .rejectIfEmptyOrWhitespace(errors, "departmentName", "department.name.empty");
+
+    Department department = (Department) object;
+    if (department.getDepartmentName().length() > 100) {
+      errors.rejectValue("departmentName", "department.name.limitLength");
+    }
   }
 }

@@ -1,7 +1,6 @@
 package com.nikolay.webapp.controller;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -189,7 +188,7 @@ public class TestDepartmentController {
   @Test
   public void testPostUpdateDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testPostUpdateDepartment()");
-    doNothing().when(mockDepartmentService).updateDepartment(any(Department.class));
+    when(mockDepartmentService.updateDepartment(any(Department.class))).thenReturn(true);
     mockMvc.perform(post("/department/14/edit")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
@@ -210,7 +209,7 @@ public class TestDepartmentController {
   @Test
   public void testRemoveDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testRemoveDepartment()");
-    doNothing().when(mockDepartmentService).deleteDepartment(1L);
+    when(mockDepartmentService.deleteDepartment(1L)).thenReturn(true);
     mockMvc.perform(
         get("/department/1/delete")
             .accept(MediaType.APPLICATION_JSON))

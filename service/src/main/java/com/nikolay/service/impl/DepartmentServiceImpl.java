@@ -30,6 +30,15 @@ public class DepartmentServiceImpl implements DepartmentService {
   @Value("${departmentService.incorrectDepartmentName}")
   private String incorrectDepartmentName;
 
+  @Value("${departmentService.notUpdated}")
+  private String departmentNotUpdated;
+
+  @Value("${departmentService.notDeleted}")
+  private String departmentNotDeleted;
+
+  @Value("${departmentService.notSaved}")
+  private String departmentNotSave;
+
   private DepartmentDao departmentDao;
 
   /**
@@ -78,22 +87,24 @@ public class DepartmentServiceImpl implements DepartmentService {
   }
 
   @Override
-  public void updateDepartment(Department department) {
+  public Boolean updateDepartment(Department department) {
     LOGGER.debug("updateDepartment(department): departmentId = {}", department.getId());
     checkDepartment(department);
-    if (department.getId() == null) {
-      throw new OperationFailedException(incorrectId);
+    Boolean resultUpdateDepartment = departmentDao.updateDepartment(department);
+    if (!resultUpdateDepartment) {
+      throw new OperationFailedException(departmentNotUpdated);
     }
-    departmentDao.updateDepartment(department);
+    return resultUpdateDepartment;
   }
 
   @Override
-  public void deleteDepartment(Long departmentId) {
+  public Boolean deleteDepartment(Long departmentId) {
     LOGGER.debug("deleteDepartment(id) id = {}", departmentId);
-    if (departmentId == null || departmentId < 0) {
-      throw new OperationFailedException(incorrectId);
+    Boolean resultDeleteDepartment = departmentDao.deleteDepartment(departmentId);
+    if (!resultDeleteDepartment) {
+      throw new OperationFailedException(departmentNotDeleted);
     }
-    departmentDao.deleteDepartment(departmentId);
+    return resultDeleteDepartment;
   }
 
   private void checkDepartment(Department department) throws OperationFailedException {

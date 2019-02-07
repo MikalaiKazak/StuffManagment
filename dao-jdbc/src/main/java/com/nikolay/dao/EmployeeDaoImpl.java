@@ -1,5 +1,7 @@
 package com.nikolay.dao;
 
+import static com.nikolay.dao.mapper.EmployeeMapper.EMPLOYEE_ID;
+
 import com.nikolay.dao.mapper.EmployeeMapper;
 import com.nikolay.model.Employee;
 import java.time.LocalDate;
@@ -84,7 +86,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public Employee getEmployeeById(Long employeeId) {
+  public Employee getEmployeeById(final Long employeeId) {
     LOGGER.debug("getEmployeeById(employeeId): employeeId = {}", employeeId);
     SqlParameterSource namedParameters = new MapSqlParameterSource(parameterEmployeeId,
         employeeId);
@@ -93,7 +95,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public Long saveEmployee(Employee employee) {
+  public Long saveEmployee(final Employee employee) {
     LOGGER.debug("saveEmployee(employee): employeeName = {}", employee.getFullName());
     KeyHolder keyHolder = new GeneratedKeyHolder();
     MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -101,14 +103,15 @@ public class EmployeeDaoImpl implements EmployeeDao {
     namedParameters.addValue(parameterFullName, employee.getFullName());
     namedParameters.addValue(parameterEmployeeBirthday, employee.getBirthday().toString());
     namedParameters.addValue(parameterEmployeeSalary, employee.getSalary());
-    this.namedParameterJdbcTemplate.update(addEmployee, namedParameters, keyHolder);
+    this.namedParameterJdbcTemplate
+        .update(addEmployee, namedParameters, keyHolder, new String[]{EMPLOYEE_ID});
     Long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
     LOGGER.debug("saveEmployee(employee): id = {}", id);
     return id;
   }
 
   @Override
-  public void updateEmployee(Employee employee) {
+  public Boolean updateEmployee(final Employee employee) {
     LOGGER.debug("updateEmployee(employee): employeeId = {}", employee.getId());
     MapSqlParameterSource namedParameters = new MapSqlParameterSource();
     namedParameters.addValue(parameterEmployeeId, employee.getId());
@@ -116,15 +119,15 @@ public class EmployeeDaoImpl implements EmployeeDao {
     namedParameters.addValue(parameterFullName, employee.getFullName());
     namedParameters.addValue(parameterEmployeeBirthday, employee.getBirthday().toString());
     namedParameters.addValue(parameterEmployeeSalary, employee.getSalary());
-    this.namedParameterJdbcTemplate.update(updateEmployee, namedParameters);
+    return this.namedParameterJdbcTemplate.update(updateEmployee, namedParameters) == 1;
   }
 
   @Override
-  public void deleteEmployee(Long employeeId) {
+  public Boolean deleteEmployee(final Long employeeId) {
     LOGGER.debug("deleteEmployee(employeeId): id = {}", employeeId);
     SqlParameterSource namedParameters = new MapSqlParameterSource(parameterEmployeeId,
         employeeId);
-    this.namedParameterJdbcTemplate.update(deleteEmployee, namedParameters);
+    return this.namedParameterJdbcTemplate.update(deleteEmployee, namedParameters) == 1;
   }
 
   @Override
@@ -134,7 +137,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public List<Employee> getEmployeeByDateOfBirthday(LocalDate date) {
+  public List<Employee> getEmployeesByDateOfBirthday(final LocalDate date) {
     LOGGER.debug("getEmployeeByDateOfBirthday(date): date = {}",
         date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     SqlParameterSource namedParameters = new MapSqlParameterSource(parameterEmployeeBirthday,
@@ -144,7 +147,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public List<Employee> getEmployeeBetweenDatesOfBirthday(LocalDate dateFrom, LocalDate dateTo) {
+  public List<Employee> getEmployeesBetweenDatesOfBirthday(final LocalDate dateFrom,
+      final LocalDate dateTo) {
     LOGGER.debug(
         "getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo): dateFrom = {}, dateTo = {}",
         dateFrom.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),

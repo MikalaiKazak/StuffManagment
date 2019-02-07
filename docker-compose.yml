@@ -5,22 +5,22 @@ services:
     image: tomcat:9-jre8
     container_name: rest-server
     volumes:
-      - ./rest/target/rest.war:/usr/local/tomcat/webapps/rest.war
-      - rest-logs:/usr/local/tomcat/logs
+    - ./rest/target/rest.war:/usr/local/tomcat/webapps/rest.war
+    - rest-logs:/usr/local/tomcat/logs
     ports:
-      - "8081:8080"
+    - "8081:8080"
   rest-client:
     image: tomcat:9-jre8
     container_name: rest-client
     environment:
-      - "JAVA_OPTS=-Dprofile=docker"
+    - "JAVA_OPTS=-Dprofile=docker"
     volumes:
-       - ./webapp/target/webapp.war:/usr/local/tomcat/webapps/webapp.war
-       - webapp-logs:/usr/local/tomcat/logs
+    - ./webapp/target/webapp.war:/usr/local/tomcat/webapps/webapp.war
+    - webapp-logs:/usr/local/tomcat/logs
     ports:
-      - "8082:8080"
+    - "8082:8080"
     depends_on:
-      - "rest-server"
+    - "rest-server"
 
 volumes:
   webapp-logs:

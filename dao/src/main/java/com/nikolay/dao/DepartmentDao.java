@@ -4,7 +4,11 @@ import com.nikolay.model.Department;
 import java.util.List;
 
 /**
- * The interface Department dao.
+ * This interface defines the various operations to be performed on a Department object.
+ *
+ * @author Mikalai Kazak
+ * @version 1.0
+ * @see Department
  */
 public interface DepartmentDao {
 
@@ -16,12 +20,12 @@ public interface DepartmentDao {
   List<Department> getAllDepartments();
 
   /**
-   * Gets department by id.
+   * Gets the department using department identifier.
    *
    * @param departmentId the department id
    * @return the department by id
    */
-  Department getDepartmentById(Long departmentId);
+  Department getDepartmentById(final Long departmentId);
 
   /**
    * Gets department by name.
@@ -29,7 +33,7 @@ public interface DepartmentDao {
    * @param departmentName the department name
    * @return the department by name
    */
-  Department getDepartmentByName(String departmentName);
+  Department getDepartmentByName(final String departmentName);
 
   /**
    * Save department long.
@@ -37,19 +41,21 @@ public interface DepartmentDao {
    * @param department the department
    * @return the long
    */
-  Long saveDepartment(Department department);
+  Long saveDepartment(final Department department);
 
   /**
    * Update department.
    *
    * @param department the department
+   * @return the boolean
    */
-  void updateDepartment(Department department);
+  Boolean updateDepartment(final Department department);
 
   /**
    * Delete department.
    *
    * @param departmentId the department id
+   * @return the boolean
    */
-  void deleteDepartment(Long departmentId);
+  Boolean deleteDepartment(final Long departmentId);
 }

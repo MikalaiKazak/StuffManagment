@@ -5,39 +5,45 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * The interface Employee dao.
+ * This interface defines the various operations to be performed on a Department object.
+ *
+ * @author Mikalai Kazak
+ * @version 1.0
+ * @see Employee
  */
 public interface EmployeeDao {
 
   /**
-   * Gets employee by id.
+   * Gets the employee object using employee identifier.
    *
    * @param employeeId the employee id
    * @return the employee by id
    */
-  Employee getEmployeeById(Long employeeId);
+  Employee getEmployeeById(final Long employeeId);
 
   /**
-   * Save employee long.
+   * Save employee.
    *
    * @param employee the employee
    * @return the long
    */
-  Long saveEmployee(Employee employee);
+  Long saveEmployee(final Employee employee);
 
   /**
    * Update employee.
    *
    * @param employee the employee
+   * @return the boolean
    */
-  void updateEmployee(Employee employee);
+  Boolean updateEmployee(final Employee employee);
 
   /**
    * Delete employee.
    *
    * @param employeeId the employee id
+   * @return the boolean
    */
-  void deleteEmployee(Long employeeId);
+  Boolean deleteEmployee(final Long employeeId);
 
   /**
    * Gets all employees.
@@ -47,19 +53,20 @@ public interface EmployeeDao {
   List<Employee> getAllEmployees();
 
   /**
-   * Gets employee by date of birthday.
+   * Gets employees by date of birthday.
    *
    * @param date the date
    * @return the employee by date of birthday
    */
-  List<Employee> getEmployeeByDateOfBirthday(LocalDate date);
+  List<Employee> getEmployeesByDateOfBirthday(final LocalDate date);
 
   /**
-   * Gets employee between dates of birthday.
+   * Gets employees between dates of birthday.
    *
    * @param dateFrom the date from
    * @param dateTo the date to
    * @return the employee between dates of birthday
    */
-  List<Employee> getEmployeeBetweenDatesOfBirthday(LocalDate dateFrom, LocalDate dateTo);
+  List<Employee> getEmployeesBetweenDatesOfBirthday(final LocalDate dateFrom,
+      final LocalDate dateTo);
 }

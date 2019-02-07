@@ -82,10 +82,10 @@ public class DepartmentRestController {
    * @return the response entity
    */
   @DeleteMapping("/{id}")
-  public ResponseEntity removeDepartment(@PathVariable("id") Long id) {
+  public ResponseEntity<Boolean> removeDepartment(@PathVariable("id") Long id) {
     LOGGER.debug("removeDepartment(): id = {}", id);
-    departmentService.deleteDepartment(id);
-    return new ResponseEntity(HttpStatus.OK);
+    Boolean resultRemoveDepartment = departmentService.deleteDepartment(id);
+    return new ResponseEntity<>(resultRemoveDepartment, HttpStatus.OK);
   }
 
   /**
@@ -96,15 +96,15 @@ public class DepartmentRestController {
    * @return the response entity
    */
   @PutMapping("/{id}")
-  public ResponseEntity updateDepartment(@PathVariable Long id,
+  public ResponseEntity<Boolean> updateDepartment(@PathVariable Long id,
       @RequestBody Department newDepartment) {
     LOGGER.debug("updateDepartment(): id = {}, newDepartmentName = {}", id,
         newDepartment.getDepartmentName());
     Department department = departmentService.getDepartmentById(id);
     department.setDepartmentName(newDepartment.getDepartmentName());
     department.setAverageSalary(newDepartment.getAverageSalary());
-    departmentService.updateDepartment(department);
-    return new ResponseEntity(HttpStatus.ACCEPTED);
+    Boolean resultUpdateDepartment = departmentService.updateDepartment(department);
+    return new ResponseEntity<>(resultUpdateDepartment, HttpStatus.ACCEPTED);
   }
 
 }

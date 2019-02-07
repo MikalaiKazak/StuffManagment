@@ -41,6 +41,12 @@ public class EmployeeServiceImpl implements EmployeeService {
   @Value("${employeeService.incorrectSalary}")
   private String incorrectSalary;
 
+  @Value("${employeeService.notUpdated}")
+  private String employeeNotUpdated;
+
+  @Value("${employeeService.notDeleted}")
+  private String employeeNotDeleted;
+
   private EmployeeDao employeeDao;
 
   /**
@@ -73,23 +79,24 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  public void updateEmployee(Employee employee) {
+  public Boolean updateEmployee(Employee employee) {
     LOGGER.debug("updateEmployee(employee): employeeId = {}", employee.getId());
     checkEmployee(employee);
-    if (employee.getId() == null) {
-      throw new OperationFailedException(incorrectId);
+    Boolean resultUpdateEmployee = employeeDao.updateEmployee(employee);
+    if (!resultUpdateEmployee) {
+      throw new OperationFailedException(employeeNotUpdated);
     }
-    employeeDao.updateEmployee(employee);
+    return resultUpdateEmployee;
   }
 
   @Override
-  public void deleteEmployee(Long employeeId) {
+  public Boolean deleteEmployee(Long employeeId) {
     LOGGER.debug("deleteEmployee(employeeId): employeeId = {}", employeeId);
-    if (employeeId == null || employeeId < 0) {
-      throw new OperationFailedException(incorrectId);
+    Boolean resultDeleteEmployee = employeeDao.deleteEmployee(employeeId);
+    if (!resultDeleteEmployee) {
+      throw new OperationFailedException(employeeNotDeleted);
     }
-    employeeDao.deleteEmployee(employeeId);
-
+    return resultDeleteEmployee;
   }
 
   @Override
@@ -99,19 +106,19 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  public List<Employee> getEmployeeByDateOfBirthday(LocalDate date) {
+  public List<Employee> getEmployeesByDateOfBirthday(LocalDate date) {
     LOGGER.debug("getEmployeeByDateOfBirthday(date): date = {}",
         date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-    return employeeDao.getEmployeeByDateOfBirthday(date);
+    return employeeDao.getEmployeesByDateOfBirthday(date);
   }
 
   @Override
-  public List<Employee> getEmployeeBetweenDatesOfBirthday(LocalDate dateFrom, LocalDate dateTo) {
+  public List<Employee> getEmployeesBetweenDatesOfBirthday(LocalDate dateFrom, LocalDate dateTo) {
     LOGGER.debug(
         "getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo): dateFrom = {}, dateTo = {}",
         dateFrom.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
         dateTo.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-    return employeeDao.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
+    return employeeDao.getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo);
   }
 
   private void checkEmployee(Employee employee) throws OperationFailedException {

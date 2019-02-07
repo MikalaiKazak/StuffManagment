@@ -89,13 +89,13 @@ public class EmployeeController {
     LOGGER.debug("getAllEmployees()");
     List<Employee> employeeList;
     if (dateFrom != null && dateTo != null) {
-      employeeList = employeeRestService.getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
+      employeeList = employeeRestService.getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo);
       model.addAttribute("message", "List of employees born between "
           + dateFrom.toString() + " and " + dateTo.toString());
       model.addAttribute("employeeList", employeeList);
       return "employeeFilter";
     } else if (date != null) {
-      employeeList = employeeRestService.getEmployeeByDateOfBirthday(date);
+      employeeList = employeeRestService.getEmployeesByDateOfBirthday(date);
       model.addAttribute("message", "List of employees born: " + date.toString());
       model.addAttribute("employeeList", employeeList);
       return "employeeFilter";

@@ -3,7 +3,6 @@ package com.nikolay.rest;
 import static com.nikolay.rest.config.JacksonConverter.createJacksonMessageConverter;
 import static com.nikolay.rest.config.JacksonConverter.createObjectMapperWithJacksonConverter;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -49,16 +48,16 @@ public class TestDepartmentRestController {
   private DepartmentRestController departmentRestController;
 
   private MockMvc mockMvc;
-  private Department dep1;
-  private Department dep2;
+  private Department saveDepartment;
+  private Department correctDepartment;
   private List<Department> departments;
 
   @Before
   public void setUp() {
     LOGGER.error("execute: beforeTest()");
-    dep1 = new Department("New Department", BigDecimal.valueOf(500));
-    dep2 = new Department(14L, "Services", BigDecimal.valueOf(3249));
-    departments = Arrays.asList(dep1, dep2);
+    saveDepartment = new Department("New Department", BigDecimal.valueOf(500));
+    correctDepartment = new Department(14L, "Services", BigDecimal.valueOf(3249));
+    departments = Arrays.asList(saveDepartment, correctDepartment);
     mockMvc = standaloneSetup(departmentRestController)
         .setMessageConverters(createJacksonMessageConverter())
         .build();
@@ -74,14 +73,14 @@ public class TestDepartmentRestController {
   @Test
   public void testGetDepartmentById() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testGetDepartmentById()");
-    when(mockDepartmentService.getDepartmentById(14L)).thenReturn(dep2);
+    when(mockDepartmentService.getDepartmentById(14L)).thenReturn(correctDepartment);
     ObjectMapper mapper = createObjectMapperWithJacksonConverter();
     mockMvc.perform(
         get("/department/14")
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isFound())
-        .andExpect(content().string(mapper.writeValueAsString(dep2)));
+        .andExpect(content().string(mapper.writeValueAsString(correctDepartment)));
     verify(mockDepartmentService).getDepartmentById(14L);
   }
 
@@ -89,10 +88,12 @@ public class TestDepartmentRestController {
   public void testGetAllDepartments() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testGetAllDepartments()");
     when(mockDepartmentService.getAllDepartments()).thenReturn(departments);
+    ObjectMapper mapper = createObjectMapperWithJacksonConverter();
     mockMvc.perform(
         get("/department/")
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
+        .andExpect(content().string(mapper.writeValueAsString(departments)))
         .andExpect(status().isOk());
     verify(mockDepartmentService).getAllDepartments();
   }
@@ -101,7 +102,8 @@ public class TestDepartmentRestController {
   public void testAddDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testAddDepartment()");
     when(mockDepartmentService.saveDepartment(any(Department.class))).thenReturn(1L);
-    String departmentJson = createObjectMapperWithJacksonConverter().writeValueAsString(dep1);
+    String departmentJson = createObjectMapperWithJacksonConverter().writeValueAsString(
+        saveDepartment);
     mockMvc.perform(
         post("/department/")
             .accept(MediaType.APPLICATION_JSON)
@@ -116,12 +118,13 @@ public class TestDepartmentRestController {
   @Test
   public void testRemoveDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testRemoveDepartment()");
-    doNothing().when(mockDepartmentService).deleteDepartment(1L);
+    when(mockDepartmentService.deleteDepartment(1L)).thenReturn(true);
     mockMvc.perform(
         delete("/department/1")
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+        .andExpect(content().string(String.valueOf(true)));
     verify(mockDepartmentService).deleteDepartment(1L);
 
   }
@@ -129,18 +132,20 @@ public class TestDepartmentRestController {
   @Test
   public void testUpdateDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testUpdateDepartment()");
-    when((mockDepartmentService.getDepartmentById(14L))).thenReturn(dep2);
-    doNothing().when(mockDepartmentService).updateDepartment(dep2);
-    String departmentJson = createObjectMapperWithJacksonConverter().writeValueAsString(dep1);
+    when((mockDepartmentService.getDepartmentById(14L))).thenReturn(correctDepartment);
+    when(mockDepartmentService.updateDepartment(correctDepartment)).thenReturn(true);
+    String departmentJson = createObjectMapperWithJacksonConverter().writeValueAsString(
+        saveDepartment);
     mockMvc.perform(
         put("/department/14")
             .accept(MediaType.APPLICATION_JSON)
             .content(departmentJson)
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
+        .andExpect(content().string(String.valueOf(true)))
         .andExpect(status().isAccepted());
     verify(mockDepartmentService).getDepartmentById(14L);
-    verify(mockDepartmentService).updateDepartment(dep2);
+    verify(mockDepartmentService).updateDepartment(correctDepartment);
   }
 
 }

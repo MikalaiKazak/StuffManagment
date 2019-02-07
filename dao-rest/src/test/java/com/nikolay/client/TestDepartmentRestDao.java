@@ -2,7 +2,7 @@ package com.nikolay.client;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.doNothing;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -18,7 +18,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -98,17 +102,27 @@ public class TestDepartmentRestDao {
   @Test
   public void testDeleteDepartment() {
     LOGGER.debug("test TestDepartmentRestDao: run testDeleteDepartment()");
-    doNothing().when(mockRestTemplate).delete(urlWithIdParam, 1L);
-    departmentRestDao.deleteDepartment(1L);
-    verify(mockRestTemplate, times(1)).delete(urlWithIdParam, 1L);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<?> entity = new HttpEntity<>(headers);
+    ResponseEntity<Boolean> responseEntity = new ResponseEntity<>(true, HttpStatus.OK);
+    when(mockRestTemplate.exchange(urlWithIdParam, HttpMethod.DELETE, entity, Boolean.class, 1L))
+        .thenReturn(responseEntity);
+    assertTrue(departmentRestDao.deleteDepartment(1L));
+    verify(mockRestTemplate).exchange(urlWithIdParam, HttpMethod.DELETE, entity, Boolean.class, 1L);
   }
 
   @Test
   public void testUpdateDepartment() {
     LOGGER.debug("test TestDepartmentRestDao: run testUpdateDepartment()");
-    doNothing().when(mockRestTemplate).put(urlWithIdParam, dep2, 1L);
-    departmentRestDao.updateDepartment(dep2);
-    verify(mockRestTemplate, times(1)).put(urlWithIdParam, dep2, 1L);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<?> entity = new HttpEntity<>(dep2, headers);
+    ResponseEntity<Boolean> responseEntity = new ResponseEntity<>(true, HttpStatus.OK);
+    when(mockRestTemplate.exchange(urlWithIdParam, HttpMethod.PUT, entity, Boolean.class, 1L))
+        .thenReturn(responseEntity);
+    assertTrue(departmentRestDao.updateDepartment(dep2));
+    verify(mockRestTemplate).exchange(urlWithIdParam, HttpMethod.PUT, entity, Boolean.class, 1L);
   }
 
   @Test

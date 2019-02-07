@@ -1,6 +1,7 @@
 package com.nikolay.service;
 
 import com.nikolay.model.Employee;
+import com.nikolay.service.exception.OperationFailedException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,30 +15,36 @@ public interface EmployeeService {
    *
    * @param employeeId the employee id
    * @return the employee by id
+   * @throws OperationFailedException the operation failed exception
    */
-  Employee getEmployeeById(Long employeeId);
+  Employee getEmployeeById(final Long employeeId) throws OperationFailedException;
 
   /**
    * Save employee long.
    *
    * @param employee the employee
    * @return the long
+   * @throws OperationFailedException the operation failed exception
    */
-  Long saveEmployee(Employee employee);
+  Long saveEmployee(final Employee employee) throws OperationFailedException;
 
   /**
    * Update employee.
    *
    * @param employee the employee
+   * @return the boolean
+   * @throws OperationFailedException the operation failed exception
    */
-  void updateEmployee(Employee employee);
+  Boolean updateEmployee(final Employee employee) throws OperationFailedException;
 
   /**
    * Delete employee.
    *
    * @param employeeId the employee id
+   * @return the boolean
+   * @throws OperationFailedException the operation failed exception
    */
-  void deleteEmployee(Long employeeId);
+  Boolean deleteEmployee(final Long employeeId) throws OperationFailedException;
 
   /**
    * Gets all employees.
@@ -47,19 +54,20 @@ public interface EmployeeService {
   List<Employee> getAllEmployees();
 
   /**
-   * Gets employee by date of birthday.
+   * Gets employees by date of birthday.
    *
    * @param date the date
    * @return the employee by date of birthday
    */
-  List<Employee> getEmployeeByDateOfBirthday(LocalDate date);
+  List<Employee> getEmployeesByDateOfBirthday(final LocalDate date);
 
   /**
-   * Gets employee between dates of birthday.
+   * Gets employees between dates of birthday.
    *
    * @param dateFrom the date from
    * @param dateTo the date to
    * @return the employee between dates of birthday
    */
-  List<Employee> getEmployeeBetweenDatesOfBirthday(LocalDate dateFrom, LocalDate dateTo);
+  List<Employee> getEmployeesBetweenDatesOfBirthday(final LocalDate dateFrom,
+      final LocalDate dateTo);
 }

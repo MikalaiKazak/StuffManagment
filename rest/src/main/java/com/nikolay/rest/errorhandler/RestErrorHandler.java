@@ -2,9 +2,8 @@ package com.nikolay.rest.errorhandler;
 
 import com.nikolay.service.exception.OperationFailedException;
 import java.util.Collections;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -25,11 +25,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestErrorHandler extends ResponseEntityExceptionHandler {
 
   /**
-   * The constant LOGGER.
-   */
-  public static final Logger LOGGER = LogManager.getLogger();
-
-  /**
    * Handle illegal argument exception response entity.
    *
    * @param ex the ex
@@ -37,13 +32,29 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
    * @return the response entity
    */
   @ExceptionHandler({IllegalArgumentException.class})
-  public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex,
+  public final @ResponseBody
+  ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex,
       WebRequest request) {
-    LOGGER.error("handleIllegalArgumentException() message: " + ex.getLocalizedMessage());
-    ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,
-        Collections.singletonList(ex.getMessage()), request.getDescription(true));
-    return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST,
-        request);
+    ApiError exceptionResponse = new ApiError(Collections.singletonList(ex.getMessage()),
+        request.getDescription(true));
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+  }
+
+  /**
+   * Handle data integrity violation exception response entity.
+   *
+   * @param ex the ex
+   * @param request the request
+   * @return the response entity
+   */
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public final @ResponseBody
+  ResponseEntity<ApiError> handleDataIntegrityViolationException(DataIntegrityViolationException ex,
+      WebRequest request) {
+    ApiError exceptionResponse = new ApiError(
+        Collections.singletonList(ex.getMessage()),
+        request.getDescription(false));
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
   }
 
   /**
@@ -53,15 +64,13 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
    * @param request the request
    * @return the response entity
    */
-  @ExceptionHandler({DataAccessException.class})
-  public ResponseEntity<Object> handleDataAccessException(DataAccessException ex,
-      WebRequest request) {
-    LOGGER.error("handleDataAccessException() message: " + ex.getLocalizedMessage());
-    ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,
-        Collections.singletonList(ex.getMessage()), request.getDescription(true));
-    return handleExceptionInternal(ex, apiError, new HttpHeaders(),
-        HttpStatus.BAD_REQUEST,
-        request);
+  @ExceptionHandler(DataAccessException.class)
+  public final @ResponseBody
+  ResponseEntity<Object> handleDataAccessException(DataAccessException ex, WebRequest request) {
+    ApiError exceptionResponse = new ApiError(
+        Collections.singletonList(ex.getMessage()),
+        request.getDescription(true));
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
   }
 
   /**
@@ -72,14 +81,12 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
    * @return the response entity
    */
   @ExceptionHandler({EmptyResultDataAccessException.class})
-  public ResponseEntity<Object> handleEmptyResultDataAccessException(
+  public final @ResponseBody
+  ResponseEntity<Object> handleEmptyResultDataAccessException(
       EmptyResultDataAccessException ex, WebRequest request) {
-    LOGGER.error("handleEmptyResultDataAccessException() message: " + ex.getLocalizedMessage());
-    ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,
-        Collections.singletonList(ex.getMessage()), request.getDescription(true));
-    return handleExceptionInternal(ex, apiError, new HttpHeaders(),
-        HttpStatus.BAD_REQUEST,
-        request);
+    ApiError apiError = new ApiError(Collections.singletonList(ex.getMessage()),
+        request.getDescription(true));
+    return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
   }
 
   /**
@@ -90,13 +97,12 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
    * @return the response entity
    */
   @ExceptionHandler({IllegalStateException.class})
-  public ResponseEntity<Object> handleIllegalStateException(IllegalStateException ex,
+  public final @ResponseBody
+  ResponseEntity<Object> handleIllegalStateException(IllegalStateException ex,
       WebRequest request) {
-    LOGGER.error("handleIllegalStateException() message: " + ex.getLocalizedMessage());
-    ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,
-        Collections.singletonList(ex.getMessage()), request.getDescription(true));
-    return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST,
-        request);
+    ApiError apiError = new ApiError(Collections.singletonList(ex.getMessage()),
+        request.getDescription(true));
+    return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
   }
 
   /**
@@ -107,13 +113,12 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
    * @return the response entity
    */
   @ExceptionHandler({OperationFailedException.class})
-  public ResponseEntity<Object> handleOperationFailedException(OperationFailedException ex,
+  public final @ResponseBody
+  ResponseEntity<Object> handleOperationFailedException(OperationFailedException ex,
       WebRequest request) {
-    LOGGER.error("handleOperationFailedException() message: " + ex.getLocalizedMessage());
-    ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,
-        Collections.singletonList(ex.getMessage()), request.getDescription(true));
-    return handleExceptionInternal(ex, apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST,
-        request);
+    ApiError apiError = new ApiError(Collections.singletonList(ex.getMessage()),
+        request.getDescription(true));
+    return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
   }
 
   /**
@@ -124,32 +129,29 @@ public class RestErrorHandler extends ResponseEntityExceptionHandler {
    * @return the response entity
    */
   @ExceptionHandler({NullPointerException.class})
-  public ResponseEntity<Object> handleNullPointerException(NullPointerException ex,
+  public final @ResponseBody
+  ResponseEntity<Object> handleNullPointerException(NullPointerException ex,
       WebRequest request) {
-    LOGGER.error("handleNullPointerException() message: " + ex.getLocalizedMessage());
-    ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR,
-        Collections.singletonList(ex.getMessage()), request.getDescription(true));
-    return handleExceptionInternal(ex, apiError, new HttpHeaders(),
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        request);
+    ApiError apiError = new ApiError(Collections.singletonList(ex.getMessage()),
+        request.getDescription(true));
+    return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @Override
   protected ResponseEntity<Object> handleNoHandlerFoundException(
       NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-    ApiError apiError = new ApiError(HttpStatus.NOT_FOUND,
-        Collections.singletonList(ex.getMessage()), request.getDescription(true));
-    return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    ApiError apiError = new ApiError(Collections.singletonList(ex.getMessage()),
+        request.getDescription(true));
+    return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
   }
 
   protected ResponseEntity<Object> handleMethodArgumentNotValid(
-      MethodArgumentNotValidException ex,
-      HttpHeaders headers,
-      HttpStatus status,
+      MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status,
       WebRequest request) {
-    ApiError apiError = new ApiError(HttpStatus.NOT_FOUND,
-        Collections.singletonList(ex.getMessage()), ex.getBindingResult().toString());
-    return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    ApiError errorDetails = new ApiError(
+        Collections.singletonList(ex.getMessage()),
+        ex.getBindingResult().toString());
+    return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
   }
 
 }

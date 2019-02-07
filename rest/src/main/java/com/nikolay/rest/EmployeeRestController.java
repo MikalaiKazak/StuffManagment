@@ -61,12 +61,12 @@ public class EmployeeRestController {
           dateFrom.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
           dateTo.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
       List<Employee> employees = employeeService
-          .getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo);
+          .getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo);
       return new ResponseEntity<>(employees, HttpStatus.FOUND);
     } else if (date != null) {
       LOGGER.debug("getAllEmployees(date): date = {}",
           date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-      List<Employee> employees = employeeService.getEmployeeByDateOfBirthday(date);
+      List<Employee> employees = employeeService.getEmployeesByDateOfBirthday(date);
       return new ResponseEntity<>(employees, HttpStatus.FOUND);
     }
     List<Employee> employees = employeeService.getAllEmployees();
@@ -107,10 +107,10 @@ public class EmployeeRestController {
    * @return the response entity
    */
   @DeleteMapping("/{id}")
-  public ResponseEntity removeEmployee(@PathVariable("id") Long id) {
+  public ResponseEntity<Boolean> removeEmployee(@PathVariable("id") Long id) {
     LOGGER.debug("removeEmployee(id): id = {}", id);
-    employeeService.deleteEmployee(id);
-    return new ResponseEntity(HttpStatus.OK);
+    Boolean resultRemoveEmployee = employeeService.deleteEmployee(id);
+    return new ResponseEntity<>(resultRemoveEmployee, HttpStatus.OK);
   }
 
   /**
@@ -121,7 +121,8 @@ public class EmployeeRestController {
    * @return the response entity
    */
   @PutMapping("/{id}")
-  public ResponseEntity updateEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
+  public ResponseEntity<Boolean> updateEmployee(@RequestBody Employee newEmployee,
+      @PathVariable Long id) {
     LOGGER.debug("updateEmployee(id, employee): id = {}, employeeName = {}", id,
         newEmployee.getFullName());
     Employee employee = employeeService.getEmployeeById(id);
@@ -129,7 +130,7 @@ public class EmployeeRestController {
     employee.setFullName(newEmployee.getFullName());
     employee.setBirthday(newEmployee.getBirthday());
     employee.setSalary(newEmployee.getSalary());
-    employeeService.updateEmployee(employee);
-    return new ResponseEntity(HttpStatus.ACCEPTED);
+    Boolean resultUpdateEmployee = employeeService.updateEmployee(employee);
+    return new ResponseEntity<>(resultUpdateEmployee, HttpStatus.ACCEPTED);
   }
 }

@@ -8,6 +8,10 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -95,16 +99,26 @@ public class DepartmentRestDaoImpl implements DepartmentDao {
   }
 
   @Override
-  public void updateDepartment(Department department) throws ServerDataAccessException {
+  public Boolean updateDepartment(Department department) throws ServerDataAccessException {
     LOGGER.debug("updateDepartment(department): departmentId = {}", department.getId());
     Long departmentId = department.getId();
-    restTemplate.put(urlWithIdParam, department, departmentId);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<?> entity = new HttpEntity<>(department, headers);
+    ResponseEntity<Boolean> response = restTemplate
+        .exchange(urlWithIdParam, HttpMethod.PUT, entity, Boolean.class, departmentId);
+    return response.getBody();
   }
 
   @Override
-  public void deleteDepartment(Long departmentId) throws ServerDataAccessException {
+  public Boolean deleteDepartment(Long departmentId) throws ServerDataAccessException {
     LOGGER.debug("deleteDepartment(departmentId): departmentId = {}", departmentId);
-    restTemplate.delete(urlWithIdParam, departmentId);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<?> entity = new HttpEntity<>(headers);
+    ResponseEntity<Boolean> response = restTemplate
+        .exchange(urlWithIdParam, HttpMethod.DELETE, entity, Boolean.class, departmentId);
+    return response.getBody();
   }
 
 }

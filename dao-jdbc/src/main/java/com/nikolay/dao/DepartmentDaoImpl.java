@@ -1,5 +1,7 @@
 package com.nikolay.dao;
 
+import static com.nikolay.dao.mapper.DepartmentMapper.DEPARTMENT_ID;
+
 import com.nikolay.dao.mapper.DepartmentMapper;
 import com.nikolay.model.Department;
 import java.sql.PreparedStatement;
@@ -72,7 +74,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
   }
 
   @Override
-  public Department getDepartmentById(Long departmentId) {
+  public Department getDepartmentById(final Long departmentId) {
     LOGGER.debug("getDepartmentById(id): id = {}", departmentId);
     SqlParameterSource namedParameters = new MapSqlParameterSource(parameterDepartmentId,
         departmentId);
@@ -81,7 +83,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
   }
 
   @Override
-  public Department getDepartmentByName(String departmentName) {
+  public Department getDepartmentByName(final String departmentName) {
     LOGGER.debug("getDepartmentByName(departmentName): departmentName = {}", departmentName);
     SqlParameterSource namedParameters = new MapSqlParameterSource(parameterDepartmentName,
         departmentName);
@@ -90,14 +92,14 @@ public class DepartmentDaoImpl implements DepartmentDao {
   }
 
   @Override
-  public Long saveDepartment(Department department) {
+  public Long saveDepartment(final Department department) {
     LOGGER.debug("saveDepartment(department): departmentName = {}",
         department.getDepartmentName());
     KeyHolder keyHolder = new GeneratedKeyHolder();
     this.namedParameterJdbcTemplate.getJdbcTemplate().update(
         connection -> {
           PreparedStatement ps = connection.prepareStatement(addDepartment,
-              new String[]{parameterDepartmentId});
+              new String[]{DEPARTMENT_ID});
           ps.setString(1, department.getDepartmentName());
           return ps;
         },
@@ -108,22 +110,22 @@ public class DepartmentDaoImpl implements DepartmentDao {
   }
 
   @Override
-  public void updateDepartment(Department department) {
+  public Boolean updateDepartment(final Department department) {
     LOGGER.debug("updateDepartment(department): departmentId = {}", department.getId());
     MapSqlParameterSource namedParameters = new MapSqlParameterSource();
     namedParameters.addValue(parameterDepartmentId, department.getId());
     namedParameters.addValue(parameterDepartmentName, department.getDepartmentName());
-    this.namedParameterJdbcTemplate.update(updateDepartmentById, namedParameters);
+    return this.namedParameterJdbcTemplate.update(updateDepartmentById, namedParameters) == 1;
 
   }
 
   @Override
-  public void deleteDepartment(Long departmentId) {
+  public Boolean deleteDepartment(final Long departmentId) {
     LOGGER.debug("deleteDepartment(id): id = {}", departmentId);
     SqlParameterSource namedParameters = new MapSqlParameterSource(parameterDepartmentId,
         departmentId);
     this.namedParameterJdbcTemplate.update(deleteEmployeeByDepartmentId, namedParameters);
-    this.namedParameterJdbcTemplate.update(deleteDepartmentById, namedParameters);
+    return this.namedParameterJdbcTemplate.update(deleteDepartmentById, namedParameters) == 1;
   }
 
 }

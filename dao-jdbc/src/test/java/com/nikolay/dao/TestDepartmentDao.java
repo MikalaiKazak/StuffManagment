@@ -1,8 +1,10 @@
 package com.nikolay.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import com.nikolay.model.Department;
 import java.math.BigDecimal;
@@ -77,7 +79,7 @@ public class TestDepartmentDao {
   public void testGetDepartmentByName() {
     LOGGER.debug("test DAO: run testGetDepartmentByName()");
     Department newDepartment = departmentDao.getDepartmentByName(CORRECT_DEPARTMENT_NAME);
-    assertNotNull(department);
+    assertNotNull(newDepartment);
     assertEquals(CORRECT_DEPARTMENT_ID, newDepartment.getId().longValue());
     assertEquals(CORRECT_DEPARTMENT_NAME, newDepartment.getDepartmentName());
     assertEquals(CORRECT_DEPARTMENT_AVERAGE_SALARY,
@@ -102,7 +104,7 @@ public class TestDepartmentDao {
     LOGGER.debug("test DAO: run testDeleteDepartment()");
     long sizeBefore = departmentDao.getAllDepartments().size();
     assertEquals(CORRECT_AMOUNT_DEPARTMENTS, sizeBefore);
-    departmentDao.deleteDepartment(CORRECT_DEPARTMENT_ID);
+    assertTrue(departmentDao.deleteDepartment(CORRECT_DEPARTMENT_ID));
     long sizeAfter = departmentDao.getAllDepartments().size();
     assertEquals(sizeBefore - 1, sizeAfter);
   }
@@ -110,9 +112,9 @@ public class TestDepartmentDao {
   @Test
   public void testGetAllDepartment() {
     LOGGER.debug("test DAO: run testGetAllDepartment()");
-    List<Department> newDepartment = departmentDao.getAllDepartments();
-    assertNotNull(newDepartment);
-    assertEquals(CORRECT_AMOUNT_DEPARTMENTS, newDepartment.size());
+    List<Department> departmentList = departmentDao.getAllDepartments();
+    assertNotNull(departmentList);
+    assertEquals(CORRECT_AMOUNT_DEPARTMENTS, departmentList.size());
   }
 
   @Test
@@ -122,7 +124,7 @@ public class TestDepartmentDao {
     assertNotNull(newDepartment);
     assertEquals(CORRECT_DEPARTMENT_ID, newDepartment.getId().longValue());
     newDepartment.setDepartmentName(CHANGED_DEPARTMENT_NAME);
-    departmentDao.updateDepartment(newDepartment);
+    assertTrue(departmentDao.updateDepartment(newDepartment));
     Department changedDepartment = departmentDao.getDepartmentById(CORRECT_DEPARTMENT_ID);
     assertEquals(CORRECT_DEPARTMENT_ID, changedDepartment.getId().longValue());
     assertEquals(CORRECT_DEPARTMENT_AVERAGE_SALARY, changedDepartment.getAverageSalary());
@@ -156,7 +158,7 @@ public class TestDepartmentDao {
   @Test(expected = NullPointerException.class)
   public void negativeTestUpdateNull() {
     LOGGER.debug("test DAO: run negativeTestUpdateNull()");
-    departmentDao.updateDepartment(null);
+    assertFalse(departmentDao.updateDepartment(null));
   }
 
   @Test(expected = DuplicateKeyException.class)
