@@ -52,7 +52,7 @@
           </div>
 
           <div class="form-group">
-            <label class="control-label" for="inputGroupSelect01">Department</label>
+            <label class="control-label" for="inputGroupSelect01">Department select</label>
             <select class="custom-select" id="inputGroupSelect01" th:field="*{departmentId}">
               <option th:each="department : ${departmentList}"
                       th:utext="${department.departmentName}"
@@ -65,7 +65,7 @@
           </div>
 
           <div class="form-group">
-            <label class="control-label" for="fullName">Employee full name:</label>
+            <label class="control-label" for="fullName">Full name:</label>
             <input class="form-input" id="fullName" th:field="*{fullName}" type="text">
             <label class="d-block text-danger" for="fullName" th:errors="*{fullName}"
                    th:if="${#fields.hasErrors('fullName')}">Incorrect date</label>

@@ -90,7 +90,7 @@
           <tr th:each="employee : ${employeeList}">
             <td th:text="${employee.departmentId}"></td>
             <td th:text="${employee.fullName}"></td>
-            <td th:text="${employee.salary}"></td>
+            <td th:text="${employee.salary} + '$'"></td>
             <td class="table-buttons">
               <a class="table-button btn btn-info" role="button"
                  th:href="@{|/employee/${employee.id}|}">Show</a>

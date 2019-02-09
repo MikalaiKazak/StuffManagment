@@ -54,7 +54,7 @@
           <tbody th:remove="all-but-first">
           <tr th:each="department : ${departmentList}">
             <td th:text="${department.departmentName}"></td>
-            <td th:text="${department.averageSalary}"></td>
+            <td th:text="${department.averageSalary} + '$'"></td>
             <td class="table-buttons">
               <a class="table-button btn btn-info" role="button"
                  th:href="@{|/department/${department.id}|}">Show</a>

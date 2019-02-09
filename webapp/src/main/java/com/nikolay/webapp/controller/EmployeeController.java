@@ -62,13 +62,15 @@ public class EmployeeController {
   @InitBinder
   private void initBinder(WebDataBinder binder) {
     LOGGER.debug("initBinder()");
+    binder.setValidator(employeeValidator);
     binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
       @Override
       public void setAsText(String text) throws IllegalArgumentException {
-        setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        if (text != null && text.length() > 0) {
+          setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }
       }
     });
-    binder.setValidator(employeeValidator);
   }
 
   /**

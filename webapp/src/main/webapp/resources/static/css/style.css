@@ -19,8 +19,20 @@ html {
   margin-bottom: 20px;
 }
 
+.table .thead-dark th {
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
 .link-menu {
   margin-top: 30px;
+}
+
+.top-section-header .btn {
+  margin-top: 5px;
+  padding-left: 30px;
+  padding-right: 30px;
+  text-transform: uppercase;
 }
 
 .table-buttons {
@@ -29,6 +41,10 @@ html {
 
 .none {
   display: none;
+}
+
+.btn-info {
+  color: #fff !important;
 }
 
 .filter {
@@ -43,7 +59,22 @@ html {
 
 .form-wrap {
   margin-top: 70px;
+}
+
+.form-wrap .form-group .form-input {
+  display: block;
+  min-width: 100%;
+  width: 400px;
+  min-height: 40px;
+}
+
+.form-wrap .form-group .btn {
+  padding: 10px 50px;
+}
+
+.table .thead-dark th {
   text-align: center;
+  vertical-align: middle;
 }
 
 table.dataTable thead .sorting:after,
@@ -68,6 +99,22 @@ table.dataTable thead .sorting_desc_disabled:before {
     margin-left: 5px;
     display: block;
   }
+
+  .top-section-header .btn {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .form-wrap .form-group .form-input {
+    display: block;
+    width: 100px;
+    min-height: 20px;
+  }
+
+  .form-wrap .form-group .btn {
+    padding: 5px 20px;
+  }
+
 }
 
 

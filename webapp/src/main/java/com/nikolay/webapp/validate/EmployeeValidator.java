@@ -40,6 +40,7 @@ public class EmployeeValidator implements Validator {
 
     LocalDate dateOfBirthday = employee.getBirthday();
     LocalDate today = LocalDate.now();
+
     try {
       Period period = Period.between(dateOfBirthday, today);
 
@@ -59,4 +60,5 @@ public class EmployeeValidator implements Validator {
     }
 
   }
+
 }
