@@ -22,8 +22,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * The type Employee dao.
- *
- * @author Mikalai_Kazak @epam.com 10.12.2018
  */
 @Component
 public class EmployeeDaoImpl implements EmployeeDao {

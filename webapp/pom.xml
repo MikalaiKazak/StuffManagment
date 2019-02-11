@@ -20,6 +20,11 @@
 
     <dependency>
       <groupId>com.nikolay.department-app</groupId>
+      <artifactId>utility</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.nikolay.department-app</groupId>
       <artifactId>service</artifactId>
     </dependency>
 

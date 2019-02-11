@@ -31,6 +31,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = {"classpath*:/test-dao.xml"})
 public class TestEmployeeDao {
 
+  /**
+   * The constant LOGGER.
+   */
   public static final Logger LOGGER = LogManager.getLogger();
 
   private static final long CORRECT_AMOUNT_EMPLOYEES = 13L;
@@ -40,7 +43,7 @@ public class TestEmployeeDao {
   private static final String CORRECT_EMPLOYEE_DEPARTMENT_NAME = "Engineering";
   private static final String CORRECT_EMPLOYEE_FULL_NAME = "Clem Hudspith";
   private static final LocalDate CORRECT_EMPLOYEE_BIRTHDAY = LocalDate.of(1982, 4, 2);
-  private static final BigDecimal CORRECT_EMPLOYEE_SALARY = BigDecimal.valueOf(810);
+  private static final BigDecimal CORRECT_EMPLOYEE_SALARY = BigDecimal.valueOf(810).setScale(2);
 
   private static final long NEW_EMPLOYEE_DEPARTMENT_ID = 2L;
   private static final String NEW_EMPLOYEE_DEPARTMENT_NAME = "DWBI";
@@ -66,16 +69,25 @@ public class TestEmployeeDao {
   @Autowired
   private EmployeeDao employeeDao;
 
+  /**
+   * Before test.
+   */
   @Before
   public void beforeTest() {
     LOGGER.error("execute: beforeTest()");
   }
 
+  /**
+   * After test.
+   */
   @After
   public void afterTest() {
     LOGGER.error("execute: afterTest()");
   }
 
+  /**
+   * Test get employee by id.
+   */
   @Test
   public void testGetEmployeeById() {
     LOGGER.debug("test DAO: run testGetEmployeeById()");
@@ -89,6 +101,9 @@ public class TestEmployeeDao {
     assertEquals(CORRECT_EMPLOYEE_SALARY, newEmployee.getSalary());
   }
 
+  /**
+   * Test get employee by birthday.
+   */
   @Test
   public void testGetEmployeeByBirthday() {
     LOGGER.debug("test DAO: run testGetEmployeeByBirthday()");
@@ -105,6 +120,9 @@ public class TestEmployeeDao {
     assertEquals(CORRECT_EMPLOYEE_SALARY, newEmployee.getSalary());
   }
 
+  /**
+   * Test get employee between dates of birthday.
+   */
   @Test
   public void testGetEmployeeBetweenDatesOfBirthday() {
     LOGGER.debug("test DAO: run testGetEmployeeBetweenDatesOfBirthday()");
@@ -114,6 +132,9 @@ public class TestEmployeeDao {
     assertEquals(3, employeeList.size());
   }
 
+  /**
+   * Test get all employee.
+   */
   @Test
   public void testGetAllEmployee() {
     LOGGER.debug("test DAO: run testGetAllEmployee()");
@@ -122,6 +143,9 @@ public class TestEmployeeDao {
     assertEquals(CORRECT_AMOUNT_EMPLOYEES, employees.size());
   }
 
+  /**
+   * Test delete employee.
+   */
   @Test
   public void testDeleteEmployee() {
     LOGGER.debug("test DAO: run testDeleteEmployee()");
@@ -131,6 +155,9 @@ public class TestEmployeeDao {
     assertEquals(sizeBefore - 1, sizeAfter);
   }
 
+  /**
+   * Test save employee.
+   */
   @Test
   public void testSaveEmployee() {
     LOGGER.debug("test DAO: run testSaveEmployee()");
@@ -147,6 +174,9 @@ public class TestEmployeeDao {
     assertEquals(NEW_EMPLOYEE_SALARY, employee.getSalary());
   }
 
+  /**
+   * Test save employee with float salary.
+   */
   @Test
   public void testSaveEmployeeWithFloatSalary() {
     LOGGER.debug("test DAO: run testSaveEmployeeWithFloatSalary()");
@@ -162,6 +192,9 @@ public class TestEmployeeDao {
     assertEquals(2L, newEmployee.getDepartmentId().longValue());
   }
 
+  /**
+   * Test update employee.
+   */
   @Test
   public void testUpdateEmployee() {
     LOGGER.debug("test DAO: run testUpdateEmployee()");
@@ -177,42 +210,63 @@ public class TestEmployeeDao {
     assertEquals(NEW_EMPLOYEE_SALARY, changedEmployee.getSalary().stripTrailingZeros());
   }
 
+  /**
+   * Negative test get employee by id.
+   */
   @Test(expected = EmptyResultDataAccessException.class)
   public void negativeTestGetEmployeeById() {
     LOGGER.debug("test DAO: run negativeTestGetEmployeeById()");
     assertNull(employeeDao.getEmployeeById(null));
   }
 
+  /**
+   * Negative test get employee by birthday.
+   */
   @Test(expected = NullPointerException.class)
   public void negativeTestGetEmployeeByBirthday() {
     LOGGER.debug("test DAO: run negativeTestGetEmployeeByBirthday()");
     assertNull(employeeDao.getEmployeesByDateOfBirthday(null));
   }
 
+  /**
+   * Negative test get employee between dates of birthday.
+   */
   @Test(expected = NullPointerException.class)
   public void negativeTestGetEmployeeBetweenDatesOfBirthday() {
     LOGGER.debug("test DAO: run negativeTestGetEmployeeBetweenDatesOfBirthday()");
     assertNull(employeeDao.getEmployeesBetweenDatesOfBirthday(null, null));
   }
 
+  /**
+   * Negative test get employee by incorrect id.
+   */
   @Test(expected = EmptyResultDataAccessException.class)
   public void negativeTestGetEmployeeByIncorrectId() {
     LOGGER.debug("test DAO: run negativeTestGetEmployeeByIncorrectId()");
     assertNull(employeeDao.getEmployeeById(INCORRECT_EMPLOYEE_ID));
   }
 
+  /**
+   * Negative test save null.
+   */
   @Test(expected = NullPointerException.class)
   public void negativeTestSaveNull() {
     LOGGER.debug("test DAO: run negativeTestSaveNull()");
     assertNull(employeeDao.saveEmployee(null));
   }
 
+  /**
+   * Negative test update null.
+   */
   @Test(expected = NullPointerException.class)
   public void negativeTestUpdateNull() {
     LOGGER.debug("test DAO: run negativeTestUpdateNull()");
     assertFalse(employeeDao.updateEmployee(null));
   }
 
+  /**
+   * Negative test save incorrect employee.
+   */
   @Test(expected = DataIntegrityViolationException.class)
   public void negativeTestSaveIncorrectEmployee() {
     LOGGER.debug("test DAO: run negativeTestSaveIncorrectEmployee()");

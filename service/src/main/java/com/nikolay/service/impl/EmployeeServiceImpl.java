@@ -11,11 +11,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The type Employee service.
  */
 @Service
+@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
 
   /**
@@ -85,8 +87,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     Boolean resultUpdateEmployee = employeeDao.updateEmployee(employee);
     if (!resultUpdateEmployee) {
       throw new OperationFailedException(employeeNotUpdated);
+    } else {
+      return resultUpdateEmployee;
     }
-    return resultUpdateEmployee;
   }
 
   @Override
@@ -95,8 +98,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     Boolean resultDeleteEmployee = employeeDao.deleteEmployee(employeeId);
     if (!resultDeleteEmployee) {
       throw new OperationFailedException(employeeNotDeleted);
+    } else {
+      return resultDeleteEmployee;
     }
-    return resultDeleteEmployee;
   }
 
   @Override

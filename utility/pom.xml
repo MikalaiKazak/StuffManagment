@@ -9,63 +9,25 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>service</artifactId>
-  <packaging>jar</packaging>
+  <artifactId>utility</artifactId>
 
   <dependencies>
-
     <dependency>
       <groupId>com.nikolay.department-app</groupId>
       <artifactId>model</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>com.nikolay.department-app</groupId>
-      <artifactId>dao</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.nikolay.department-app</groupId>
-      <artifactId>dao-jdbc</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.nikolay.department-app</groupId>
-      <artifactId>service-api</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
     </dependency>
-
-    <!--log4j-->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-
   </dependencies>
-
 
 </project>

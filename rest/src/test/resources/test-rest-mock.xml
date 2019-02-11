@@ -15,4 +15,8 @@
     <constructor-arg value="com.nikolay.service.EmployeeService"/>
   </bean>
 
+  <bean class="com.nikolay.utility.validate.EmployeeValidator" id="employeeValidator"/>
+
+  <bean class="com.nikolay.utility.validate.DepartmentValidator" id="departmentValidator"/>
+
 </beans>

@@ -92,10 +92,10 @@
 <script th:inline="javascript">
   /*<![CDATA[*/
   var message = [[${message}]];
-  if(message) {
+  if (message) {
     $.notify({
       message: message
-    },{
+    }, {
       type: 'success'
     });
   }

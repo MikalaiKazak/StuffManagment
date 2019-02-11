@@ -1,7 +1,6 @@
 package com.nikolay.dao.mapper;
 
 import com.nikolay.model.Employee;
-import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,16 +11,34 @@ import org.springframework.jdbc.core.RowMapper;
  */
 public class EmployeeMapper implements RowMapper<Employee> {
 
+  /**
+   * The constant EMPLOYEE_ID.
+   */
   public static final String EMPLOYEE_ID = "EMPLOYEE_ID";
 
+  /**
+   * The constant EMPLOYEE_DEPARTMENT_ID.
+   */
   public static final String EMPLOYEE_DEPARTMENT_ID = "EMPLOYEE_DEPARTMENT_ID";
 
+  /**
+   * The constant DEPARTMENT_NAME.
+   */
   public static final String DEPARTMENT_NAME = "DEPARTMENT_NAME";
 
+  /**
+   * The constant EMPLOYEE_FULL_NAME.
+   */
   public static final String EMPLOYEE_FULL_NAME = "EMPLOYEE_FULL_NAME";
 
+  /**
+   * The constant EMPLOYEE_DATE_OF_BIRTHDAY.
+   */
   public static final String EMPLOYEE_DATE_OF_BIRTHDAY = "EMPLOYEE_DATE_OF_BIRTHDAY";
 
+  /**
+   * The constant EMPLOYEE_SALARY.
+   */
   public static final String EMPLOYEE_SALARY = "EMPLOYEE_SALARY";
 
   @Override
@@ -32,8 +49,7 @@ public class EmployeeMapper implements RowMapper<Employee> {
     employee.setDepartmentName(rs.getString(DEPARTMENT_NAME));
     employee.setFullName(rs.getString(EMPLOYEE_FULL_NAME));
 
-    BigDecimal salary = rs.getBigDecimal(EMPLOYEE_SALARY);
-    employee.setSalary(new BigDecimal(salary.stripTrailingZeros().toPlainString()));
+    employee.setSalary(rs.getBigDecimal(EMPLOYEE_SALARY));
 
     Date date = rs.getDate(EMPLOYEE_DATE_OF_BIRTHDAY);
     if (date != null) {

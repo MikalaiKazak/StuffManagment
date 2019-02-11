@@ -27,10 +27,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+/**
+ * The type Test employee service.
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-service-mock.xml"})
 public class TestEmployeeService {
 
+  /**
+   * The constant LOGGER.
+   */
   public static final Logger LOGGER = LogManager.getLogger();
   private static final long CORRECT_AMOUNT_EMPLOYEES = 2L;
   private static final long CORRECT_EMPLOYEE_ID = 1L;
@@ -50,9 +56,15 @@ public class TestEmployeeService {
   private static final LocalDate DATE_TO = LocalDate.of(1991, 7, 20);
   private static final Long INCORRECT_EMPLOYEE_ID = -20L;
 
+  /**
+   * The Employee dao mock.
+   */
   @Autowired
   EmployeeDao employeeDaoMock;
 
+  /**
+   * The Employee service.
+   */
   @Autowired
   EmployeeService employeeService;
 
@@ -60,6 +72,9 @@ public class TestEmployeeService {
   private Employee saveEmployee;
   private List<Employee> employees;
 
+  /**
+   * Sets up.
+   */
   @Before
   public void setUp() {
     saveEmployee = new Employee(
@@ -94,6 +109,9 @@ public class TestEmployeeService {
     LOGGER.error("execute: afterTest()");
   }
 
+  /**
+   * Test get employee by id.
+   */
   @Test
   public void testGetEmployeeById() {
     LOGGER.debug("test Service: run testGetEmployeeById()");
@@ -109,6 +127,9 @@ public class TestEmployeeService {
     assertEquals(CORRECT_EMPLOYEE_BIRTHDAY, newEmployee.getBirthday());
   }
 
+  /**
+   * Test save employee.
+   */
   @Test
   public void testSaveEmployee() {
     LOGGER.debug("test Service: run testSaveEmployee()");
@@ -119,6 +140,9 @@ public class TestEmployeeService {
     assertEquals(NEW_EMPLOYEE_ID, employeeId.longValue());
   }
 
+  /**
+   * Test update employee.
+   */
   @Test
   public void testUpdateEmployee() {
     LOGGER.debug("test Service: run testUpdateEmployee()");
@@ -127,6 +151,9 @@ public class TestEmployeeService {
     verify(employeeDaoMock).updateEmployee(correctEmployee);
   }
 
+  /**
+   * Test delete employee.
+   */
   @Test
   public void testDeleteEmployee() {
     LOGGER.debug("test Service: run testDeleteEmployee()");
@@ -135,6 +162,9 @@ public class TestEmployeeService {
     verify(employeeDaoMock).deleteEmployee(CORRECT_EMPLOYEE_ID);
   }
 
+  /**
+   * Test get all employee.
+   */
   @Test
   public void testGetAllEmployee() {
     LOGGER.debug("test Service: run testGetAllEmployee()");
@@ -145,6 +175,9 @@ public class TestEmployeeService {
     assertEquals(CORRECT_AMOUNT_EMPLOYEES, employees.size());
   }
 
+  /**
+   * Test get employee by date of birthday.
+   */
   @Test
   public void testGetEmployeeByDateOfBirthday() {
     LOGGER.debug("test Service: run testGetEmployeeByDateOfBirthday()");
@@ -155,6 +188,9 @@ public class TestEmployeeService {
     verify(employeeDaoMock).getEmployeesByDateOfBirthday(DATE);
   }
 
+  /**
+   * Test get employee between dates of birthday.
+   */
   @Test
   public void testGetEmployeeBetweenDatesOfBirthday() {
     LOGGER.debug("test Service: run testGetEmployeeBetweenDatesOfBirthday()");
@@ -167,6 +203,9 @@ public class TestEmployeeService {
     assertEquals(CORRECT_AMOUNT_EMPLOYEES, employees.size());
   }
 
+  /**
+   * Test get employee by id exception.
+   */
   @Test(expected = OperationFailedException.class)
   public void testGetEmployeeByIdException() {
     LOGGER.debug("test Service: run testGetEmployeeByIdException()");

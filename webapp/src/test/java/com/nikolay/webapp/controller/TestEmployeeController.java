@@ -192,7 +192,7 @@ public class TestEmployeeController {
   }
 
   /**
-   * Test post update department.
+   * Test post update employee.
    *
    * @throws Exception the exception
    */

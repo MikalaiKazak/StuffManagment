@@ -29,7 +29,7 @@ public interface EmployeeService {
   Long saveEmployee(final Employee employee) throws OperationFailedException;
 
   /**
-   * Update employee.
+   * Update employee boolean.
    *
    * @param employee the employee
    * @return the boolean
@@ -38,7 +38,7 @@ public interface EmployeeService {
   Boolean updateEmployee(final Employee employee) throws OperationFailedException;
 
   /**
-   * Delete employee.
+   * Delete employee boolean.
    *
    * @param employeeId the employee id
    * @return the boolean
@@ -57,7 +57,7 @@ public interface EmployeeService {
    * Gets employees by date of birthday.
    *
    * @param date the date
-   * @return the employee by date of birthday
+   * @return the employees by date of birthday
    */
   List<Employee> getEmployeesByDateOfBirthday(final LocalDate date);
 
@@ -66,7 +66,7 @@ public interface EmployeeService {
    *
    * @param dateFrom the date from
    * @param dateTo the date to
-   * @return the employee between dates of birthday
+   * @return the employees between dates of birthday
    */
   List<Employee> getEmployeesBetweenDatesOfBirthday(final LocalDate dateFrom,
       final LocalDate dateTo);

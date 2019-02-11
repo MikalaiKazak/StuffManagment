@@ -20,7 +20,7 @@ public class ErrorController extends RuntimeException {
   public static final Logger LOGGER = LogManager.getLogger();
 
   /**
-   * Exception handler string.
+   * Handler illegal argument exception string.
    *
    * @param ex the ex
    * @param model the model

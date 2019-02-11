@@ -16,6 +16,8 @@
     <module>rest</module>
     <module>dao-rest</module>
     <module>webapp</module>
+    <module>service-api</module>
+    <module>utility</module>
   </modules>
 
   <properties>
@@ -46,6 +48,12 @@
 
       <dependency>
         <groupId>com.nikolay.department-app</groupId>
+        <artifactId>utility</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.nikolay.department-app</groupId>
         <artifactId>dao</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -53,6 +61,12 @@
       <dependency>
         <groupId>com.nikolay.department-app</groupId>
         <artifactId>dao-jdbc</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.nikolay.department-app</groupId>
+        <artifactId>service-api</artifactId>
         <version>${project.version}</version>
       </dependency>
 

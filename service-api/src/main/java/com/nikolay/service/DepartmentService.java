@@ -44,7 +44,7 @@ public interface DepartmentService {
   Long saveDepartment(final Department department) throws OperationFailedException;
 
   /**
-   * Update department.
+   * Update department boolean.
    *
    * @param department the department
    * @return the boolean
@@ -53,7 +53,7 @@ public interface DepartmentService {
   Boolean updateDepartment(final Department department) throws OperationFailedException;
 
   /**
-   * Delete department.
+   * Delete department boolean.
    *
    * @param departmentId the department id
    * @return the boolean

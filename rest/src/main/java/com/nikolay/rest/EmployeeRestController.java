@@ -11,8 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Validator;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,26 +32,39 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/employee")
 public class EmployeeRestController {
 
+  /**
+   * The constant LOGGER.
+   */
   public static final Logger LOGGER = LogManager.getLogger();
 
-  /**
-   * The Employee service.
-   */
   private EmployeeService employeeService;
+
+  private Validator employeeValidator;
 
   /**
    * Instantiates a new Employee rest controller.
    *
    * @param employeeService the employee service
+   * @param employeeValidator the employee validator
    */
   @Autowired
-  public EmployeeRestController(EmployeeService employeeService) {
+  public EmployeeRestController(EmployeeService employeeService, Validator employeeValidator) {
+    this.employeeValidator = employeeValidator;
     this.employeeService = employeeService;
+  }
+
+  @InitBinder
+  private void initBinder(WebDataBinder binder) {
+    LOGGER.debug("initBinder()");
+    binder.setValidator(employeeValidator);
   }
 
   /**
    * Gets all employees.
    *
+   * @param date the date
+   * @param dateFrom the date from
+   * @param dateTo the date to
    * @return the all employees
    */
   @GetMapping("/")
@@ -93,7 +110,7 @@ public class EmployeeRestController {
    * @return the response entity
    */
   @PostMapping("/")
-  public ResponseEntity<Long> addEmployee(@RequestBody Employee employee) {
+  public ResponseEntity<Long> addEmployee(@RequestBody @Validated Employee employee) {
     LOGGER.debug("addEmployee(employee): employeeName = {}", employee.getFullName());
     Long id = employeeService.saveEmployee(employee);
     employee.setId(id);
@@ -121,7 +138,7 @@ public class EmployeeRestController {
    * @return the response entity
    */
   @PutMapping("/{id}")
-  public ResponseEntity<Boolean> updateEmployee(@RequestBody Employee newEmployee,
+  public ResponseEntity<Boolean> updateEmployee(@RequestBody @Validated Employee newEmployee,
       @PathVariable Long id) {
     LOGGER.debug("updateEmployee(id, employee): id = {}, employeeName = {}", id,
         newEmployee.getFullName());

@@ -30,7 +30,6 @@
     <property name="errorHandler" ref="customResponseErrorHandler"/>
   </bean>
 
-
   <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"
     id="jsonConverter">
     <property name="supportedMediaTypes" value="application/json"/>
@@ -53,9 +52,9 @@
     <property name="employeeDao" ref="employeeRestDao"/>
   </bean>
 
-  <bean class="com.nikolay.webapp.validate.EmployeeValidator" id="employeeValidator"/>
+  <bean class="com.nikolay.utility.validate.EmployeeValidator" id="employeeValidator"/>
 
-  <bean class="com.nikolay.webapp.validate.DepartmentValidator" id="departmentValidator"/>
+  <bean class="com.nikolay.utility.validate.DepartmentValidator" id="departmentValidator"/>
 
 </beans>
 

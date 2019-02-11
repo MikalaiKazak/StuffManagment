@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
 
-    <title>Error page</title>
+  <title>Error page</title>
 
-    <link href="../../resources/static/css/bootstrap.min.css"
-          rel="stylesheet"
-          th:href="@{/resources/static/css/bootstrap.min.css}">
-    <link href="../../resources/static/css/style.css"
-          rel="stylesheet"
-          th:href="@{/resources/static/css/style.css}">
+  <link href="../../resources/static/css/bootstrap.min.css"
+        rel="stylesheet"
+        th:href="@{/resources/static/css/bootstrap.min.css}">
+  <link href="../../resources/static/css/style.css"
+        rel="stylesheet"
+        th:href="@{/resources/static/css/style.css}">
 
 </head>
 
@@ -20,23 +20,24 @@
 <header th:replace="fragments/header :: header"></header>
 
 <section align="center" class="section">
-    <div class="container">
-        <p>Application has encountered an error.</p>
+  <div class="container">
+    <p>Application has encountered an error.</p>
 
-        <div class="card alert alert-info">
-            <p>
-                <b>Message:
-                </b> <p>The 404 (Not Found) status code indicates that the origin server did
-                not find a current representation for the target resource or is not
-                willing to disclose that one exists.  A 404 status code does not
-                indicate whether this lack of representation is temporary or
-                permanent; the 410 (Gone) status code is preferred over 404 if the
-                origin server knows, presumably through some configurable means, that
-                the condition is likely to be permanent.</p>
-                <span th:text="${Text}"></span>
-            </p>
-        </div>
+    <div class="card alert alert-info">
+      <p>
+        <b>Message:
+        </b>
+      <p>The 404 (Not Found) status code indicates that the origin server did
+        not find a current representation for the target resource or is not
+        willing to disclose that one exists. A 404 status code does not
+        indicate whether this lack of representation is temporary or
+        permanent; the 410 (Gone) status code is preferred over 404 if the
+        origin server knows, presumably through some configurable means, that
+        the condition is likely to be permanent.</p>
+      <span th:text="${Text}"></span>
+      </p>
     </div>
+  </div>
 </section>
 
 

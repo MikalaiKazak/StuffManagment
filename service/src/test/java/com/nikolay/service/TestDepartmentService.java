@@ -28,10 +28,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+/**
+ * The type Test department service.
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-service-mock.xml"})
 public class TestDepartmentService {
 
+  /**
+   * The constant LOGGER.
+   */
   public static final Logger LOGGER = LogManager.getLogger();
   private static final long CORRECT_AMOUNT_DEPARTMENTS = 2L;
   private static final long CORRECT_DEPARTMENT_ID = 1L;
@@ -51,6 +57,9 @@ public class TestDepartmentService {
   private Department correctDepartment;
   private List<Department> departments;
 
+  /**
+   * Sets up.
+   */
   @Before
   public void setUp() {
     LOGGER.error("execute: beforeTest()");
@@ -77,6 +86,9 @@ public class TestDepartmentService {
     LOGGER.error("execute: afterTest()");
   }
 
+  /**
+   * Test get department by id.
+   */
   @Test
   public void testGetDepartmentById() {
     LOGGER.debug("test Service: run testGetDepartmentById()");
@@ -89,6 +101,9 @@ public class TestDepartmentService {
     assertEquals(CORRECT_DEPARTMENT_AVERAGE_SALARY, newDepartment.getAverageSalary());
   }
 
+  /**
+   * Test get department by name.
+   */
   @Test
   public void testGetDepartmentByName() {
     LOGGER.debug("test Service: run testGetDepartmentByName()");
@@ -102,6 +117,9 @@ public class TestDepartmentService {
     assertEquals(CORRECT_DEPARTMENT_AVERAGE_SALARY, newDepartment.getAverageSalary());
   }
 
+  /**
+   * Test get all department.
+   */
   @Test
   public void testGetAllDepartment() {
     LOGGER.debug("test Service: run testGetAllDepartment()");
@@ -112,6 +130,9 @@ public class TestDepartmentService {
     assertEquals(CORRECT_AMOUNT_DEPARTMENTS, departmentList.size());
   }
 
+  /**
+   * Test save department.
+   */
   @Test
   public void testSaveDepartment() {
     LOGGER.debug("test Service: run testSaveDepartment()");
@@ -122,6 +143,9 @@ public class TestDepartmentService {
     assertEquals(NEW_DEPARTMENT_ID, departmentId.longValue());
   }
 
+  /**
+   * Test update department.
+   */
   @Test
   public void testUpdateDepartment() {
     LOGGER.debug("test Service: run testUpdateDepartment()");
@@ -130,6 +154,9 @@ public class TestDepartmentService {
     verify(departmentDaoMock).updateDepartment(correctDepartment);
   }
 
+  /**
+   * Test delete department.
+   */
   @Test
   public void testDeleteDepartment() {
     LOGGER.debug("test Service: run testDeleteDepartment()");
@@ -139,6 +166,9 @@ public class TestDepartmentService {
     verify(departmentDaoMock, times(2)).deleteDepartment(anyLong());
   }
 
+  /**
+   * Test save department exception.
+   */
   @Test(expected = OperationFailedException.class)
   public void testSaveDepartmentException() {
     LOGGER.debug("test Service: run testSaveDepartmentException()");
@@ -148,6 +178,9 @@ public class TestDepartmentService {
     verifyZeroInteractions(departmentDaoMock.saveDepartment(correctDepartment));
   }
 
+  /**
+   * Test update department exception.
+   */
   @Test(expected = OperationFailedException.class)
   public void testUpdateDepartmentException() {
     LOGGER.debug("test Service: run testUpdateDepartmentException()");
@@ -156,6 +189,9 @@ public class TestDepartmentService {
     verifyNoMoreInteractions(departmentDaoMock);
   }
 
+  /**
+   * Test get department by id exception.
+   */
   @Test(expected = OperationFailedException.class)
   public void testGetDepartmentByIdException() {
     LOGGER.debug("test Service: run testGetDepartmentByIdException()");

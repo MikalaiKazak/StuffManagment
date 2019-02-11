@@ -11,10 +11,19 @@ import org.springframework.jdbc.core.RowMapper;
  */
 public class DepartmentMapper implements RowMapper<Department> {
 
+  /**
+   * The constant DEPARTMENT_ID.
+   */
   public static final String DEPARTMENT_ID = "DEPARTMENT_ID";
 
+  /**
+   * The constant DEPARTMENT_NAME.
+   */
   public static final String DEPARTMENT_NAME = "DEPARTMENT_NAME";
 
+  /**
+   * The constant AVG_SALARY.
+   */
   public static final String AVG_SALARY = "AVG_SALARY";
 
   @Override
@@ -27,8 +36,7 @@ public class DepartmentMapper implements RowMapper<Department> {
     if (avgSalary == null) {
       department.setAverageSalary(BigDecimal.ZERO);
     } else {
-      department.setAverageSalary(
-          new BigDecimal(avgSalary.stripTrailingZeros().toPlainString()));
+      department.setAverageSalary(avgSalary);
     }
     return department;
   }

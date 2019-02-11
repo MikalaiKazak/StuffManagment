@@ -38,12 +38,16 @@
         </li>
         <li class="nav-item">
           <a class="nav-link"
-             href="../departments.html" th:classappend="${#request.getServletPath() == '/departments' ? 'active' : ''}" th:href="@{/departments}">Departments
+             href="../departments.html"
+             th:classappend="${#request.getServletPath() == '/departments' ? 'active' : ''}"
+             th:href="@{/departments}">Departments
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link"
-             href="../employees.html" th:classappend="${#request.getServletPath() == '/employees' ? 'active' : ''}" th:href="@{/employees}">Employees <span
+             href="../employees.html"
+             th:classappend="${#request.getServletPath() == '/employees' ? 'active' : ''}"
+             th:href="@{/employees}">Employees <span
               class="sr-only">(current)</a>
         </li>
       </ul>

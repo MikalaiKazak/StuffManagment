@@ -46,8 +46,8 @@ public class EmployeeController {
   /**
    * Instantiates a new Employee controller.
    *
-   * @param employeeRestService the employee rest dao
-   * @param departmentRestService the department rest dao
+   * @param employeeRestService the employee rest service
+   * @param departmentRestService the department rest service
    * @param employeeValidator the employee validator
    */
   @Autowired
@@ -109,11 +109,11 @@ public class EmployeeController {
   }
 
   /**
-   * Gets department page.
+   * Gets employee page.
    *
    * @param id the id
    * @param model the model
-   * @return the department page
+   * @return the employee page
    */
   @GetMapping("/employee/{id}")
   public String getEmployeePage(@PathVariable("id") Long id, Model model) {

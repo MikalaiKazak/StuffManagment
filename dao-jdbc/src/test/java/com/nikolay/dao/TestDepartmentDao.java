@@ -16,7 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -24,24 +23,27 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * The type Test department dao.
- *
- * @author Mikalai Kazak
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-dao.xml"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class TestDepartmentDao {
 
+  /**
+   * The constant LOGGER.
+   */
   public static final Logger LOGGER = LogManager.getLogger();
 
   private static final long CORRECT_AMOUNT_DEPARTMENTS = 14L;
 
   private static final long CORRECT_DEPARTMENT_ID = 1L;
   private static final String CORRECT_DEPARTMENT_NAME = "Accounting";
-  private static final BigDecimal CORRECT_DEPARTMENT_AVERAGE_SALARY = new BigDecimal(2399.5);
+  private static final BigDecimal CORRECT_DEPARTMENT_AVERAGE_SALARY = new BigDecimal(2399.5)
+      .setScale(2);
 
   private static final String NEW_DEPARTMENT_NAME = "DWBI";
-  private static final BigDecimal NEW_DEPARTMENT_AVERAGE_SALARY = new BigDecimal(300.25);
+  private static final BigDecimal NEW_DEPARTMENT_AVERAGE_SALARY = new BigDecimal(300.25)
+      .setScale(2);
 
   private static final String CHANGED_DEPARTMENT_NAME = "Department";
 
@@ -55,16 +57,25 @@ public class TestDepartmentDao {
   @Autowired
   private DepartmentDao departmentDao;
 
+  /**
+   * Before test.
+   */
   @Before
   public void beforeTest() {
     LOGGER.error("execute: beforeTest()");
   }
 
+  /**
+   * After test.
+   */
   @After
   public void afterTest() {
     LOGGER.error("execute: afterTest()");
   }
 
+  /**
+   * Test get department.
+   */
   @Test
   public void testGetDepartment() {
     LOGGER.debug("test Dao: run testGetDepartment()");
@@ -75,6 +86,9 @@ public class TestDepartmentDao {
     assertEquals(CORRECT_DEPARTMENT_AVERAGE_SALARY, newDepartment.getAverageSalary());
   }
 
+  /**
+   * Test get department by name.
+   */
   @Test
   public void testGetDepartmentByName() {
     LOGGER.debug("test DAO: run testGetDepartmentByName()");
@@ -86,6 +100,9 @@ public class TestDepartmentDao {
         newDepartment.getAverageSalary());
   }
 
+  /**
+   * Test save department.
+   */
   @Test
   public void testSaveDepartment() {
     LOGGER.debug("test DAO: run testSaveDepartment()");
@@ -99,6 +116,9 @@ public class TestDepartmentDao {
     assertEquals(department.getDepartmentName(), newDepartment.getDepartmentName());
   }
 
+  /**
+   * Test delete department.
+   */
   @Test
   public void testDeleteDepartment() {
     LOGGER.debug("test DAO: run testDeleteDepartment()");
@@ -109,6 +129,9 @@ public class TestDepartmentDao {
     assertEquals(sizeBefore - 1, sizeAfter);
   }
 
+  /**
+   * Test get all department.
+   */
   @Test
   public void testGetAllDepartment() {
     LOGGER.debug("test DAO: run testGetAllDepartment()");
@@ -117,6 +140,9 @@ public class TestDepartmentDao {
     assertEquals(CORRECT_AMOUNT_DEPARTMENTS, departmentList.size());
   }
 
+  /**
+   * Test update department.
+   */
   @Test
   public void testUpdateDepartment() {
     LOGGER.debug("test DAO: run testUpdateDepartment()");
@@ -131,41 +157,49 @@ public class TestDepartmentDao {
     assertEquals(CHANGED_DEPARTMENT_NAME, changedDepartment.getDepartmentName());
   }
 
+  /**
+   * Negative test get department by id.
+   */
   @Test(expected = EmptyResultDataAccessException.class)
   public void negativeTestGetDepartmentById() {
     LOGGER.debug("test DAO: run negativeTestGetDepartmentById()");
     assertNull(departmentDao.getDepartmentById(null));
   }
 
+  /**
+   * Negative test get department by name.
+   */
   @Test(expected = EmptyResultDataAccessException.class)
   public void negativeTestGetDepartmentByName() {
     LOGGER.debug("test DAO: run negativeTestGetDepartmentByName()");
     assertNull(departmentDao.getDepartmentByName(null));
   }
 
+  /**
+   * Negative test get department by incorrect id.
+   */
   @Test(expected = EmptyResultDataAccessException.class)
   public void negativeTestGetDepartmentByIncorrectId() {
     LOGGER.debug("test DAO: run negativeTestGetDepartmentByIncorrectId()");
     assertNull(departmentDao.getDepartmentById(INCORRECT_DEPARTMENT_ID));
   }
 
+  /**
+   * Negative test save null.
+   */
   @Test(expected = NullPointerException.class)
   public void negativeTestSaveNull() {
     LOGGER.debug("test DAO: run negativeTestSaveNull()");
     assertNull(departmentDao.saveDepartment(null));
   }
 
+  /**
+   * Negative test update null.
+   */
   @Test(expected = NullPointerException.class)
   public void negativeTestUpdateNull() {
     LOGGER.debug("test DAO: run negativeTestUpdateNull()");
     assertFalse(departmentDao.updateDepartment(null));
-  }
-
-  @Test(expected = DuplicateKeyException.class)
-  public void negativeTestSaveExistDepartment() {
-    LOGGER.debug("test DAO: run negativeTestSaveExistDepartment()");
-    Department newDepartment = departmentDao.getDepartmentById(CORRECT_DEPARTMENT_ID);
-    assertNull(departmentDao.saveDepartment(newDepartment));
   }
 
 }

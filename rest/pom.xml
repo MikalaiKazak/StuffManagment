@@ -21,11 +21,15 @@
 
     <dependency>
       <groupId>com.nikolay.department-app</groupId>
-      <artifactId>dao-jdbc</artifactId>
+      <artifactId>utility</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.nikolay.department-app</groupId>
+      <artifactId>service</artifactId>
     </dependency>
 
     <!--log4j-->
-
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
@@ -34,11 +38,6 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.nikolay.department-app</groupId>
-      <artifactId>service</artifactId>
     </dependency>
 
     <dependency>

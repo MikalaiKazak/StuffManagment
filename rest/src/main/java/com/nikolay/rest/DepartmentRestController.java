@@ -8,8 +8,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Validator;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,16 +28,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/department")
 public class DepartmentRestController {
 
-  public static final Logger LOGGER = LogManager.getLogger();
-
   /**
-   * The Department service.
+   * The constant LOGGER.
    */
+  public static final Logger LOGGER = LogManager.getLogger();
+  private final Validator departmentValidator;
   private DepartmentService departmentService;
 
+  /**
+   * Instantiates a new Department rest controller.
+   *
+   * @param departmentService the department service
+   * @param departmentValidator the department validator
+   */
   @Autowired
-  public DepartmentRestController(DepartmentService departmentService) {
+  public DepartmentRestController(DepartmentService departmentService,
+      Validator departmentValidator) {
     this.departmentService = departmentService;
+    this.departmentValidator = departmentValidator;
+  }
+
+  @InitBinder
+  private void initBinder(WebDataBinder binder) {
+    LOGGER.debug("initBinder()");
+    binder.setValidator(departmentValidator);
   }
 
   /**
@@ -68,7 +86,7 @@ public class DepartmentRestController {
    * @return the response entity
    */
   @PostMapping("/")
-  public ResponseEntity<Long> addDepartment(@RequestBody Department department) {
+  public ResponseEntity<Long> addDepartment(@RequestBody @Validated Department department) {
     LOGGER.debug("addDepartment(): departmentName = {}", department.getDepartmentName());
     Long id = departmentService.saveDepartment(department);
     department.setId(id);
@@ -91,13 +109,13 @@ public class DepartmentRestController {
   /**
    * Update department response entity.
    *
-   * @param newDepartment the new department
    * @param id the id
+   * @param newDepartment the new department
    * @return the response entity
    */
   @PutMapping("/{id}")
   public ResponseEntity<Boolean> updateDepartment(@PathVariable Long id,
-      @RequestBody Department newDepartment) {
+      @RequestBody @Validated Department newDepartment) {
     LOGGER.debug("updateDepartment(): id = {}, newDepartmentName = {}", id,
         newDepartment.getDepartmentName());
     Department department = departmentService.getDepartmentById(id);

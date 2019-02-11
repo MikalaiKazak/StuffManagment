@@ -31,6 +31,11 @@
     <jdbc:script location="classpath*:/db/create_table.sql"/>
   </jdbc:initialize-database>
 
+  <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+    id="transactionManager">
+    <property name="dataSource" ref="dataSource"/>
+  </bean>
+
   <bean class="com.nikolay.dao.DepartmentDaoImpl" id="departmentDao">
     <constructor-arg ref="dataSource"/>
   </bean>
@@ -46,6 +51,10 @@
   <bean class="com.nikolay.service.impl.EmployeeServiceImpl" id="employeeService">
     <property name="employeeDao" ref="employeeDao"/>
   </bean>
+
+  <bean class="com.nikolay.utility.validate.EmployeeValidator" id="employeeValidator"/>
+
+  <bean class="com.nikolay.utility.validate.DepartmentValidator" id="departmentValidator"/>
 
   <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
     <property name="messageConverters">

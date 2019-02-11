@@ -63,6 +63,9 @@ public class TestDepartmentRestDao {
     LOGGER.error("execute: beforeTest()");
   }
 
+  /**
+   * Test get department by id.
+   */
   @Test
   public void testGetDepartmentById() {
     LOGGER.debug("test TestDepartmentRestDao: run testGetDepartmentById()");
@@ -75,6 +78,9 @@ public class TestDepartmentRestDao {
         .getForObject(urlWithIdParam, Department.class, 1L);
   }
 
+  /**
+   * Test get department by name.
+   */
   @Test
   public void testGetDepartmentByName() {
     LOGGER.debug("test TestDepartmentRestDao run: testGetDepartmentByName()");
@@ -88,6 +94,9 @@ public class TestDepartmentRestDao {
     verify(mockRestTemplate, times(1)).getForObject(builder.toUriString(), Department.class);
   }
 
+  /**
+   * Test get all department.
+   */
   @Test
   public void testGetAllDepartment() {
     LOGGER.debug("test TestDepartmentRestDao: run testGetAllDepartment()");
@@ -99,6 +108,9 @@ public class TestDepartmentRestDao {
     verify(mockRestTemplate, times(1)).getForObject(url, Department[].class);
   }
 
+  /**
+   * Test delete department.
+   */
   @Test
   public void testDeleteDepartment() {
     LOGGER.debug("test TestDepartmentRestDao: run testDeleteDepartment()");
@@ -112,6 +124,9 @@ public class TestDepartmentRestDao {
     verify(mockRestTemplate).exchange(urlWithIdParam, HttpMethod.DELETE, entity, Boolean.class, 1L);
   }
 
+  /**
+   * Test update department.
+   */
   @Test
   public void testUpdateDepartment() {
     LOGGER.debug("test TestDepartmentRestDao: run testUpdateDepartment()");
@@ -125,6 +140,9 @@ public class TestDepartmentRestDao {
     verify(mockRestTemplate).exchange(urlWithIdParam, HttpMethod.PUT, entity, Boolean.class, 1L);
   }
 
+  /**
+   * Test save department.
+   */
   @Test
   public void testSaveDepartment() {
     LOGGER.debug("test TestDepartmentRestDao: run testSaveDepartment()");

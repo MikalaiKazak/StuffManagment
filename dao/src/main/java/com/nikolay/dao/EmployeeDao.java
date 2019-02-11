@@ -5,16 +5,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * This interface defines the various operations to be performed on a Department object.
- *
- * @author Mikalai Kazak
- * @version 1.0
- * @see Employee
+ * The interface Employee dao.
  */
 public interface EmployeeDao {
 
   /**
-   * Gets the employee object using employee identifier.
+   * Gets employee by id.
    *
    * @param employeeId the employee id
    * @return the employee by id
@@ -22,7 +18,7 @@ public interface EmployeeDao {
   Employee getEmployeeById(final Long employeeId);
 
   /**
-   * Save employee.
+   * Save employee long.
    *
    * @param employee the employee
    * @return the long
@@ -30,7 +26,7 @@ public interface EmployeeDao {
   Long saveEmployee(final Employee employee);
 
   /**
-   * Update employee.
+   * Update employee boolean.
    *
    * @param employee the employee
    * @return the boolean
@@ -38,7 +34,7 @@ public interface EmployeeDao {
   Boolean updateEmployee(final Employee employee);
 
   /**
-   * Delete employee.
+   * Delete employee boolean.
    *
    * @param employeeId the employee id
    * @return the boolean
@@ -56,7 +52,7 @@ public interface EmployeeDao {
    * Gets employees by date of birthday.
    *
    * @param date the date
-   * @return the employee by date of birthday
+   * @return the employees by date of birthday
    */
   List<Employee> getEmployeesByDateOfBirthday(final LocalDate date);
 
@@ -65,7 +61,7 @@ public interface EmployeeDao {
    *
    * @param dateFrom the date from
    * @param dateTo the date to
-   * @return the employee between dates of birthday
+   * @return the employees between dates of birthday
    */
   List<Employee> getEmployeesBetweenDatesOfBirthday(final LocalDate dateFrom,
       final LocalDate dateTo);
