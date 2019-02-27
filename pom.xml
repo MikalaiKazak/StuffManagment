@@ -18,6 +18,7 @@
     <module>webapp</module>
     <module>service-api</module>
     <module>utility</module>
+    <module>functional-test</module>
   </modules>
 
   <properties>
