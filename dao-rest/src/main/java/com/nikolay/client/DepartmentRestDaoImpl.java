@@ -1,10 +1,8 @@
 package com.nikolay.client;
 
-import com.nikolay.client.exception.ServerDataAccessException;
-import com.nikolay.dao.DepartmentDao;
-import com.nikolay.model.Department;
 import java.util.Arrays;
 import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.nikolay.client.exception.ServerDataAccessException;
+import com.nikolay.dao.DepartmentDao;
+import com.nikolay.model.Department;
 
 /**
  * The type Department rest dao.
@@ -102,23 +104,35 @@ public class DepartmentRestDaoImpl implements DepartmentDao {
   public Boolean updateDepartment(Department department) throws ServerDataAccessException {
     LOGGER.debug("updateDepartment(department): departmentId = {}", department.getId());
     Long departmentId = department.getId();
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_JSON);
-    HttpEntity<?> entity = new HttpEntity<>(department, headers);
+    HttpEntity<?> entity = new HttpEntity<>(department, createHeaders());
     ResponseEntity<Boolean> response = restTemplate
         .exchange(urlWithIdParam, HttpMethod.PUT, entity, Boolean.class, departmentId);
-    return response.getBody();
+    Boolean resultOperation = response.getBody();
+    if (resultOperation == null || !resultOperation) {
+      throw new ServerDataAccessException("The employee was not updated");
+    } else {
+      return resultOperation;
+    }
   }
 
   @Override
   public Boolean deleteDepartment(Long departmentId) throws ServerDataAccessException {
     LOGGER.debug("deleteDepartment(departmentId): departmentId = {}", departmentId);
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_JSON);
-    HttpEntity<?> entity = new HttpEntity<>(headers);
+    HttpEntity<?> entity = new HttpEntity<>(createHeaders());
     ResponseEntity<Boolean> response = restTemplate
         .exchange(urlWithIdParam, HttpMethod.DELETE, entity, Boolean.class, departmentId);
-    return response.getBody();
+    Boolean resultOperation = response.getBody();
+    if (resultOperation == null || !resultOperation) {
+      throw new ServerDataAccessException("The employee was not deleted");
+    } else {
+      return resultOperation;
+    }
+  }
+
+  private HttpHeaders createHeaders() {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    return headers;
   }
 
 }

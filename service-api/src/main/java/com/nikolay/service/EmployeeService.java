@@ -1,9 +1,10 @@
 package com.nikolay.service;
 
-import com.nikolay.model.Employee;
-import com.nikolay.service.exception.OperationFailedException;
 import java.time.LocalDate;
 import java.util.List;
+
+import com.nikolay.model.Employee;
+import com.nikolay.service.exception.OperationFailedException;
 
 /**
  * The interface Employee service.

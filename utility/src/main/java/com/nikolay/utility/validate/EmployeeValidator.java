@@ -1,14 +1,16 @@
 package com.nikolay.utility.validate;
 
-import com.nikolay.model.Employee;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
+import com.nikolay.model.Employee;
 
 /**
  * The type Employee validator.

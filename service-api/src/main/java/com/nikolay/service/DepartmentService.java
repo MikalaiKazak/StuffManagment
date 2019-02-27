@@ -1,8 +1,9 @@
 package com.nikolay.service;
 
+import java.util.List;
+
 import com.nikolay.model.Department;
 import com.nikolay.service.exception.OperationFailedException;
-import java.util.List;
 
 /**
  * The interface Department service.

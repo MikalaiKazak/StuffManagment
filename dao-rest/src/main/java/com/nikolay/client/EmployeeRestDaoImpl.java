@@ -1,12 +1,10 @@
 package com.nikolay.client;
 
-import com.nikolay.client.exception.ServerDataAccessException;
-import com.nikolay.dao.EmployeeDao;
-import com.nikolay.model.Employee;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.nikolay.client.exception.ServerDataAccessException;
+import com.nikolay.dao.EmployeeDao;
+import com.nikolay.model.Employee;
 
 /**
  * The type Employee rest dao.
@@ -70,7 +72,6 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
     if (employeeId == null) {
       throw new ServerDataAccessException("The employee was not saved");
     }
-
     return employeeId;
   }
 

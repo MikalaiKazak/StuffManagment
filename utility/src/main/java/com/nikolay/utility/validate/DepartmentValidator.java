@@ -1,11 +1,12 @@
 package com.nikolay.utility.validate;
 
-import com.nikolay.model.Department;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
+import com.nikolay.model.Department;
 
 /**
  * The type Department validator.
@@ -29,7 +30,7 @@ public class DepartmentValidator implements Validator {
         .rejectIfEmptyOrWhitespace(errors, "departmentName", "department.name.empty");
 
     Department department = (Department) object;
-    if (department.getDepartmentName().length() > 100) {
+    if (department.getDepartmentName() != null && department.getDepartmentName().length() > 100) {
       errors.rejectValue("departmentName", "department.name.limitLength");
     }
   }

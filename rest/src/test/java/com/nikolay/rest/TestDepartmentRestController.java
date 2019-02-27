@@ -16,13 +16,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nikolay.model.Department;
-import com.nikolay.service.DepartmentService;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.annotation.Resource;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -35,21 +34,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-/**
- * The type Test department rest controller.
- */
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nikolay.model.Department;
+import com.nikolay.service.DepartmentService;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-rest-mock.xml"})
 public class TestDepartmentRestController {
 
-  /**
-   * The constant LOGGER.
-   */
   public static final Logger LOGGER = LogManager.getLogger();
 
-  /**
-   * The Mock department service.
-   */
   @Autowired
   DepartmentService mockDepartmentService;
 
@@ -61,9 +55,6 @@ public class TestDepartmentRestController {
   private Department correctDepartment;
   private List<Department> departments;
 
-  /**
-   * Sets up.
-   */
   @Before
   public void setUp() {
     LOGGER.error("execute: beforeTest()");
@@ -75,9 +66,6 @@ public class TestDepartmentRestController {
         .build();
   }
 
-  /**
-   * Tear down.
-   */
   @After
   public void tearDown() {
     verifyNoMoreInteractions(mockDepartmentService);
@@ -85,11 +73,6 @@ public class TestDepartmentRestController {
     LOGGER.error("execute: afterTest()");
   }
 
-  /**
-   * Test get department by id.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testGetDepartmentById() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testGetDepartmentById()");
@@ -104,11 +87,6 @@ public class TestDepartmentRestController {
     verify(mockDepartmentService).getDepartmentById(14L);
   }
 
-  /**
-   * Test get all departments.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testGetAllDepartments() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testGetAllDepartments()");
@@ -123,11 +101,6 @@ public class TestDepartmentRestController {
     verify(mockDepartmentService).getAllDepartments();
   }
 
-  /**
-   * Test add department.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testAddDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testAddDepartment()");
@@ -145,11 +118,6 @@ public class TestDepartmentRestController {
     verify(mockDepartmentService).saveDepartment(any(Department.class));
   }
 
-  /**
-   * Test remove department.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testRemoveDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testRemoveDepartment()");
@@ -164,11 +132,6 @@ public class TestDepartmentRestController {
 
   }
 
-  /**
-   * Test update department.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testUpdateDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testUpdateDepartment()");

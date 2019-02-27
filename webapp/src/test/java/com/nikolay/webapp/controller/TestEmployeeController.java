@@ -11,15 +11,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.nikolay.model.Department;
-import com.nikolay.model.Employee;
-import com.nikolay.service.DepartmentService;
-import com.nikolay.service.EmployeeService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -34,16 +31,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-/**
- * The type Test employee controller.
- */
+import com.nikolay.model.Department;
+import com.nikolay.model.Employee;
+import com.nikolay.service.DepartmentService;
+import com.nikolay.service.EmployeeService;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/mock-test-webapp.xml"})
 public class TestEmployeeController {
 
-  /**
-   * The constant LOGGER.
-   */
   public static final Logger LOGGER = LogManager.getLogger();
 
   @Autowired
@@ -62,9 +58,6 @@ public class TestEmployeeController {
 
   private MockMvc mockMvc;
 
-  /**
-   * Sets up.
-   */
   @Before
   public void setUp() {
     LOGGER.error("execute: beforeTest()");
@@ -82,20 +75,12 @@ public class TestEmployeeController {
         .build();
   }
 
-  /**
-   * Tear down.
-   */
   @After
   public void tearDown() {
     reset(mockEmployeeService);
     LOGGER.error("execute: afterTest()");
   }
 
-  /**
-   * Test get employee by id.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testGetEmployeeById() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testGetEmployeeById()");
@@ -112,11 +97,6 @@ public class TestEmployeeController {
     verify(mockEmployeeService).getEmployeeById(2L);
   }
 
-  /**
-   * Test get all employees.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testGetAllEmployees() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testGetAllEmployees()");
@@ -132,11 +112,6 @@ public class TestEmployeeController {
     verify(mockEmployeeService).getAllEmployees();
   }
 
-  /**
-   * Test get add employee.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testGetAddEmployee() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testGetAddEmployee()");
@@ -149,11 +124,6 @@ public class TestEmployeeController {
         .andExpect(model().attributeExists("employee"));
   }
 
-  /**
-   * Test get update employee.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testGetUpdateEmployee() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testGetUpdateEmployee()");
@@ -168,11 +138,6 @@ public class TestEmployeeController {
     verify(mockEmployeeService).getEmployeeById(2L);
   }
 
-  /**
-   * Test post add employee.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testPostAddEmployee() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testPostAddEmployee()");
@@ -191,11 +156,6 @@ public class TestEmployeeController {
     verify(mockEmployeeService).saveEmployee(any(Employee.class));
   }
 
-  /**
-   * Test post update employee.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testPostUpdateEmployee() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testPostUpdateDepartment()");
@@ -215,11 +175,6 @@ public class TestEmployeeController {
   }
 
 
-  /**
-   * Test remove employee.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testRemoveEmployee() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testRemoveEmployee()");
@@ -233,11 +188,6 @@ public class TestEmployeeController {
     verify(mockEmployeeService).deleteEmployee(1L);
   }
 
-  /**
-   * Test get employee by date of birthday.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testGetEmployeeByDateOfBirthday() throws Exception {
     LOGGER.debug("test TestEmployeeRestController: run testGetEmployeeByDateOfBirthday()");
@@ -254,11 +204,6 @@ public class TestEmployeeController {
     verify(mockEmployeeService).getEmployeesByDateOfBirthday(date);
   }
 
-  /**
-   * Test get employee between dates of birthday.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testGetEmployeeBetweenDatesOfBirthday() throws Exception {
     LOGGER.debug("test TestEmployeeRestController: run testGetEmployeeBetweenDatesOfBirthday()");

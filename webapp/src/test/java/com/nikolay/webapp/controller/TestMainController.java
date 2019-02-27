@@ -16,16 +16,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-/**
- * The type Test main controller.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/mock-test-webapp.xml"})
 public class TestMainController {
 
-  /**
-   * The constant LOGGER.
-   */
   public static final Logger LOGGER = LogManager.getLogger();
 
   @Autowired
@@ -33,9 +27,6 @@ public class TestMainController {
 
   private MockMvc mockMvc;
 
-  /**
-   * Sets up.
-   */
   @Before
   public void setUp() {
     LOGGER.debug("execute before test method");
@@ -44,11 +35,6 @@ public class TestMainController {
         .build();
   }
 
-  /**
-   * Default page test.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void defaultPageTest() throws Exception {
     LOGGER.debug("defaultPageTest()");

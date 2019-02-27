@@ -23,6 +23,11 @@
     <property name="password" value="${jdbc.password}"/>
   </bean>
 
+  <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+    id="transactionManager">
+    <property name="dataSource" ref="dataSource"/>
+  </bean>
+
   <jdbc:initialize-database>
     <jdbc:script location="classpath*:/db/create_table.sql"/>
     <jdbc:script location="classpath*:/db/init_table.sql"/>

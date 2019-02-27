@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 import javax.annotation.Resource;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -18,16 +19,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-/**
- * The type Test main rest controller.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-rest-mock.xml"})
 public class TestMainRestController {
 
-  /**
-   * The constant LOGGER.
-   */
   public static final Logger LOGGER = LogManager.getLogger();
 
   @Resource
@@ -35,9 +30,6 @@ public class TestMainRestController {
 
   private MockMvc mockMvc;
 
-  /**
-   * Sets up.
-   */
   @Before
   public void setUp() {
     LOGGER.error("execute: beforeTest()");
@@ -46,19 +38,11 @@ public class TestMainRestController {
         .build();
   }
 
-  /**
-   * After method.
-   */
   @After
   public void afterMethod() {
     LOGGER.error("execute: afterTest()");
   }
 
-  /**
-   * Test main controller.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testMainController() throws Exception {
     LOGGER.debug("test TestMainRestController: run testMainController()");

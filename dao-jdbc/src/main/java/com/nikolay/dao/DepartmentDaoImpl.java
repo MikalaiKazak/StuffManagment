@@ -2,12 +2,11 @@ package com.nikolay.dao;
 
 import static com.nikolay.dao.mapper.DepartmentMapper.DEPARTMENT_ID;
 
-import com.nikolay.dao.mapper.DepartmentMapper;
-import com.nikolay.model.Department;
-import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Objects;
+
 import javax.sql.DataSource;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,9 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+
+import com.nikolay.dao.mapper.DepartmentMapper;
+import com.nikolay.model.Department;
 
 /**
  * The type Department dao.
@@ -76,19 +78,17 @@ public class DepartmentDaoImpl implements DepartmentDao {
   @Override
   public Department getDepartmentById(final Long departmentId) {
     LOGGER.debug("getDepartmentById(id): id = {}", departmentId);
-    SqlParameterSource namedParameters = new MapSqlParameterSource(parameterDepartmentId,
-        departmentId);
     return this.namedParameterJdbcTemplate
-        .queryForObject(getDepartmentById, namedParameters, departmentMapper);
+        .queryForObject(getDepartmentById, new MapSqlParameterSource(parameterDepartmentId,
+            departmentId), departmentMapper);
   }
 
   @Override
   public Department getDepartmentByName(final String departmentName) {
     LOGGER.debug("getDepartmentByName(departmentName): departmentName = {}", departmentName);
-    SqlParameterSource namedParameters = new MapSqlParameterSource(parameterDepartmentName,
-        departmentName);
     return this.namedParameterJdbcTemplate
-        .queryForObject(getDepartmentByName, namedParameters, departmentMapper);
+        .queryForObject(getDepartmentByName, new MapSqlParameterSource(parameterDepartmentName,
+            departmentName), departmentMapper);
   }
 
   @Override
@@ -96,25 +96,18 @@ public class DepartmentDaoImpl implements DepartmentDao {
     LOGGER.debug("saveDepartment(department): departmentName = {}",
         department.getDepartmentName());
     KeyHolder keyHolder = new GeneratedKeyHolder();
-    this.namedParameterJdbcTemplate.getJdbcTemplate().update(
-        connection -> {
-          PreparedStatement ps = connection.prepareStatement(addDepartment,
-              new String[]{DEPARTMENT_ID});
-          ps.setString(1, department.getDepartmentName());
-          return ps;
-        },
-        keyHolder);
-    Long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
-    LOGGER.debug("saveDepartment(department): id = {}", id);
-    return id;
+    this.namedParameterJdbcTemplate
+        .update(addDepartment, new MapSqlParameterSource(parameterDepartmentName,
+            department.getDepartmentName()), keyHolder, new String[]{DEPARTMENT_ID});
+    return Objects.requireNonNull(keyHolder.getKey()).longValue();
   }
 
   @Override
   public Boolean updateDepartment(final Department department) {
     LOGGER.debug("updateDepartment(department): departmentId = {}", department.getId());
-    MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-    namedParameters.addValue(parameterDepartmentId, department.getId());
-    namedParameters.addValue(parameterDepartmentName, department.getDepartmentName());
+    MapSqlParameterSource namedParameters = new MapSqlParameterSource()
+        .addValue(parameterDepartmentId, department.getId())
+        .addValue(parameterDepartmentName, department.getDepartmentName());
     return this.namedParameterJdbcTemplate.update(updateDepartmentById, namedParameters) == 1;
 
   }

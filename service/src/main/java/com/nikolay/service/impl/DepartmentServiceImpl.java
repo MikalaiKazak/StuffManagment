@@ -1,15 +1,17 @@
 package com.nikolay.service.impl;
 
-import com.nikolay.dao.DepartmentDao;
-import com.nikolay.model.Department;
-import com.nikolay.service.DepartmentService;
-import com.nikolay.service.exception.OperationFailedException;
 import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.nikolay.dao.DepartmentDao;
+import com.nikolay.model.Department;
+import com.nikolay.service.DepartmentService;
+import com.nikolay.service.exception.OperationFailedException;
 
 /**
  * The type Department service.

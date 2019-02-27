@@ -7,11 +7,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.nikolay.dao.EmployeeDao;
-import com.nikolay.model.Employee;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Before;
@@ -30,9 +29,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-/**
- * The type Test employee rest dao.
- */
+import com.nikolay.dao.EmployeeDao;
+import com.nikolay.model.Employee;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-dao-rest.xml"})
 public class TestEmployeeRestDao {
@@ -59,9 +58,6 @@ public class TestEmployeeRestDao {
   private LocalDate dateTo;
   private LocalDate dateFrom;
 
-  /**
-   * Sets up.
-   */
   @Before
   public void setUp() {
     emp1 = new Employee(3L, "Services", "Nikolay Kozak", LocalDate.of(1999, 2, 28),
@@ -76,9 +72,6 @@ public class TestEmployeeRestDao {
     LOGGER.error("execute: beforeTest()");
   }
 
-  /**
-   * Test get employee by id.
-   */
   @Test
   public void testGetEmployeeById() {
     LOGGER.debug("test TestEmployeeRestDao: run testGetEmployeeById()");
@@ -90,9 +83,6 @@ public class TestEmployeeRestDao {
     verify(mockRestTemplate, times(1)).getForObject(urlWithParamUrl, Employee.class, 1L);
   }
 
-  /**
-   * Test get all employee.
-   */
   @Test
   public void testGetAllEmployee() {
     LOGGER.debug("test TestEmployeeRestDao: run testGetAllEmployee()");
@@ -104,9 +94,6 @@ public class TestEmployeeRestDao {
     verify(mockRestTemplate, times(1)).getForObject(url, Employee[].class);
   }
 
-  /**
-   * Test save employee.
-   */
   @Test
   public void testSaveEmployee() {
     LOGGER.debug("test TestEmployeeRestDao: run testSaveEmployee()");
@@ -118,9 +105,6 @@ public class TestEmployeeRestDao {
     verify(mockRestTemplate, times(1)).postForEntity(url, emp1, Long.class);
   }
 
-  /**
-   * Test get employee by date of birthday.
-   */
   @Test
   public void testGetEmployeeByDateOfBirthday() {
     LOGGER.debug("test TestEmployeeRestDao: run testGetEmployeeByDateOfBirthday()");
@@ -134,9 +118,6 @@ public class TestEmployeeRestDao {
     verify(mockRestTemplate, times(1)).getForObject(builder.toUriString(), Employee[].class);
   }
 
-  /**
-   * Test get employee with date of birthday.
-   */
   @Test
   public void testGetEmployeeWithDateOfBirthday() {
     LOGGER.debug("test TestEmployeeRestDao: run testGetEmployeeWithDateOfBirthday()");
@@ -152,9 +133,6 @@ public class TestEmployeeRestDao {
     verify(mockRestTemplate, times(1)).getForObject(builder.toUriString(), Employee[].class);
   }
 
-  /**
-   * Test delete employee.
-   */
   @Test
   public void testDeleteEmployee() {
     LOGGER.debug("test TestEmployeeRestDao: run testDeleteEmployee()");
@@ -169,9 +147,6 @@ public class TestEmployeeRestDao {
         .exchange(urlWithParamUrl, HttpMethod.DELETE, entity, Boolean.class, 1L);
   }
 
-  /**
-   * Test update employee.
-   */
   @Test
   public void testUpdateEmployee() {
     LOGGER.debug("test TestEmployeeRestDao: run testUpdateEmployee()");

@@ -1,7 +1,7 @@
 package com.nikolay.rest.errorhandler;
 
-import com.nikolay.service.exception.OperationFailedException;
 import java.util.Collections;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.nikolay.service.exception.OperationFailedException;
 
 /**
  * The type Rest error handler.

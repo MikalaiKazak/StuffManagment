@@ -7,10 +7,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.nikolay.dao.DepartmentDao;
-import com.nikolay.model.Department;
 import java.math.BigDecimal;
 import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Before;
@@ -29,9 +28,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-/**
- * The type Test department rest dao.
- */
+import com.nikolay.dao.DepartmentDao;
+import com.nikolay.model.Department;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-dao-rest.xml"})
 public class TestDepartmentRestDao {
@@ -53,9 +52,6 @@ public class TestDepartmentRestDao {
   private Department dep1;
   private Department dep2;
 
-  /**
-   * Sets up.
-   */
   @Before
   public void setUp() {
     dep1 = new Department("New Department", BigDecimal.valueOf(500));
@@ -63,9 +59,6 @@ public class TestDepartmentRestDao {
     LOGGER.error("execute: beforeTest()");
   }
 
-  /**
-   * Test get department by id.
-   */
   @Test
   public void testGetDepartmentById() {
     LOGGER.debug("test TestDepartmentRestDao: run testGetDepartmentById()");
@@ -78,9 +71,6 @@ public class TestDepartmentRestDao {
         .getForObject(urlWithIdParam, Department.class, 1L);
   }
 
-  /**
-   * Test get department by name.
-   */
   @Test
   public void testGetDepartmentByName() {
     LOGGER.debug("test TestDepartmentRestDao run: testGetDepartmentByName()");
@@ -94,9 +84,6 @@ public class TestDepartmentRestDao {
     verify(mockRestTemplate, times(1)).getForObject(builder.toUriString(), Department.class);
   }
 
-  /**
-   * Test get all department.
-   */
   @Test
   public void testGetAllDepartment() {
     LOGGER.debug("test TestDepartmentRestDao: run testGetAllDepartment()");
@@ -108,9 +95,6 @@ public class TestDepartmentRestDao {
     verify(mockRestTemplate, times(1)).getForObject(url, Department[].class);
   }
 
-  /**
-   * Test delete department.
-   */
   @Test
   public void testDeleteDepartment() {
     LOGGER.debug("test TestDepartmentRestDao: run testDeleteDepartment()");
@@ -124,9 +108,6 @@ public class TestDepartmentRestDao {
     verify(mockRestTemplate).exchange(urlWithIdParam, HttpMethod.DELETE, entity, Boolean.class, 1L);
   }
 
-  /**
-   * Test update department.
-   */
   @Test
   public void testUpdateDepartment() {
     LOGGER.debug("test TestDepartmentRestDao: run testUpdateDepartment()");
@@ -140,9 +121,6 @@ public class TestDepartmentRestDao {
     verify(mockRestTemplate).exchange(urlWithIdParam, HttpMethod.PUT, entity, Boolean.class, 1L);
   }
 
-  /**
-   * Test save department.
-   */
   @Test
   public void testSaveDepartment() {
     LOGGER.debug("test TestDepartmentRestDao: run testSaveDepartment()");

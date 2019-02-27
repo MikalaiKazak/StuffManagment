@@ -11,12 +11,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.nikolay.model.Department;
-import com.nikolay.service.DepartmentService;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -31,16 +30,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-/**
- * The type Test department controller.
- */
+import com.nikolay.model.Department;
+import com.nikolay.service.DepartmentService;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/mock-test-webapp.xml"})
 public class TestDepartmentController {
 
-  /**
-   * The constant LOGGER.
-   */
   public static final Logger LOGGER = LogManager.getLogger();
 
   @Autowired
@@ -55,11 +51,6 @@ public class TestDepartmentController {
 
   private MockMvc mockMvc;
 
-  /**
-   * Sets up.
-   *
-   * @throws ParseException the parse exception
-   */
   @Before
   public void setUp() throws ParseException {
     InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -75,20 +66,12 @@ public class TestDepartmentController {
         .build();
   }
 
-  /**
-   * Tear down.
-   */
   @After
   public void tearDown() {
     reset(mockDepartmentService);
     LOGGER.error("execute: afterTest()");
   }
 
-  /**
-   * Test get department by id.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testGetDepartmentById() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testGetDepartmentById()");
@@ -104,11 +87,6 @@ public class TestDepartmentController {
     verify(mockDepartmentService).getDepartmentById(14L);
   }
 
-  /**
-   * Test get all departments.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testGetAllDepartments() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testGetAllDepartments()");
@@ -124,11 +102,6 @@ public class TestDepartmentController {
     verify(mockDepartmentService).getAllDepartments();
   }
 
-  /**
-   * Test get add department.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testGetAddDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testGetAddDepartment()");
@@ -141,11 +114,6 @@ public class TestDepartmentController {
         .andExpect(model().attributeExists("department"));
   }
 
-  /**
-   * Test get update department.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testGetUpdateDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testGetAddDepartment()");
@@ -160,11 +128,6 @@ public class TestDepartmentController {
     verify(mockDepartmentService).getDepartmentById(14L);
   }
 
-  /**
-   * Test post add department.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testPostAddDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testPostAddDepartment()");
@@ -180,11 +143,6 @@ public class TestDepartmentController {
     verify(mockDepartmentService).saveDepartment(any(Department.class));
   }
 
-  /**
-   * Test post update department.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testPostUpdateDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testPostUpdateDepartment()");
@@ -201,11 +159,6 @@ public class TestDepartmentController {
     verify(mockDepartmentService).updateDepartment(any(Department.class));
   }
 
-  /**
-   * Test remove department.
-   *
-   * @throws Exception the exception
-   */
   @Test
   public void testRemoveDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testRemoveDepartment()");

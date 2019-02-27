@@ -1,44 +1,20 @@
 package com.nikolay.dao.mapper;
 
-import com.nikolay.model.Employee;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import org.springframework.jdbc.core.RowMapper;
 
-/**
- * The type Employee mapper.
- */
+import com.nikolay.model.Employee;
+
 public class EmployeeMapper implements RowMapper<Employee> {
 
-  /**
-   * The constant EMPLOYEE_ID.
-   */
   public static final String EMPLOYEE_ID = "EMPLOYEE_ID";
-
-  /**
-   * The constant EMPLOYEE_DEPARTMENT_ID.
-   */
   public static final String EMPLOYEE_DEPARTMENT_ID = "EMPLOYEE_DEPARTMENT_ID";
-
-  /**
-   * The constant DEPARTMENT_NAME.
-   */
   public static final String DEPARTMENT_NAME = "DEPARTMENT_NAME";
-
-  /**
-   * The constant EMPLOYEE_FULL_NAME.
-   */
   public static final String EMPLOYEE_FULL_NAME = "EMPLOYEE_FULL_NAME";
-
-  /**
-   * The constant EMPLOYEE_DATE_OF_BIRTHDAY.
-   */
   public static final String EMPLOYEE_DATE_OF_BIRTHDAY = "EMPLOYEE_DATE_OF_BIRTHDAY";
-
-  /**
-   * The constant EMPLOYEE_SALARY.
-   */
   public static final String EMPLOYEE_SALARY = "EMPLOYEE_SALARY";
 
   @Override

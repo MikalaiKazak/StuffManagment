@@ -1,7 +1,8 @@
 package com.nikolay.dao;
 
-import com.nikolay.model.Department;
 import java.util.List;
+
+import com.nikolay.model.Department;
 
 /**
  * The interface Department dao.

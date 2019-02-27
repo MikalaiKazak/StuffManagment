@@ -1,13 +1,10 @@
 package com.nikolay.webapp.controller;
 
-import com.nikolay.model.Department;
-import com.nikolay.model.Employee;
-import com.nikolay.service.DepartmentService;
-import com.nikolay.service.EmployeeService;
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +22,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.nikolay.model.Department;
+import com.nikolay.model.Employee;
+import com.nikolay.service.DepartmentService;
+import com.nikolay.service.EmployeeService;
 
 /**
  * The type Employee controller.

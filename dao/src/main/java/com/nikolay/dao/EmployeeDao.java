@@ -1,8 +1,9 @@
 package com.nikolay.dao;
 
-import com.nikolay.model.Employee;
 import java.time.LocalDate;
 import java.util.List;
+
+import com.nikolay.model.Employee;
 
 /**
  * The interface Employee dao.
