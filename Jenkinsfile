@@ -15,5 +15,12 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
+
+        stage ('Functional tests') {
+            steps {
+              sh 'bash ./build_docker.sh'
+            }
+        }
+
     }
 }
