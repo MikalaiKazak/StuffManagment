@@ -11,16 +11,12 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import io.restassured.RestAssured;
 
-@Transactional
-@Rollback
 public class ApplicationFunctionalTest {
 
   private static final Logger LOGGER = LogManager.getLogger();
