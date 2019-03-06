@@ -18,7 +18,7 @@ pipeline {
 
         stage ('Functional tests') {
             steps {
-              sh 'bash ./build_docker.sh'
+              sh 'bash ./run_test.sh'
             }
         }
 
