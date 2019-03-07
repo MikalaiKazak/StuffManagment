@@ -18,6 +18,7 @@
     <module>webapp</module>
     <module>service-api</module>
     <module>utility</module>
+    <module>functional-test</module>
   </modules>
 
   <properties>
@@ -35,6 +36,9 @@
     <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
     <checkstyle.version>8.15</checkstyle.version>
     <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
+    <maven-surefire-plugin.version>2.12.4</maven-surefire-plugin.version>
+    <rest-assured.version>3.3.0</rest-assured.version>
+    <org.testng.version>6.14.3</org.testng.version>
   </properties>
 
   <dependencyManagement>
@@ -162,6 +166,12 @@
       </dependency>
 
       <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-tx</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>org.hsqldb</groupId>
         <artifactId>hsqldb</artifactId>
         <version>${hsqldb.version}</version>
@@ -185,6 +195,20 @@
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.testng</groupId>
+        <artifactId>testng</artifactId>
+        <version>${org.testng.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.rest-assured</groupId>
+        <artifactId>rest-assured</artifactId>
+        <version>${rest-assured.version}</version>
         <scope>test</scope>
       </dependency>
 
@@ -229,6 +253,11 @@
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
       </plugin>
     </plugins>
   </build>
