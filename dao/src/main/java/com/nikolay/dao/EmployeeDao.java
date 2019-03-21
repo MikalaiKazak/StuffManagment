@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.nikolay.model.Employee;
+import com.nikolay.model.dto.ResponseEmployeeDto;
 
 /**
  * The interface Employee dao.
@@ -16,7 +17,7 @@ public interface EmployeeDao {
    * @param employeeId the employee id
    * @return the employee by id
    */
-  Employee getEmployeeById(final Long employeeId);
+  ResponseEmployeeDto getEmployeeById(final Long employeeId);
 
   /**
    * Save employee long.
@@ -47,7 +48,7 @@ public interface EmployeeDao {
    *
    * @return the all employees
    */
-  List<Employee> getAllEmployees();
+  List<ResponseEmployeeDto> getAllEmployees();
 
   /**
    * Gets employees by date of birthday.
@@ -55,7 +56,7 @@ public interface EmployeeDao {
    * @param date the date
    * @return the employees by date of birthday
    */
-  List<Employee> getEmployeesByDateOfBirthday(final LocalDate date);
+  List<ResponseEmployeeDto> getEmployeesByDateOfBirthday(final LocalDate date);
 
   /**
    * Gets employees between dates of birthday.
@@ -64,6 +65,6 @@ public interface EmployeeDao {
    * @param dateTo the date to
    * @return the employees between dates of birthday
    */
-  List<Employee> getEmployeesBetweenDatesOfBirthday(final LocalDate dateFrom,
+  List<ResponseEmployeeDto> getEmployeesBetweenDatesOfBirthday(final LocalDate dateFrom,
       final LocalDate dateTo);
 }

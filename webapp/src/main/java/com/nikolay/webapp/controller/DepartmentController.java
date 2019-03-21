@@ -10,15 +10,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.nikolay.model.Department;
+import com.nikolay.model.dto.ResponseDepartmentDto;
 import com.nikolay.service.DepartmentService;
 
 /**
@@ -34,6 +33,7 @@ public class DepartmentController {
 
   private final DepartmentService departmentRestService;
 
+  @Autowired
   private final Validator departmentValidator;
 
   /**
@@ -49,12 +49,6 @@ public class DepartmentController {
     this.departmentValidator = departmentValidator;
   }
 
-  @InitBinder
-  private void initBinder(WebDataBinder binder) {
-    LOGGER.debug("initBinder()");
-    binder.setValidator(departmentValidator);
-  }
-
   /**
    * Gets all department.
    *
@@ -64,7 +58,7 @@ public class DepartmentController {
   @GetMapping("/departments")
   public String getAllDepartment(Model model) {
     LOGGER.debug("getAllDepartment()");
-    List<Department> departments = departmentRestService.getAllDepartments();
+    List<ResponseDepartmentDto> departments = departmentRestService.getAllDepartments();
     model.addAttribute("departmentList", departments);
     return "departments";
   }
@@ -93,7 +87,7 @@ public class DepartmentController {
   @GetMapping("/department/{id}")
   public String getDepartmentPage(@PathVariable("id") Long id, Model model) {
     LOGGER.debug("getDepartmentPage() id = {}", id);
-    Department department = departmentRestService.getDepartmentById(id);
+    ResponseDepartmentDto department = departmentRestService.getDepartmentById(id);
     model.addAttribute("department", department);
     return "department";
   }
@@ -110,6 +104,7 @@ public class DepartmentController {
   public String addDepartment(@ModelAttribute @Validated Department department,
       BindingResult br, RedirectAttributes redirectAttributes) {
     LOGGER.debug("addDepartment()");
+    departmentValidator.validate(department, br);
     if (br.hasErrors()) {
       return "addDepartment";
     }
@@ -129,7 +124,7 @@ public class DepartmentController {
   @GetMapping("/department/{id}/edit")
   public String editDepartmentPage(@PathVariable("id") Long id, Model model) {
     LOGGER.debug("editDepartmentPage() id = {]", id);
-    Department department = departmentRestService.getDepartmentById(id);
+    ResponseDepartmentDto department = departmentRestService.getDepartmentById(id);
     model.addAttribute("department", department);
     return "editDepartment";
   }
@@ -148,6 +143,7 @@ public class DepartmentController {
       @ModelAttribute @Validated Department department,
       BindingResult br, RedirectAttributes redirectAttributes) {
     LOGGER.debug("editDepartment() id = {}", id);
+    departmentValidator.validate(department, br);
     if (br.hasErrors()) {
       return "editDepartment";
     }

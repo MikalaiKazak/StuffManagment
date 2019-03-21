@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.nikolay.model.Employee;
+import com.nikolay.model.dto.ResponseEmployeeDto;
 
-public class EmployeeMapper implements RowMapper<Employee> {
+public class EmployeeMapper implements RowMapper<ResponseEmployeeDto> {
 
   public static final String EMPLOYEE_ID = "EMPLOYEE_ID";
   public static final String EMPLOYEE_DEPARTMENT_ID = "EMPLOYEE_DEPARTMENT_ID";
@@ -18,8 +18,8 @@ public class EmployeeMapper implements RowMapper<Employee> {
   public static final String EMPLOYEE_SALARY = "EMPLOYEE_SALARY";
 
   @Override
-  public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
-    Employee employee = new Employee();
+  public ResponseEmployeeDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+    ResponseEmployeeDto employee = new ResponseEmployeeDto();
     employee.setId(rs.getLong(EMPLOYEE_ID));
     employee.setDepartmentId(rs.getLong(EMPLOYEE_DEPARTMENT_ID));
     employee.setDepartmentName(rs.getString(DEPARTMENT_NAME));

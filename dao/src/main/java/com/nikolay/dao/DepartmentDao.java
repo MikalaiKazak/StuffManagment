@@ -3,6 +3,7 @@ package com.nikolay.dao;
 import java.util.List;
 
 import com.nikolay.model.Department;
+import com.nikolay.model.dto.ResponseDepartmentDto;
 
 /**
  * The interface Department dao.
@@ -14,7 +15,7 @@ public interface DepartmentDao {
    *
    * @return the all departments
    */
-  List<Department> getAllDepartments();
+  List<ResponseDepartmentDto> getAllDepartments();
 
   /**
    * Gets department by id.
@@ -22,15 +23,7 @@ public interface DepartmentDao {
    * @param departmentId the department id
    * @return the department by id
    */
-  Department getDepartmentById(final Long departmentId);
-
-  /**
-   * Gets department by name.
-   *
-   * @param departmentName the department name
-   * @return the department by name
-   */
-  Department getDepartmentByName(final String departmentName);
+  ResponseDepartmentDto getDepartmentById(final Long departmentId);
 
   /**
    * Save department long.

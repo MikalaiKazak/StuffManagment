@@ -38,6 +38,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nikolay.model.Employee;
+import com.nikolay.model.dto.ResponseEmployeeDto;
 import com.nikolay.service.EmployeeService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -54,16 +55,17 @@ public class TestEmployeeRestController {
 
   private MockMvc mockMvc;
 
-  private Employee correctEmployee;
+  private ResponseEmployeeDto correctEmployee;
   private Employee saveEmployee;
-  private List<Employee> employees;
+  private List<ResponseEmployeeDto> employees;
 
   @Before
   public void setUp() {
     LOGGER.error("execute: beforeTest()");
-    saveEmployee = new Employee(3L, "Services", "Nikolay Kozak", LocalDate.of(1999, 2, 28),
+    saveEmployee = new Employee(3L, 3L, "Nikolay Kozak", LocalDate.of(1999, 2, 28),
         BigDecimal.valueOf(350));
-    correctEmployee = new Employee(1L, 1L, "Services", "Nikolay Kozak", LocalDate.of(1999, 2, 28),
+    correctEmployee = new ResponseEmployeeDto(1L, 1L, "Services", "Nikolay Kozak",
+        LocalDate.of(1999, 2, 28),
         BigDecimal.valueOf(350));
     employees = Arrays.asList(correctEmployee, correctEmployee);
     mockMvc = standaloneSetup(employeeRestController)
@@ -96,7 +98,7 @@ public class TestEmployeeRestController {
   @Test
   public void testAddEmployee() throws Exception {
     LOGGER.debug("test TestEmployeeRestController: run testAddEmployee()");
-    when(mockEmployeeService.saveEmployee(any(Employee.class))).thenReturn(1L);
+    when(mockEmployeeService.saveEmployee(any(Employee.class))).thenReturn(3L);
     String employeeJson = createObjectMapperWithJacksonConverter().writeValueAsString(saveEmployee);
     mockMvc.perform(
         post("/employee/")
@@ -105,27 +107,26 @@ public class TestEmployeeRestController {
             .content(employeeJson))
         .andDo(print())
         .andExpect(status().isCreated())
-        .andExpect(content().string("1"));
+        .andExpect(content().string("3"));
     verify(mockEmployeeService).saveEmployee(any(Employee.class));
   }
 
   @Test
   public void testUpdateDepartment() throws Exception {
     LOGGER.debug("test TestEmployeeRestController: run testUpdateEmployee()");
-    when((mockEmployeeService.getEmployeeById(1L))).thenReturn(correctEmployee);
-    when(mockEmployeeService.updateEmployee(correctEmployee)).thenReturn(true);
+    when(mockEmployeeService.updateEmployee(any(Employee.class)))
+        .thenReturn(true);
     String employeeJson = createObjectMapperWithJacksonConverter().writeValueAsString(
-        correctEmployee);
+        saveEmployee);
     mockMvc.perform(
-        put("/employee/1")
+        put("/employee/3")
             .accept(MediaType.APPLICATION_JSON)
             .content(employeeJson)
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(content().string(String.valueOf(true)))
         .andExpect(status().isAccepted());
-    verify(mockEmployeeService).getEmployeeById(1L);
-    verify(mockEmployeeService).updateEmployee(correctEmployee);
+    verify(mockEmployeeService).updateEmployee(any(Employee.class));
   }
 
   @Test

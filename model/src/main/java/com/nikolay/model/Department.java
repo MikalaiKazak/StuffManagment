@@ -1,7 +1,5 @@
 package com.nikolay.model;
 
-import java.math.BigDecimal;
-
 /**
  * The type Department.
  *
@@ -12,8 +10,6 @@ public class Department {
   private Long id;
 
   private String departmentName;
-
-  private BigDecimal averageSalary;
 
   /**
    * Instantiates a new Department.
@@ -26,23 +22,10 @@ public class Department {
    *
    * @param id the id
    * @param departmentName the department name
-   * @param averageSalary the average salary
    */
-  public Department(Long id, String departmentName, BigDecimal averageSalary) {
+  public Department(Long id, String departmentName) {
     this.id = id;
     this.departmentName = departmentName;
-    this.averageSalary = averageSalary;
-  }
-
-  /**
-   * Instantiates a new Department.
-   *
-   * @param departmentName the department name
-   * @param averageSalary the average salary
-   */
-  public Department(String departmentName, BigDecimal averageSalary) {
-    this.departmentName = departmentName;
-    this.averageSalary = averageSalary;
   }
 
   /**
@@ -79,23 +62,5 @@ public class Department {
    */
   public void setDepartmentName(String departmentName) {
     this.departmentName = departmentName;
-  }
-
-  /**
-   * Gets average salary.
-   *
-   * @return the average salary
-   */
-  public BigDecimal getAverageSalary() {
-    return averageSalary;
-  }
-
-  /**
-   * Sets average salary.
-   *
-   * @param averageSalary the average salary
-   */
-  public void setAverageSalary(BigDecimal averageSalary) {
-    this.averageSalary = averageSalary;
   }
 }

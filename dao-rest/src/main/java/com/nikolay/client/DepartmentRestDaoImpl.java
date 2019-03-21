@@ -13,11 +13,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.nikolay.client.exception.ServerDataAccessException;
 import com.nikolay.dao.DepartmentDao;
 import com.nikolay.model.Department;
+import com.nikolay.model.dto.ResponseDepartmentDto;
 
 /**
  * The type Department rest dao.
@@ -49,10 +49,10 @@ public class DepartmentRestDaoImpl implements DepartmentDao {
 
 
   @Override
-  public List<Department> getAllDepartments() throws ServerDataAccessException {
+  public List<ResponseDepartmentDto> getAllDepartments() throws ServerDataAccessException {
     LOGGER.debug("getAllDepartments()");
-    Department[] departmentsArray = restTemplate
-        .getForObject(url, Department[].class);
+    ResponseDepartmentDto[] departmentsArray = restTemplate
+        .getForObject(url, ResponseDepartmentDto[].class);
     if (departmentsArray == null) {
       throw new ServerDataAccessException("Departments not found");
     }
@@ -60,29 +60,16 @@ public class DepartmentRestDaoImpl implements DepartmentDao {
   }
 
   @Override
-  public Department getDepartmentById(Long departmentId) throws ServerDataAccessException {
+  public ResponseDepartmentDto getDepartmentById(Long departmentId)
+      throws ServerDataAccessException {
     LOGGER.debug("getDepartmentById(departmentId): departmentId = {}", departmentId);
-    Department department = restTemplate
-        .getForObject(urlWithIdParam, Department.class, departmentId);
+    ResponseDepartmentDto department = restTemplate
+        .getForObject(urlWithIdParam, ResponseDepartmentDto.class, departmentId);
     if (department == null) {
       throw new ServerDataAccessException(
           "Department by identifier " + departmentId + " not found");
     }
     LOGGER.debug("DepartmentName = {}", department.getDepartmentName());
-    return department;
-  }
-
-  @Override
-  public Department getDepartmentByName(String departmentName) throws ServerDataAccessException {
-    LOGGER.debug("getDepartmentByName(departmentName): departmentName = {}", departmentName);
-    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
-        .queryParam("name", departmentName);
-    Department department = restTemplate
-        .getForObject(builder.toUriString(), Department.class);
-    if (department == null) {
-      throw new ServerDataAccessException(
-          "Department by name: " + departmentName + " not found");
-    }
     return department;
   }
 
@@ -101,12 +88,12 @@ public class DepartmentRestDaoImpl implements DepartmentDao {
   }
 
   @Override
-  public Boolean updateDepartment(Department department) throws ServerDataAccessException {
-    LOGGER.debug("updateDepartment(department): departmentId = {}", department.getId());
-    Long departmentId = department.getId();
+  public Boolean updateDepartment(Department department)
+      throws ServerDataAccessException {
+    LOGGER.debug("updateDepartment(department)");
     HttpEntity<?> entity = new HttpEntity<>(department, createHeaders());
     ResponseEntity<Boolean> response = restTemplate
-        .exchange(urlWithIdParam, HttpMethod.PUT, entity, Boolean.class, departmentId);
+        .exchange(urlWithIdParam, HttpMethod.PUT, entity, Boolean.class, department.getId());
     Boolean resultOperation = response.getBody();
     if (resultOperation == null || !resultOperation) {
       throw new ServerDataAccessException("The employee was not updated");

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.nikolay.model.Employee;
+import com.nikolay.model.dto.ResponseEmployeeDto;
 import com.nikolay.service.exception.OperationFailedException;
 
 /**
@@ -18,7 +19,7 @@ public interface EmployeeService {
    * @return the employee by id
    * @throws OperationFailedException the operation failed exception
    */
-  Employee getEmployeeById(final Long employeeId) throws OperationFailedException;
+  ResponseEmployeeDto getEmployeeById(final Long employeeId) throws OperationFailedException;
 
   /**
    * Save employee long.
@@ -36,7 +37,8 @@ public interface EmployeeService {
    * @return the boolean
    * @throws OperationFailedException the operation failed exception
    */
-  Boolean updateEmployee(final Employee employee) throws OperationFailedException;
+  Boolean updateEmployee(final Employee employee)
+      throws OperationFailedException;
 
   /**
    * Delete employee boolean.
@@ -52,7 +54,7 @@ public interface EmployeeService {
    *
    * @return the all employees
    */
-  List<Employee> getAllEmployees();
+  List<ResponseEmployeeDto> getAllEmployees();
 
   /**
    * Gets employees by date of birthday.
@@ -60,7 +62,7 @@ public interface EmployeeService {
    * @param date the date
    * @return the employees by date of birthday
    */
-  List<Employee> getEmployeesByDateOfBirthday(final LocalDate date);
+  List<ResponseEmployeeDto> getEmployeesByDateOfBirthday(final LocalDate date);
 
   /**
    * Gets employees between dates of birthday.
@@ -69,6 +71,6 @@ public interface EmployeeService {
    * @param dateTo the date to
    * @return the employees between dates of birthday
    */
-  List<Employee> getEmployeesBetweenDatesOfBirthday(final LocalDate dateFrom,
+  List<ResponseEmployeeDto> getEmployeesBetweenDatesOfBirthday(final LocalDate dateFrom,
       final LocalDate dateTo);
 }

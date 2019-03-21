@@ -17,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
@@ -25,6 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nikolay.model.Employee;
+import com.nikolay.model.dto.ResponseEmployeeDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-dao.xml"})
@@ -43,8 +43,8 @@ public class TestEmployeeDao {
   private static final LocalDate CORRECT_EMPLOYEE_BIRTHDAY = LocalDate.of(1982, 4, 2);
   private static final BigDecimal CORRECT_EMPLOYEE_SALARY = BigDecimal.valueOf(810).setScale(2);
 
+  private static final long NEW_EMPLOYEE_ID = 1L;
   private static final long NEW_EMPLOYEE_DEPARTMENT_ID = 2L;
-  private static final String NEW_EMPLOYEE_DEPARTMENT_NAME = "DWBI";
   private static final String NEW_EMPLOYEE_FULL_NAME = "Jeck Hudspith";
   private static final LocalDate NEW_EMPLOYEE_BIRTHDAY = LocalDate.of(1982, 4, 2);
   private static final BigDecimal NEW_EMPLOYEE_SALARY = BigDecimal.valueOf(200.12);
@@ -54,11 +54,9 @@ public class TestEmployeeDao {
 
   private static final Long INCORRECT_EMPLOYEE_ID = 200L;
 
-  private static final Long INCORRECT_EMPLOYEE_DEPARTMENT_ID = 200L;
-
   private static final Employee employee = new Employee(
+      NEW_EMPLOYEE_ID,
       NEW_EMPLOYEE_DEPARTMENT_ID,
-      NEW_EMPLOYEE_DEPARTMENT_NAME,
       NEW_EMPLOYEE_FULL_NAME,
       NEW_EMPLOYEE_BIRTHDAY,
       NEW_EMPLOYEE_SALARY
@@ -80,7 +78,7 @@ public class TestEmployeeDao {
   @Test
   public void testGetEmployeeById() {
     LOGGER.debug("test DAO: run testGetEmployeeById()");
-    Employee newEmployee = employeeDao.getEmployeeById(CORRECT_EMPLOYEE_ID);
+    ResponseEmployeeDto newEmployee = employeeDao.getEmployeeById(CORRECT_EMPLOYEE_ID);
 
     assertNotNull(newEmployee);
     assertEquals(CORRECT_EMPLOYEE_ID, newEmployee.getId().longValue());
@@ -94,12 +92,12 @@ public class TestEmployeeDao {
   @Test
   public void testGetEmployeeByBirthday() {
     LOGGER.debug("test DAO: run testGetEmployeeByBirthday()");
-    List<Employee> employeeList = employeeDao
+    List<ResponseEmployeeDto> employeeList = employeeDao
         .getEmployeesByDateOfBirthday(CORRECT_EMPLOYEE_BIRTHDAY);
 
     assertNotNull(employeeList);
     assertEquals(1, employeeList.size());
-    Employee newEmployee = employeeList.get(0);
+    ResponseEmployeeDto newEmployee = employeeList.get(0);
     assertEquals(CORRECT_EMPLOYEE_ID, newEmployee.getId().longValue());
     assertEquals(CORRECT_EMPLOYEE_DEPARTMENT_ID, newEmployee.getDepartmentId().longValue());
     assertEquals(CORRECT_EMPLOYEE_DEPARTMENT_NAME, newEmployee.getDepartmentName());
@@ -111,7 +109,7 @@ public class TestEmployeeDao {
   @Test
   public void testGetEmployeeBetweenDatesOfBirthday() {
     LOGGER.debug("test DAO: run testGetEmployeeBetweenDatesOfBirthday()");
-    List<Employee> employeeList = employeeDao
+    List<ResponseEmployeeDto> employeeList = employeeDao
         .getEmployeesBetweenDatesOfBirthday(DATE_FROM, DATE_TO);
 
     assertNotNull(employeeList);
@@ -121,7 +119,7 @@ public class TestEmployeeDao {
   @Test
   public void testGetAllEmployee() {
     LOGGER.debug("test DAO: run testGetAllEmployee()");
-    List<Employee> employees = employeeDao.getAllEmployees();
+    List<ResponseEmployeeDto> employees = employeeDao.getAllEmployees();
 
     assertNotNull(employees);
     assertEquals(CORRECT_AMOUNT_EMPLOYEES, employees.size());
@@ -142,7 +140,7 @@ public class TestEmployeeDao {
     long sizeBefore = employeeDao.getAllEmployees().size();
     long employeeId = employeeDao.saveEmployee(employee);
     long sizeAfter = employeeDao.getAllEmployees().size();
-    Employee newEmployee = employeeDao.getEmployeeById(employeeId);
+    ResponseEmployeeDto newEmployee = employeeDao.getEmployeeById(employeeId);
 
     assertEquals(sizeBefore + 1, sizeAfter);
     assertNotNull(newEmployee);
@@ -154,29 +152,17 @@ public class TestEmployeeDao {
   }
 
   @Test
-  public void testSaveEmployeeWithFloatSalary() {
-    LOGGER.debug("test DAO: run testSaveEmployeeWithFloatSalary()");
-    long sizeBefore = employeeDao.getAllEmployees().size();
-    Employee employee = new Employee(2L, "Sales", "Nikolay Kozak",
-        LocalDate.of(1999, 12, 28), BigDecimal.valueOf(245.51));
-    long employeeId = employeeDao.saveEmployee(employee);
-    long sizeAfter = employeeDao.getAllEmployees().size();
-    Employee newEmployee = employeeDao.getEmployeeById(employeeId);
-
-    assertEquals(sizeBefore + 1, sizeAfter);
-    assertNotNull(newEmployee);
-    assertEquals(employee.getSalary(), newEmployee.getSalary().stripTrailingZeros());
-    assertEquals(2L, newEmployee.getDepartmentId().longValue());
-  }
-
-  @Test
   public void testUpdateEmployee() {
     LOGGER.debug("test DAO: run testUpdateEmployee()");
-    Employee newEmployee = employeeDao.getEmployeeById(CORRECT_EMPLOYEE_ID);
-    newEmployee.setDepartmentId(NEW_EMPLOYEE_DEPARTMENT_ID);
-    newEmployee.setSalary(NEW_EMPLOYEE_SALARY);
-    Boolean result = employeeDao.updateEmployee(newEmployee);
-    Employee changedEmployee = employeeDao.getEmployeeById(CORRECT_EMPLOYEE_ID);
+    ResponseEmployeeDto newEmployee = employeeDao.getEmployeeById(CORRECT_EMPLOYEE_ID);
+    Employee saveEmployeeDto = new Employee();
+    saveEmployeeDto.setId(newEmployee.getId());
+    saveEmployeeDto.setDepartmentId(NEW_EMPLOYEE_DEPARTMENT_ID);
+    saveEmployeeDto.setFullName(newEmployee.getFullName());
+    saveEmployeeDto.setBirthday(newEmployee.getBirthday());
+    saveEmployeeDto.setSalary(NEW_EMPLOYEE_SALARY);
+    Boolean result = employeeDao.updateEmployee(saveEmployeeDto);
+    ResponseEmployeeDto changedEmployee = employeeDao.getEmployeeById(CORRECT_EMPLOYEE_ID);
 
     assertNotNull(newEmployee);
     assertNotNull(changedEmployee);
@@ -223,11 +209,4 @@ public class TestEmployeeDao {
     assertFalse(employeeDao.updateEmployee(null));
   }
 
-  @Test(expected = DataIntegrityViolationException.class)
-  public void negativeTestSaveIncorrectEmployee() {
-    LOGGER.debug("test DAO: run negativeTestSaveIncorrectEmployee()");
-    Employee newEmployee = employeeDao.getEmployeeById(CORRECT_EMPLOYEE_ID);
-    newEmployee.setDepartmentId(INCORRECT_EMPLOYEE_DEPARTMENT_ID);
-    assertNull(employeeDao.saveEmployee(newEmployee));
-  }
 }

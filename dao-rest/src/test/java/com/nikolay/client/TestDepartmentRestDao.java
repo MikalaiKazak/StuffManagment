@@ -26,10 +26,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.nikolay.dao.DepartmentDao;
 import com.nikolay.model.Department;
+import com.nikolay.model.dto.ResponseDepartmentDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-dao-rest.xml"})
@@ -50,49 +50,36 @@ public class TestDepartmentRestDao {
   private RestTemplate mockRestTemplate;
 
   private Department dep1;
-  private Department dep2;
+  private ResponseDepartmentDto dep2;
 
   @Before
   public void setUp() {
-    dep1 = new Department("New Department", BigDecimal.valueOf(500));
-    dep2 = new Department(1L, "Services", BigDecimal.valueOf(3249));
+    dep1 = new Department(1L, "New Department");
+    dep2 = new ResponseDepartmentDto(1L, "Services", BigDecimal.valueOf(3249));
     LOGGER.error("execute: beforeTest()");
   }
 
   @Test
   public void testGetDepartmentById() {
     LOGGER.debug("test TestDepartmentRestDao: run testGetDepartmentById()");
-    when(mockRestTemplate.getForObject(urlWithIdParam, Department.class, 1L))
+    when(mockRestTemplate.getForObject(urlWithIdParam, ResponseDepartmentDto.class, 1L))
         .thenReturn(dep2);
-    Department department = departmentRestDao.getDepartmentById(1L);
+    ResponseDepartmentDto department = departmentRestDao.getDepartmentById(1L);
     assertNotNull(department);
     assertEquals(1L, department.getId().longValue());
     verify(mockRestTemplate, times(1))
-        .getForObject(urlWithIdParam, Department.class, 1L);
-  }
-
-  @Test
-  public void testGetDepartmentByName() {
-    LOGGER.debug("test TestDepartmentRestDao run: testGetDepartmentByName()");
-    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
-        .queryParam("name", "Services");
-    when(mockRestTemplate.getForObject(builder.toUriString(), Department.class))
-        .thenReturn(dep2);
-    Department department = departmentRestDao.getDepartmentByName("Services");
-    assertNotNull(department);
-    assertEquals("Services", department.getDepartmentName());
-    verify(mockRestTemplate, times(1)).getForObject(builder.toUriString(), Department.class);
+        .getForObject(urlWithIdParam, ResponseDepartmentDto.class, 1L);
   }
 
   @Test
   public void testGetAllDepartment() {
     LOGGER.debug("test TestDepartmentRestDao: run testGetAllDepartment()");
-    when(mockRestTemplate.getForObject(url, Department[].class)).thenReturn(
-        new Department[]{dep1, dep2});
-    List<Department> departmentList = departmentRestDao.getAllDepartments();
+    when(mockRestTemplate.getForObject(url, ResponseDepartmentDto[].class)).thenReturn(
+        new ResponseDepartmentDto[]{dep2, dep2});
+    List<ResponseDepartmentDto> departmentList = departmentRestDao.getAllDepartments();
     assertNotNull(departmentList);
     assertEquals(2, departmentList.size());
-    verify(mockRestTemplate, times(1)).getForObject(url, Department[].class);
+    verify(mockRestTemplate, times(1)).getForObject(url, ResponseDepartmentDto[].class);
   }
 
   @Test
@@ -113,11 +100,11 @@ public class TestDepartmentRestDao {
     LOGGER.debug("test TestDepartmentRestDao: run testUpdateDepartment()");
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-    HttpEntity<?> entity = new HttpEntity<>(dep2, headers);
+    HttpEntity<?> entity = new HttpEntity<>(dep1, headers);
     ResponseEntity<Boolean> responseEntity = new ResponseEntity<>(true, HttpStatus.OK);
     when(mockRestTemplate.exchange(urlWithIdParam, HttpMethod.PUT, entity, Boolean.class, 1L))
         .thenReturn(responseEntity);
-    assertTrue(departmentRestDao.updateDepartment(dep2));
+    assertTrue(departmentRestDao.updateDepartment(dep1));
     verify(mockRestTemplate).exchange(urlWithIdParam, HttpMethod.PUT, entity, Boolean.class, 1L);
   }
 

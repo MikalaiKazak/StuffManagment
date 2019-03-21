@@ -31,6 +31,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.nikolay.model.Department;
+import com.nikolay.model.dto.ResponseDepartmentDto;
 import com.nikolay.service.DepartmentService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -45,9 +46,9 @@ public class TestDepartmentController {
   @Autowired
   private DepartmentService mockDepartmentService;
 
-  private Department dep1 = new Department();
-  private Department dep2 = new Department();
-  private List<Department> departments;
+  private Department dep1;
+  private ResponseDepartmentDto dep2;
+  private List<ResponseDepartmentDto> departments;
 
   private MockMvc mockMvc;
 
@@ -58,9 +59,9 @@ public class TestDepartmentController {
     viewResolver.setPrefix("/WEB-INF/templates/");
 
     LOGGER.debug("execute before test method");
-    dep1 = new Department("New Department", BigDecimal.valueOf(500));
-    dep2 = new Department(14L, "Services", BigDecimal.valueOf(3249));
-    departments = Arrays.asList(dep1, dep2);
+    dep1 = new Department(1L, "New Department");
+    dep2 = new ResponseDepartmentDto(14L, "Services", BigDecimal.valueOf(3249));
+    departments = Arrays.asList(dep2, dep2);
     mockMvc = MockMvcBuilders.standaloneSetup(new ErrorController(), departmentController)
         .setViewResolvers(viewResolver)
         .build();
@@ -146,7 +147,8 @@ public class TestDepartmentController {
   @Test
   public void testPostUpdateDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testPostUpdateDepartment()");
-    when(mockDepartmentService.updateDepartment(any(Department.class))).thenReturn(true);
+    when(mockDepartmentService.updateDepartment(any(Department.class)))
+        .thenReturn(true);
     mockMvc.perform(post("/department/14/edit")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)

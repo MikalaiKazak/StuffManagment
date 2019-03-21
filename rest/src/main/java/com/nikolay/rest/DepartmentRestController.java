@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nikolay.model.Department;
+import com.nikolay.model.dto.ResponseDepartmentDto;
 import com.nikolay.service.DepartmentService;
 
 /**
@@ -34,6 +35,7 @@ public class DepartmentRestController {
    * The constant LOGGER.
    */
   public static final Logger LOGGER = LogManager.getLogger();
+
   private final Validator departmentValidator;
   private DepartmentService departmentService;
 
@@ -56,15 +58,10 @@ public class DepartmentRestController {
     binder.setValidator(departmentValidator);
   }
 
-  /**
-   * Gets all departments.
-   *
-   * @return the all departments
-   */
   @GetMapping("/")
-  public ResponseEntity<List<Department>> getAllDepartments() {
+  public ResponseEntity<List<ResponseDepartmentDto>> getAllDepartments() {
     LOGGER.debug("getAllDepartments()");
-    List<Department> departmentList = departmentService.getAllDepartments();
+    List<ResponseDepartmentDto> departmentList = departmentService.getAllDepartments();
     return new ResponseEntity<>(departmentList, HttpStatus.OK);
   }
 
@@ -75,9 +72,9 @@ public class DepartmentRestController {
    * @return the department by id
    */
   @GetMapping("/{id}")
-  public ResponseEntity<Department> getDepartmentById(@PathVariable("id") Long id) {
+  public ResponseEntity<ResponseDepartmentDto> getDepartmentById(@PathVariable("id") Long id) {
     LOGGER.debug("getDepartmentById(): id = {}", id);
-    Department department = departmentService.getDepartmentById(id);
+    ResponseDepartmentDto department = departmentService.getDepartmentById(id);
     return new ResponseEntity<>(department, HttpStatus.FOUND);
   }
 
@@ -91,7 +88,6 @@ public class DepartmentRestController {
   public ResponseEntity<Long> addDepartment(@RequestBody @Validated Department department) {
     LOGGER.debug("addDepartment(): departmentName = {}", department.getDepartmentName());
     Long id = departmentService.saveDepartment(department);
-    department.setId(id);
     return new ResponseEntity<>(id, HttpStatus.CREATED);
   }
 
@@ -120,10 +116,7 @@ public class DepartmentRestController {
       @RequestBody @Validated Department newDepartment) {
     LOGGER.debug("updateDepartment(): id = {}, newDepartmentName = {}", id,
         newDepartment.getDepartmentName());
-    Department department = departmentService.getDepartmentById(id);
-    department.setDepartmentName(newDepartment.getDepartmentName());
-    department.setAverageSalary(newDepartment.getAverageSalary());
-    Boolean resultUpdateDepartment = departmentService.updateDepartment(department);
+    Boolean resultUpdateDepartment = departmentService.updateDepartment(newDepartment);
     return new ResponseEntity<>(resultUpdateDepartment, HttpStatus.ACCEPTED);
   }
 

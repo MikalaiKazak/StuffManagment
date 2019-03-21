@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nikolay.model.Department;
+import com.nikolay.model.dto.ResponseDepartmentDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-dao.xml"})
@@ -40,16 +41,15 @@ public class TestDepartmentDao {
       .setScale(2);
 
   private static final String NEW_DEPARTMENT_NAME = "DWBI";
-  private static final BigDecimal NEW_DEPARTMENT_AVERAGE_SALARY = new BigDecimal(300.25)
-      .setScale(2);
+  private static final long ID_DEPARTMENT_ID = 1L;
 
   private static final String CHANGED_DEPARTMENT_NAME = "Department";
 
   private static final Long INCORRECT_DEPARTMENT_ID = 200L;
 
   private static final Department department = new Department(
-      NEW_DEPARTMENT_NAME,
-      NEW_DEPARTMENT_AVERAGE_SALARY
+      ID_DEPARTMENT_ID,
+      NEW_DEPARTMENT_NAME
   );
 
   @Autowired
@@ -68,24 +68,12 @@ public class TestDepartmentDao {
   @Test
   public void testGetDepartment() {
     LOGGER.debug("test Dao: run testGetDepartment()");
-    Department newDepartment = departmentDao.getDepartmentById(CORRECT_DEPARTMENT_ID);
+    ResponseDepartmentDto newDepartment = departmentDao.getDepartmentById(CORRECT_DEPARTMENT_ID);
 
     assertNotNull(newDepartment);
     assertEquals(CORRECT_DEPARTMENT_ID, newDepartment.getId().longValue());
     assertEquals(CORRECT_DEPARTMENT_NAME, newDepartment.getDepartmentName());
     assertEquals(CORRECT_DEPARTMENT_AVERAGE_SALARY, newDepartment.getAverageSalary());
-  }
-
-  @Test
-  public void testGetDepartmentByName() {
-    LOGGER.debug("test DAO: run testGetDepartmentByName()");
-    Department newDepartment = departmentDao.getDepartmentByName(CORRECT_DEPARTMENT_NAME);
-
-    assertNotNull(newDepartment);
-    assertEquals(CORRECT_DEPARTMENT_ID, newDepartment.getId().longValue());
-    assertEquals(CORRECT_DEPARTMENT_NAME, newDepartment.getDepartmentName());
-    assertEquals(CORRECT_DEPARTMENT_AVERAGE_SALARY,
-        newDepartment.getAverageSalary());
   }
 
   @Test
@@ -96,7 +84,7 @@ public class TestDepartmentDao {
     long sizeAfter = departmentDao.getAllDepartments().size();
 
     assertEquals(sizeBefore + 1, sizeAfter);
-    Department newDepartment = departmentDao.getDepartmentById(departmentId);
+    ResponseDepartmentDto newDepartment = departmentDao.getDepartmentById(departmentId);
     assertNotNull(newDepartment);
     assertEquals(departmentId.longValue(), newDepartment.getId().longValue());
     assertEquals(department.getDepartmentName(), newDepartment.getDepartmentName());
@@ -115,7 +103,7 @@ public class TestDepartmentDao {
   @Test
   public void testGetAllDepartment() {
     LOGGER.debug("test DAO: run testGetAllDepartment()");
-    List<Department> departmentList = departmentDao.getAllDepartments();
+    List<ResponseDepartmentDto> departmentList = departmentDao.getAllDepartments();
 
     assertNotNull(departmentList);
     assertEquals(CORRECT_AMOUNT_DEPARTMENTS, departmentList.size());
@@ -124,13 +112,17 @@ public class TestDepartmentDao {
   @Test
   public void testUpdateDepartment() {
     LOGGER.debug("test DAO: run testUpdateDepartment()");
-    Department newDepartment = departmentDao.getDepartmentById(CORRECT_DEPARTMENT_ID);
+    ResponseDepartmentDto department = departmentDao.getDepartmentById(CORRECT_DEPARTMENT_ID);
 
-    assertNotNull(newDepartment);
-    assertEquals(CORRECT_DEPARTMENT_ID, newDepartment.getId().longValue());
-    newDepartment.setDepartmentName(CHANGED_DEPARTMENT_NAME);
+    assertNotNull(department);
+    assertEquals(CORRECT_DEPARTMENT_ID, department.getId().longValue());
+
+    Department newDepartment = new Department(CORRECT_DEPARTMENT_ID, CHANGED_DEPARTMENT_NAME);
+
     assertTrue(departmentDao.updateDepartment(newDepartment));
-    Department changedDepartment = departmentDao.getDepartmentById(CORRECT_DEPARTMENT_ID);
+
+    ResponseDepartmentDto changedDepartment = departmentDao
+        .getDepartmentById(CORRECT_DEPARTMENT_ID);
     assertEquals(CORRECT_DEPARTMENT_ID, changedDepartment.getId().longValue());
     assertEquals(CORRECT_DEPARTMENT_AVERAGE_SALARY, changedDepartment.getAverageSalary());
     assertEquals(CHANGED_DEPARTMENT_NAME, changedDepartment.getDepartmentName());
@@ -140,12 +132,6 @@ public class TestDepartmentDao {
   public void negativeTestGetDepartmentById() {
     LOGGER.debug("test DAO: run negativeTestGetDepartmentById()");
     assertNull(departmentDao.getDepartmentById(null));
-  }
-
-  @Test(expected = EmptyResultDataAccessException.class)
-  public void negativeTestGetDepartmentByName() {
-    LOGGER.debug("test DAO: run negativeTestGetDepartmentByName()");
-    assertNull(departmentDao.getDepartmentByName(null));
   }
 
   @Test(expected = EmptyResultDataAccessException.class)

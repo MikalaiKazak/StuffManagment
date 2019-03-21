@@ -20,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.nikolay.client.exception.ServerDataAccessException;
 import com.nikolay.dao.EmployeeDao;
 import com.nikolay.model.Employee;
+import com.nikolay.model.dto.ResponseEmployeeDto;
 
 /**
  * The type Employee rest dao.
@@ -50,10 +51,10 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public Employee getEmployeeById(Long employeeId) throws ServerDataAccessException {
+  public ResponseEmployeeDto getEmployeeById(Long employeeId) throws ServerDataAccessException {
     LOGGER.debug("getEmployeeById(employeeId): employeeId = {}", employeeId);
-    Employee employee = restTemplate
-        .getForObject(urlWithParamUrl, Employee.class, employeeId);
+    ResponseEmployeeDto employee = restTemplate
+        .getForObject(urlWithParamUrl, ResponseEmployeeDto.class, employeeId);
     if (employee == null) {
       throw new ServerDataAccessException(
           "Employee by identifier " + employeeId + " not found");
@@ -76,15 +77,14 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public Boolean updateEmployee(Employee employee) throws ServerDataAccessException {
-    LOGGER.debug("updateEmployee(employee): employeeId = {}", employee.getId());
-    Long employeeId = employee.getId();
-    restTemplate.put(urlWithParamUrl, employee, employeeId);
+  public Boolean updateEmployee(Employee employee)
+      throws ServerDataAccessException {
+    LOGGER.debug("updateEmployee(employee)");
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     HttpEntity<?> entity = new HttpEntity<>(employee, headers);
     ResponseEntity<Boolean> response = restTemplate
-        .exchange(urlWithParamUrl, HttpMethod.PUT, entity, Boolean.class, employeeId);
+        .exchange(urlWithParamUrl, HttpMethod.PUT, entity, Boolean.class, employee.getId());
     return response.getBody();
   }
 
@@ -100,10 +100,10 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public List<Employee> getAllEmployees() throws ServerDataAccessException {
+  public List<ResponseEmployeeDto> getAllEmployees() throws ServerDataAccessException {
     LOGGER.debug("getAllEmployees()");
-    Employee[] employeesArray = restTemplate
-        .getForObject(url, Employee[].class);
+    ResponseEmployeeDto[] employeesArray = restTemplate
+        .getForObject(url, ResponseEmployeeDto[].class);
     if (employeesArray == null) {
       throw new ServerDataAccessException("Employees not found");
     }
@@ -111,14 +111,14 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public List<Employee> getEmployeesByDateOfBirthday(LocalDate date)
+  public List<ResponseEmployeeDto> getEmployeesByDateOfBirthday(LocalDate date)
       throws ServerDataAccessException {
     LOGGER.debug("getEmployeesByDateOfBirthday(date): date = {}",
         date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
         .queryParam("date", date);
-    Employee[] employeesArray = restTemplate
-        .getForObject(builder.toUriString(), Employee[].class);
+    ResponseEmployeeDto[] employeesArray = restTemplate
+        .getForObject(builder.toUriString(), ResponseEmployeeDto[].class);
     if (employeesArray == null) {
       throw new ServerDataAccessException("Employees not found");
     }
@@ -126,7 +126,8 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public List<Employee> getEmployeesBetweenDatesOfBirthday(LocalDate dateFrom, LocalDate dateTo)
+  public List<ResponseEmployeeDto> getEmployeesBetweenDatesOfBirthday(LocalDate dateFrom,
+      LocalDate dateTo)
       throws ServerDataAccessException {
     LOGGER.debug(
         "getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo): dateFrom = {}, dateTo = {}",
@@ -135,8 +136,8 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
         .queryParam("dateFrom", dateFrom)
         .queryParam("dateTo", dateTo);
-    Employee[] employeesArray = restTemplate
-        .getForObject(builder.toUriString(), Employee[].class);
+    ResponseEmployeeDto[] employeesArray = restTemplate
+        .getForObject(builder.toUriString(), ResponseEmployeeDto[].class);
     if (employeesArray == null) {
       throw new ServerDataAccessException("Employees not found");
     }

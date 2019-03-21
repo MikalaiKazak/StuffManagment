@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nikolay.dao.DepartmentDao;
 import com.nikolay.model.Department;
+import com.nikolay.model.dto.ResponseDepartmentDto;
 import com.nikolay.service.DepartmentService;
 import com.nikolay.service.exception.OperationFailedException;
 
@@ -25,15 +26,6 @@ public class DepartmentServiceImpl implements DepartmentService {
    */
   public static final Logger LOGGER = LogManager.getLogger();
 
-  @Value("${departmentService.incorrectId}")
-  private String incorrectId;
-
-  @Value("${departmentService.incorrectDepartment}")
-  private String incorrectDepartment;
-
-  @Value("${departmentService.incorrectDepartmentName}")
-  private String incorrectDepartmentName;
-
   @Value("${departmentService.notUpdated}")
   private String departmentNotUpdated;
 
@@ -42,6 +34,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 
   @Value("${departmentService.notSaved}")
   private String departmentNotSave;
+
+  @Value("${department.incorrectDepartmentId}")
+  private String incorrectDepartmentId;
+
+  @Value("${department.incorrectDepartmentName}")
+  private String incorrectDepartmentName;
 
   private DepartmentDao departmentDao;
 
@@ -56,44 +54,39 @@ public class DepartmentServiceImpl implements DepartmentService {
   }
 
   @Override
-  public List<Department> getAllDepartments() {
+  public List<ResponseDepartmentDto> getAllDepartments() {
     LOGGER.debug("getAllDepartments()");
     return departmentDao.getAllDepartments();
   }
 
   @Override
-  public Department getDepartmentById(Long departmentId) {
+  public ResponseDepartmentDto getDepartmentById(Long departmentId) {
     LOGGER.debug("getDepartmentById(id): id = {}", departmentId);
     if (departmentId == null || departmentId < 0) {
-      throw new OperationFailedException(incorrectId);
+      throw new OperationFailedException(incorrectDepartmentId);
     }
     return departmentDao.getDepartmentById(departmentId);
-  }
-
-  @Override
-  public Department getDepartmentByName(String departmentName) {
-    LOGGER.debug("getDepartmentByName(departmentName): departmentName = {}", departmentName);
-    if (departmentName == null) {
-      throw new OperationFailedException(incorrectDepartmentName);
-    }
-    return departmentDao.getDepartmentByName(departmentName);
   }
 
   @Override
   public Long saveDepartment(Department department) {
     LOGGER.debug("saveDepartment(department): departmentName = {}",
         department.getDepartmentName());
-    checkDepartment(department);
-    if (department.getId() != null) {
-      throw new OperationFailedException((incorrectId));
+    if (department.getDepartmentName() == null) {
+      throw new OperationFailedException(incorrectDepartmentName);
     }
     return departmentDao.saveDepartment(department);
   }
 
   @Override
   public Boolean updateDepartment(Department department) {
-    LOGGER.debug("updateDepartment(department): departmentId = {}", department.getId());
-    checkDepartment(department);
+    LOGGER.debug("updateDepartment(department)");
+    if (department.getId() == null || department.getId() < 0) {
+      throw new OperationFailedException(incorrectDepartmentId);
+    }
+    if (department.getDepartmentName() == null) {
+      throw new OperationFailedException(incorrectDepartmentName);
+    }
     Boolean resultUpdateDepartment = departmentDao.updateDepartment(department);
     if (!resultUpdateDepartment) {
       throw new OperationFailedException(departmentNotUpdated);
@@ -105,18 +98,14 @@ public class DepartmentServiceImpl implements DepartmentService {
   public Boolean deleteDepartment(Long departmentId) {
     LOGGER.debug("deleteDepartment(id) id = {}", departmentId);
     Boolean resultDeleteDepartment = departmentDao.deleteDepartment(departmentId);
+    if (departmentId == null || departmentId < 0) {
+      throw new OperationFailedException(incorrectDepartmentId);
+    }
     if (!resultDeleteDepartment) {
       throw new OperationFailedException(departmentNotDeleted);
     }
     return resultDeleteDepartment;
   }
 
-  private void checkDepartment(Department department) throws OperationFailedException {
-    if (department == null) {
-      throw new OperationFailedException(incorrectDepartment);
-    }
-    if (department.getDepartmentName() == null) {
-      throw new OperationFailedException(incorrectDepartmentName);
-    }
-  }
+
 }

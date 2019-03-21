@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import com.nikolay.dao.mapper.DepartmentMapper;
 import com.nikolay.model.Department;
+import com.nikolay.model.dto.ResponseDepartmentDto;
 
 /**
  * The type Department dao.
@@ -44,9 +45,6 @@ public class DepartmentDaoImpl implements DepartmentDao {
   @Value("${department.GET_DEPARTMENT_BY_ID}")
   private String getDepartmentById;
 
-  @Value("${department.GET_DEPARTMENT_BY_NAME}")
-  private String getDepartmentByName;
-
   @Value("${department.DELETE_DEPARTMENT}")
   private String deleteDepartmentById;
 
@@ -70,25 +68,17 @@ public class DepartmentDaoImpl implements DepartmentDao {
   }
 
   @Override
-  public List<Department> getAllDepartments() {
+  public List<ResponseDepartmentDto> getAllDepartments() {
     LOGGER.debug("getAllDepartments()");
     return this.namedParameterJdbcTemplate.query(getAllDepartments, departmentMapper);
   }
 
   @Override
-  public Department getDepartmentById(final Long departmentId) {
+  public ResponseDepartmentDto getDepartmentById(final Long departmentId) {
     LOGGER.debug("getDepartmentById(id): id = {}", departmentId);
     return this.namedParameterJdbcTemplate
         .queryForObject(getDepartmentById, new MapSqlParameterSource(parameterDepartmentId,
             departmentId), departmentMapper);
-  }
-
-  @Override
-  public Department getDepartmentByName(final String departmentName) {
-    LOGGER.debug("getDepartmentByName(departmentName): departmentName = {}", departmentName);
-    return this.namedParameterJdbcTemplate
-        .queryForObject(getDepartmentByName, new MapSqlParameterSource(parameterDepartmentName,
-            departmentName), departmentMapper);
   }
 
   @Override
@@ -104,7 +94,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
 
   @Override
   public Boolean updateDepartment(final Department department) {
-    LOGGER.debug("updateDepartment(department): departmentId = {}", department.getId());
+    LOGGER.debug("updateDepartment(department)");
     MapSqlParameterSource namedParameters = new MapSqlParameterSource()
         .addValue(parameterDepartmentId, department.getId())
         .addValue(parameterDepartmentName, department.getDepartmentName());

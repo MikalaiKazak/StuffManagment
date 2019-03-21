@@ -1,5 +1,6 @@
 package com.nikolay.service.impl;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nikolay.dao.EmployeeDao;
 import com.nikolay.model.Employee;
+import com.nikolay.model.dto.ResponseEmployeeDto;
 import com.nikolay.service.EmployeeService;
 import com.nikolay.service.exception.OperationFailedException;
 
@@ -27,29 +29,29 @@ public class EmployeeServiceImpl implements EmployeeService {
    */
   public static final Logger LOGGER = LogManager.getLogger();
 
-  @Value("${employeeService.incorrectId}")
-  private String incorrectId;
-
-  @Value("${employeeService.incorrectEmployee}")
-  private String incorrectEmployee;
-
-  @Value("${employeeService.incorrectDepartmentId}")
-  private String incorrectDepartmentId;
-
-  @Value("${employeeService.incorrectFullName}")
-  private String incorrectFullName;
-
-  @Value("${employeeService.incorrectBirthday}")
-  private String incorrectBirthday;
-
-  @Value("${employeeService.incorrectSalary}")
-  private String incorrectSalary;
-
   @Value("${employeeService.notUpdated}")
   private String employeeNotUpdated;
 
   @Value("${employeeService.notDeleted}")
   private String employeeNotDeleted;
+
+  @Value("${employee.incorrectId}")
+  private String incorrectEmployeeId;
+
+  @Value("${employee.incorrectEmployee}")
+  private String incorrectEmployee;
+
+  @Value("${department.incorrectDepartmentId}")
+  private String incorrectDepartmentId;
+
+  @Value("${employee.incorrectFullName}")
+  private String incorrectFullName;
+
+  @Value("${employee.incorrectBirthday}")
+  private String incorrectBirthday;
+
+  @Value("${employee.incorrectSalary}")
+  private String incorrectSalary;
 
   private EmployeeDao employeeDao;
 
@@ -64,10 +66,10 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  public Employee getEmployeeById(Long employeeId) {
+  public ResponseEmployeeDto getEmployeeById(Long employeeId) {
     LOGGER.debug("getEmployeeById(employeeId): employeeId = {}", employeeId);
     if (employeeId == null || employeeId < 0) {
-      throw new OperationFailedException(incorrectId);
+      throw new OperationFailedException(incorrectEmployeeId);
     }
     return employeeDao.getEmployeeById(employeeId);
   }
@@ -75,17 +77,19 @@ public class EmployeeServiceImpl implements EmployeeService {
   @Override
   public Long saveEmployee(Employee employee) {
     LOGGER.debug("saveEmployee(employee): employeeName = {}", employee.getFullName());
-    checkEmployee(employee);
-    if (employee.getId() != null) {
-      throw new OperationFailedException(incorrectId);
-    }
+    checkEmployee(employee.getDepartmentId(), employee.getFullName(), employee.getBirthday(),
+        employee.getSalary());
     return employeeDao.saveEmployee(employee);
   }
 
   @Override
   public Boolean updateEmployee(Employee employee) {
-    LOGGER.debug("updateEmployee(employee): employeeId = {}", employee.getId());
-    checkEmployee(employee);
+    LOGGER.debug("updateEmployee(employee)");
+    checkEmployee(employee.getDepartmentId(), employee.getFullName(), employee.getBirthday(),
+        employee.getSalary());
+    if (employee.getId() == null || employee.getId() < 0) {
+      throw new OperationFailedException(incorrectEmployeeId);
+    }
     Boolean resultUpdateEmployee = employeeDao.updateEmployee(employee);
     if (!resultUpdateEmployee) {
       throw new OperationFailedException(employeeNotUpdated);
@@ -94,9 +98,25 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
   }
 
+  private void checkEmployee(Long departmentId, String fullName, LocalDate birthday,
+      BigDecimal salary) {
+    if (departmentId == null) {
+      throw new OperationFailedException(incorrectDepartmentId);
+    } else if (fullName == null) {
+      throw new OperationFailedException(incorrectFullName);
+    } else if (birthday == null) {
+      throw new OperationFailedException(incorrectBirthday);
+    } else if (salary == null) {
+      throw new OperationFailedException(incorrectSalary);
+    }
+  }
+
   @Override
   public Boolean deleteEmployee(Long employeeId) {
     LOGGER.debug("deleteEmployee(employeeId): employeeId = {}", employeeId);
+    if (employeeId == null || employeeId < 0) {
+      throw new OperationFailedException(incorrectEmployeeId);
+    }
     Boolean resultDeleteEmployee = employeeDao.deleteEmployee(employeeId);
     if (!resultDeleteEmployee) {
       throw new OperationFailedException(employeeNotDeleted);
@@ -106,20 +126,21 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  public List<Employee> getAllEmployees() {
+  public List<ResponseEmployeeDto> getAllEmployees() {
     LOGGER.debug("getAllEmployees()");
     return employeeDao.getAllEmployees();
   }
 
   @Override
-  public List<Employee> getEmployeesByDateOfBirthday(LocalDate date) {
+  public List<ResponseEmployeeDto> getEmployeesByDateOfBirthday(LocalDate date) {
     LOGGER.debug("getEmployeeByDateOfBirthday(date): date = {}",
         date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     return employeeDao.getEmployeesByDateOfBirthday(date);
   }
 
   @Override
-  public List<Employee> getEmployeesBetweenDatesOfBirthday(LocalDate dateFrom, LocalDate dateTo) {
+  public List<ResponseEmployeeDto> getEmployeesBetweenDatesOfBirthday(LocalDate dateFrom,
+      LocalDate dateTo) {
     LOGGER.debug(
         "getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo): dateFrom = {}, dateTo = {}",
         dateFrom.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
@@ -127,21 +148,4 @@ public class EmployeeServiceImpl implements EmployeeService {
     return employeeDao.getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo);
   }
 
-  private void checkEmployee(Employee employee) throws OperationFailedException {
-    if (employee == null) {
-      throw new OperationFailedException(incorrectEmployee);
-    }
-    if (employee.getDepartmentId() == null) {
-      throw new OperationFailedException(incorrectDepartmentId);
-    }
-    if (employee.getFullName() == null) {
-      throw new OperationFailedException(incorrectFullName);
-    }
-    if (employee.getBirthday() == null) {
-      throw new OperationFailedException(incorrectBirthday);
-    }
-    if (employee.getSalary() == null) {
-      throw new OperationFailedException(incorrectSalary);
-    }
-  }
 }

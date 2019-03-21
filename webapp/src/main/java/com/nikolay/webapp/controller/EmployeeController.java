@@ -23,8 +23,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.nikolay.model.Department;
 import com.nikolay.model.Employee;
+import com.nikolay.model.dto.ResponseDepartmentDto;
+import com.nikolay.model.dto.ResponseEmployeeDto;
 import com.nikolay.service.DepartmentService;
 import com.nikolay.service.EmployeeService;
 
@@ -43,6 +44,7 @@ public class EmployeeController {
 
   private final DepartmentService departmentRestService;
 
+  @Autowired
   private final Validator employeeValidator;
 
   /**
@@ -64,7 +66,6 @@ public class EmployeeController {
   @InitBinder
   private void initBinder(WebDataBinder binder) {
     LOGGER.debug("initBinder()");
-    binder.setValidator(employeeValidator);
     binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
       @Override
       public void setAsText(String text) throws IllegalArgumentException {
@@ -91,7 +92,7 @@ public class EmployeeController {
       @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo,
       Model model) {
     LOGGER.debug("getAllEmployees()");
-    List<Employee> employeeList;
+    List<ResponseEmployeeDto> employeeList;
     if (dateFrom != null && dateTo != null) {
       employeeList = employeeRestService.getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo);
       model.addAttribute("message", "List of employees born between "
@@ -120,8 +121,9 @@ public class EmployeeController {
   @GetMapping("/employee/{id}")
   public String getEmployeePage(@PathVariable("id") Long id, Model model) {
     LOGGER.debug("getEmployeePage() id = {}", id);
-    Employee employee = employeeRestService.getEmployeeById(id);
-    Department department = departmentRestService.getDepartmentById(employee.getDepartmentId());
+    ResponseEmployeeDto employee = employeeRestService.getEmployeeById(id);
+    ResponseDepartmentDto department = departmentRestService
+        .getDepartmentById(employee.getDepartmentId());
     model.addAttribute("employee", employee);
     model.addAttribute("departmentName", employee.getDepartmentName());
     return "employee";
@@ -154,6 +156,7 @@ public class EmployeeController {
   public String addEmployee(@ModelAttribute @Validated Employee employee,
       BindingResult br, RedirectAttributes redirectAttributes, Model model) {
     LOGGER.debug("addEmployee()");
+    employeeValidator.validate(employee, br);
     if (br.hasErrors()) {
       model.addAttribute("departmentList", departmentRestService.getAllDepartments());
       return "addEmployee";
@@ -174,7 +177,7 @@ public class EmployeeController {
   @GetMapping("/employee/{id}/edit")
   public String editEmployeePage(@PathVariable("id") Long id, Model model) {
     LOGGER.debug("editEmployeePage() id = {}", id);
-    Employee employee = employeeRestService.getEmployeeById(id);
+    ResponseEmployeeDto employee = employeeRestService.getEmployeeById(id);
     model.addAttribute("employee", employee);
     model.addAttribute("departmentList", departmentRestService.getAllDepartments());
     return "editEmployee";
@@ -194,6 +197,7 @@ public class EmployeeController {
   public String editEmployee(@PathVariable("id") Long id,
       @ModelAttribute @Validated Employee employee,
       BindingResult br, RedirectAttributes redirectAttributes, Model model) {
+    employeeValidator.validate(employee, br);
     LOGGER.debug("editEmployee() id = {]", id);
     if (br.hasErrors()) {
       model.addAttribute("departmentList", departmentRestService.getAllDepartments());

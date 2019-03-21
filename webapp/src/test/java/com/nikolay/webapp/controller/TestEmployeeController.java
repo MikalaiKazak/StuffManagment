@@ -31,9 +31,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import com.nikolay.model.Department;
 import com.nikolay.model.Employee;
-import com.nikolay.service.DepartmentService;
+import com.nikolay.model.dto.ResponseDepartmentDto;
+import com.nikolay.model.dto.ResponseEmployeeDto;
 import com.nikolay.service.EmployeeService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -46,15 +46,12 @@ public class TestEmployeeController {
   private EmployeeController employeeController;
 
   @Autowired
-  private DepartmentService mockDepartmentService;
-
-  @Autowired
   private EmployeeService mockEmployeeService;
 
-  private Department dep1;
+  private ResponseDepartmentDto dep1;
   private Employee emp1;
-  private Employee emp2;
-  private List<Employee> employees;
+  private ResponseEmployeeDto emp2;
+  private List<ResponseEmployeeDto> employees;
 
   private MockMvc mockMvc;
 
@@ -64,12 +61,12 @@ public class TestEmployeeController {
     InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
     viewResolver.setSuffix(".html");
     viewResolver.setPrefix("/WEB-INF/templates/");
-    dep1 = new Department(1L, "Services", BigDecimal.valueOf(200));
-    emp1 = new Employee(1L, 1L, "Services", "Nikolay Kozak", LocalDate.of(1999, 2, 28),
+    dep1 = new ResponseDepartmentDto(1L, "Services", BigDecimal.valueOf(200));
+    emp1 = new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28),
         BigDecimal.valueOf(350));
-    emp2 = new Employee(2L, 1L, "Services", "Dmitry Kozak", LocalDate.of(2000, 12, 5),
+    emp2 = new ResponseEmployeeDto(2L, 1L, "Services", "Dmitry Kozak", LocalDate.of(2000, 12, 5),
         BigDecimal.valueOf(300));
-    employees = Arrays.asList(emp1, emp2);
+    employees = Arrays.asList(emp2, emp2);
     mockMvc = MockMvcBuilders.standaloneSetup(new ErrorController(), employeeController)
         .setViewResolvers(viewResolver)
         .build();
@@ -159,7 +156,8 @@ public class TestEmployeeController {
   @Test
   public void testPostUpdateEmployee() throws Exception {
     LOGGER.debug("test TestEmployeeController: run testPostUpdateDepartment()");
-    when(mockEmployeeService.updateEmployee(any(Employee.class))).thenReturn(true);
+    when(mockEmployeeService.updateEmployee(any(Employee.class)))
+        .thenReturn(true);
     mockMvc.perform(post("/employee/2/edit")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
@@ -193,7 +191,7 @@ public class TestEmployeeController {
     LOGGER.debug("test TestEmployeeRestController: run testGetEmployeeByDateOfBirthday()");
     LocalDate date = LocalDate.of(1999, 2, 28);
     when(mockEmployeeService.getEmployeesByDateOfBirthday(date))
-        .thenReturn(Collections.singletonList(emp1));
+        .thenReturn(Collections.singletonList(emp2));
     mockMvc.perform(
         get("/employees/?date={date}", date)
             .accept(MediaType.APPLICATION_JSON)

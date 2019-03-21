@@ -31,6 +31,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.nikolay.dao.EmployeeDao;
 import com.nikolay.model.Employee;
+import com.nikolay.model.dto.ResponseEmployeeDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-dao-rest.xml"})
@@ -52,19 +53,19 @@ public class TestEmployeeRestDao {
 
 
   private Employee emp1;
-  private Employee emp2;
-  private Employee emp3;
+  private ResponseEmployeeDto emp2;
+  private ResponseEmployeeDto emp3;
   private LocalDate date;
   private LocalDate dateTo;
   private LocalDate dateFrom;
 
   @Before
   public void setUp() {
-    emp1 = new Employee(3L, "Services", "Nikolay Kozak", LocalDate.of(1999, 2, 28),
+    emp1 = new Employee(1L, 3L, "Nikolay Kozak", LocalDate.of(1999, 2, 28),
         BigDecimal.valueOf(350));
-    emp2 = new Employee(1L, 1L, "Services", "Nikolay", LocalDate.of(1999, 2, 28),
+    emp2 = new ResponseEmployeeDto(1L, 1L, "Services", "Nikolay", LocalDate.of(1999, 2, 28),
         BigDecimal.valueOf(350));
-    emp3 = new Employee(2L, 1L, "Services", "Dmitry Kozak", LocalDate.of(2000, 12, 5),
+    emp3 = new ResponseEmployeeDto(2L, 1L, "Services", "Dmitry Kozak", LocalDate.of(2000, 12, 5),
         BigDecimal.valueOf(300));
     date = LocalDate.of(1999, 2, 28);
     dateFrom = LocalDate.of(1998, 2, 2);
@@ -75,23 +76,23 @@ public class TestEmployeeRestDao {
   @Test
   public void testGetEmployeeById() {
     LOGGER.debug("test TestEmployeeRestDao: run testGetEmployeeById()");
-    when(mockRestTemplate.getForObject(urlWithParamUrl, Employee.class, 1L))
+    when(mockRestTemplate.getForObject(urlWithParamUrl, ResponseEmployeeDto.class, 1L))
         .thenReturn(emp2);
-    Employee employee = employeeRestDao.getEmployeeById(1L);
+    ResponseEmployeeDto employee = employeeRestDao.getEmployeeById(1L);
     assertNotNull(employee);
     assertEquals(1L, employee.getId().longValue());
-    verify(mockRestTemplate, times(1)).getForObject(urlWithParamUrl, Employee.class, 1L);
+    verify(mockRestTemplate, times(1)).getForObject(urlWithParamUrl, ResponseEmployeeDto.class, 1L);
   }
 
   @Test
   public void testGetAllEmployee() {
     LOGGER.debug("test TestEmployeeRestDao: run testGetAllEmployee()");
-    when(mockRestTemplate.getForObject(url, Employee[].class))
-        .thenReturn(new Employee[]{emp2, emp3});
-    List<Employee> employees = employeeRestDao.getAllEmployees();
+    when(mockRestTemplate.getForObject(url, ResponseEmployeeDto[].class))
+        .thenReturn(new ResponseEmployeeDto[]{emp2, emp3});
+    List<ResponseEmployeeDto> employees = employeeRestDao.getAllEmployees();
     assertNotNull(employees);
     assertEquals(2, employees.size());
-    verify(mockRestTemplate, times(1)).getForObject(url, Employee[].class);
+    verify(mockRestTemplate, times(1)).getForObject(url, ResponseEmployeeDto[].class);
   }
 
   @Test
@@ -110,12 +111,13 @@ public class TestEmployeeRestDao {
     LOGGER.debug("test TestEmployeeRestDao: run testGetEmployeeByDateOfBirthday()");
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
         .queryParam("date", date);
-    when(mockRestTemplate.getForObject(builder.toUriString(), Employee[].class))
-        .thenReturn(new Employee[]{emp2});
-    List<Employee> employeeList = employeeRestDao.getEmployeesByDateOfBirthday(date);
+    when(mockRestTemplate.getForObject(builder.toUriString(), ResponseEmployeeDto[].class))
+        .thenReturn(new ResponseEmployeeDto[]{emp2});
+    List<ResponseEmployeeDto> employeeList = employeeRestDao.getEmployeesByDateOfBirthday(date);
     assertNotNull(employeeList);
     assertEquals(1, employeeList.size());
-    verify(mockRestTemplate, times(1)).getForObject(builder.toUriString(), Employee[].class);
+    verify(mockRestTemplate, times(1))
+        .getForObject(builder.toUriString(), ResponseEmployeeDto[].class);
   }
 
   @Test
@@ -124,13 +126,14 @@ public class TestEmployeeRestDao {
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
         .queryParam("dateFrom", dateFrom)
         .queryParam("dateTo", dateTo);
-    when(mockRestTemplate.getForObject(builder.toUriString(), Employee[].class))
-        .thenReturn(new Employee[]{emp2, emp3});
-    List<Employee> employeeList = employeeRestDao
+    when(mockRestTemplate.getForObject(builder.toUriString(), ResponseEmployeeDto[].class))
+        .thenReturn(new ResponseEmployeeDto[]{emp2, emp3});
+    List<ResponseEmployeeDto> employeeList = employeeRestDao
         .getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo);
     assertNotNull(employeeList);
     assertEquals(2, employeeList.size());
-    verify(mockRestTemplate, times(1)).getForObject(builder.toUriString(), Employee[].class);
+    verify(mockRestTemplate, times(1))
+        .getForObject(builder.toUriString(), ResponseEmployeeDto[].class);
   }
 
   @Test
@@ -152,11 +155,11 @@ public class TestEmployeeRestDao {
     LOGGER.debug("test TestEmployeeRestDao: run testUpdateEmployee()");
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-    HttpEntity<?> entity = new HttpEntity<>(emp2, headers);
+    HttpEntity<?> entity = new HttpEntity<>(emp1, headers);
     ResponseEntity<Boolean> responseEntity = new ResponseEntity<>(true, HttpStatus.OK);
     when(mockRestTemplate.exchange(urlWithParamUrl, HttpMethod.PUT, entity, Boolean.class, 1L))
         .thenReturn(responseEntity);
-    assertTrue(employeeRestDao.updateEmployee(emp2));
+    assertTrue(employeeRestDao.updateEmployee(emp1));
     verify(mockRestTemplate).exchange(urlWithParamUrl, HttpMethod.PUT, entity, Boolean.class, 1L);
   }
 

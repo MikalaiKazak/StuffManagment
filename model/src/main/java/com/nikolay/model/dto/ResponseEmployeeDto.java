@@ -1,4 +1,4 @@
-package com.nikolay.model;
+package com.nikolay.model.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -6,15 +6,15 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
- * The type Employee.
- *
- * @author Mikalai_Kazak @epam.com 10.12.2018
+ * The type Response employee dto.
  */
-public class Employee {
+public class ResponseEmployeeDto {
 
   private Long id;
 
   private Long departmentId;
+
+  private String departmentName;
 
   private String fullName;
 
@@ -24,24 +24,26 @@ public class Employee {
   private BigDecimal salary;
 
   /**
-   * Instantiates a new Employee.
+   * Instantiates a new Response employee dto.
    */
-  public Employee() {
+  public ResponseEmployeeDto() {
   }
 
   /**
-   * Instantiates a new Employee.
+   * Instantiates a new Response employee dto.
    *
    * @param id the id
    * @param departmentId the department id
+   * @param departmentName the department name
    * @param fullName the full name
    * @param birthday the birthday
    * @param salary the salary
    */
-  public Employee(Long id, Long departmentId, String fullName, LocalDate birthday,
-      BigDecimal salary) {
+  public ResponseEmployeeDto(Long id, Long departmentId, String departmentName,
+      String fullName, LocalDate birthday, BigDecimal salary) {
     this.id = id;
     this.departmentId = departmentId;
+    this.departmentName = departmentName;
     this.fullName = fullName;
     this.birthday = birthday;
     this.salary = salary;
@@ -61,6 +63,14 @@ public class Employee {
 
   public void setDepartmentId(Long departmentId) {
     this.departmentId = departmentId;
+  }
+
+  public String getDepartmentName() {
+    return departmentName;
+  }
+
+  public void setDepartmentName(String departmentName) {
+    this.departmentName = departmentName;
   }
 
   public String getFullName() {
@@ -87,5 +97,3 @@ public class Employee {
     this.salary = salary;
   }
 }
-
-

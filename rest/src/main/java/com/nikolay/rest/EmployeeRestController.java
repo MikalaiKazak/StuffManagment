@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nikolay.model.Employee;
+import com.nikolay.model.dto.ResponseEmployeeDto;
 import com.nikolay.service.EmployeeService;
 
 /**
@@ -70,7 +71,7 @@ public class EmployeeRestController {
    * @return the all employees
    */
   @GetMapping("/")
-  public ResponseEntity<List<Employee>> getAllEmployees(
+  public ResponseEntity<List<ResponseEmployeeDto>> getAllEmployees(
       @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
       @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
       @RequestParam(defaultValue = "") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo) {
@@ -79,16 +80,16 @@ public class EmployeeRestController {
       LOGGER.debug("getAllEmployees(dateFrom, dateTo): dateFrom = {}, dateTo = {}",
           dateFrom.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
           dateTo.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-      List<Employee> employees = employeeService
+      List<ResponseEmployeeDto> employees = employeeService
           .getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo);
       return new ResponseEntity<>(employees, HttpStatus.FOUND);
     } else if (date != null) {
       LOGGER.debug("getAllEmployees(date): date = {}",
           date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-      List<Employee> employees = employeeService.getEmployeesByDateOfBirthday(date);
+      List<ResponseEmployeeDto> employees = employeeService.getEmployeesByDateOfBirthday(date);
       return new ResponseEntity<>(employees, HttpStatus.FOUND);
     }
-    List<Employee> employees = employeeService.getAllEmployees();
+    List<ResponseEmployeeDto> employees = employeeService.getAllEmployees();
     return new ResponseEntity<>(employees, HttpStatus.OK);
   }
 
@@ -99,9 +100,9 @@ public class EmployeeRestController {
    * @return the employee by id
    */
   @GetMapping("/{id}")
-  public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") Long id) {
+  public ResponseEntity<ResponseEmployeeDto> getEmployeeById(@PathVariable("id") Long id) {
     LOGGER.debug("getEmployeeById(id): id = {}", id);
-    Employee employee = employeeService.getEmployeeById(id);
+    ResponseEmployeeDto employee = employeeService.getEmployeeById(id);
     return new ResponseEntity<>(employee, HttpStatus.FOUND);
   }
 
@@ -115,7 +116,6 @@ public class EmployeeRestController {
   public ResponseEntity<Long> addEmployee(@RequestBody @Validated Employee employee) {
     LOGGER.debug("addEmployee(employee): employeeName = {}", employee.getFullName());
     Long id = employeeService.saveEmployee(employee);
-    employee.setId(id);
     return new ResponseEntity<>(id, HttpStatus.CREATED);
   }
 
@@ -144,12 +144,7 @@ public class EmployeeRestController {
       @PathVariable Long id) {
     LOGGER.debug("updateEmployee(id, employee): id = {}, employeeName = {}", id,
         newEmployee.getFullName());
-    Employee employee = employeeService.getEmployeeById(id);
-    employee.setDepartmentId(newEmployee.getDepartmentId());
-    employee.setFullName(newEmployee.getFullName());
-    employee.setBirthday(newEmployee.getBirthday());
-    employee.setSalary(newEmployee.getSalary());
-    Boolean resultUpdateEmployee = employeeService.updateEmployee(employee);
+    Boolean resultUpdateEmployee = employeeService.updateEmployee(newEmployee);
     return new ResponseEntity<>(resultUpdateEmployee, HttpStatus.ACCEPTED);
   }
 }

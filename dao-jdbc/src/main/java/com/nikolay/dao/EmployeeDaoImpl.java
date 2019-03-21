@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import com.nikolay.dao.mapper.EmployeeMapper;
 import com.nikolay.model.Employee;
+import com.nikolay.model.dto.ResponseEmployeeDto;
 
 /**
  * The type Employee dao.
@@ -85,7 +86,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public Employee getEmployeeById(final Long employeeId) {
+  public ResponseEmployeeDto getEmployeeById(final Long employeeId) {
     LOGGER.debug("getEmployeeById(employeeId): employeeId = {}", employeeId);
     return this.namedParameterJdbcTemplate
         .queryForObject(getEmployeeById, new MapSqlParameterSource(parameterEmployeeId, employeeId),
@@ -96,18 +97,27 @@ public class EmployeeDaoImpl implements EmployeeDao {
   public Long saveEmployee(final Employee employee) {
     LOGGER.debug("saveEmployee(employee): employeeName = {}", employee.getFullName());
     KeyHolder keyHolder = new GeneratedKeyHolder();
+    MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+        .addValue(parameterDepartmentId, employee.getDepartmentId())
+        .addValue(parameterFullName, employee.getFullName())
+        .addValue(parameterEmployeeBirthday, employee.getBirthday().toString())
+        .addValue(parameterEmployeeSalary, employee.getSalary());
     this.namedParameterJdbcTemplate
-        .update(addEmployee, getParameterSourceEmployee(employee), keyHolder,
+        .update(addEmployee, sqlParameterSource, keyHolder,
             new String[]{EMPLOYEE_ID});
     return Objects.requireNonNull(keyHolder.getKey()).longValue();
   }
 
   @Override
   public Boolean updateEmployee(final Employee employee) {
-    LOGGER.debug("updateEmployee(employee): employeeId = {}", employee.getId());
-    MapSqlParameterSource namedParameters = getParameterSourceEmployee(employee)
-        .addValue(parameterEmployeeId, employee.getId());
-    return this.namedParameterJdbcTemplate.update(updateEmployee, namedParameters) == 1;
+    LOGGER.debug("updateEmployee(employee)");
+    MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+        .addValue(parameterEmployeeId, employee.getId())
+        .addValue(parameterDepartmentId, employee.getDepartmentId())
+        .addValue(parameterFullName, employee.getFullName())
+        .addValue(parameterEmployeeBirthday, employee.getBirthday().toString())
+        .addValue(parameterEmployeeSalary, employee.getSalary());
+    return this.namedParameterJdbcTemplate.update(updateEmployee, sqlParameterSource) == 1;
   }
 
   @Override
@@ -118,13 +128,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public List<Employee> getAllEmployees() {
+  public List<ResponseEmployeeDto> getAllEmployees() {
     LOGGER.debug("getAllEmployees()");
     return this.namedParameterJdbcTemplate.query(getAllEmployee, employeeMapper);
   }
 
   @Override
-  public List<Employee> getEmployeesByDateOfBirthday(final LocalDate date) {
+  public List<ResponseEmployeeDto> getEmployeesByDateOfBirthday(final LocalDate date) {
     LOGGER.debug("getEmployeeByDateOfBirthday(date)");
     return this.namedParameterJdbcTemplate
         .query(getEmployeeByDateOfBirthday, new MapSqlParameterSource(parameterEmployeeBirthday,
@@ -132,7 +142,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public List<Employee> getEmployeesBetweenDatesOfBirthday(final LocalDate dateFrom,
+  public List<ResponseEmployeeDto> getEmployeesBetweenDatesOfBirthday(final LocalDate dateFrom,
       final LocalDate dateTo) {
     LOGGER.debug("getEmployeeBetweenDatesOfBirthday(dateFrom, dateTo)");
     MapSqlParameterSource namedParameters = new MapSqlParameterSource()
@@ -140,13 +150,5 @@ public class EmployeeDaoImpl implements EmployeeDao {
         .addValue(parameterEmployeeBirthdayTo, dateTo.toString());
     return this.namedParameterJdbcTemplate
         .query(getEmployeeBetweenDatesOfBirthday, namedParameters, employeeMapper);
-  }
-
-  private MapSqlParameterSource getParameterSourceEmployee(Employee employee) {
-    return new MapSqlParameterSource()
-        .addValue(parameterDepartmentId, employee.getDepartmentId())
-        .addValue(parameterFullName, employee.getFullName())
-        .addValue(parameterEmployeeBirthday, employee.getBirthday().toString())
-        .addValue(parameterEmployeeSalary, employee.getSalary());
   }
 }

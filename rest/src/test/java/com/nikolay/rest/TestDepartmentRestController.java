@@ -36,6 +36,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nikolay.model.Department;
+import com.nikolay.model.dto.ResponseDepartmentDto;
 import com.nikolay.service.DepartmentService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -52,15 +53,17 @@ public class TestDepartmentRestController {
 
   private MockMvc mockMvc;
   private Department saveDepartment;
+  private ResponseDepartmentDto responseDepartmentDto;
   private Department correctDepartment;
-  private List<Department> departments;
+  private List<ResponseDepartmentDto> departments;
 
   @Before
   public void setUp() {
     LOGGER.error("execute: beforeTest()");
-    saveDepartment = new Department("New Department", BigDecimal.valueOf(500));
-    correctDepartment = new Department(14L, "Services", BigDecimal.valueOf(3249));
-    departments = Arrays.asList(saveDepartment, correctDepartment);
+    saveDepartment = new Department(1L, "New Department");
+    responseDepartmentDto = new ResponseDepartmentDto(14L, "Services", BigDecimal.valueOf(3249));
+    correctDepartment = new Department(14L, "JAVA");
+    departments = Arrays.asList(responseDepartmentDto, responseDepartmentDto);
     mockMvc = standaloneSetup(departmentRestController)
         .setMessageConverters(createJacksonMessageConverter())
         .build();
@@ -76,14 +79,14 @@ public class TestDepartmentRestController {
   @Test
   public void testGetDepartmentById() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testGetDepartmentById()");
-    when(mockDepartmentService.getDepartmentById(14L)).thenReturn(correctDepartment);
+    when(mockDepartmentService.getDepartmentById(14L)).thenReturn(responseDepartmentDto);
     ObjectMapper mapper = createObjectMapperWithJacksonConverter();
     mockMvc.perform(
         get("/department/14")
             .accept(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isFound())
-        .andExpect(content().string(mapper.writeValueAsString(correctDepartment)));
+        .andExpect(content().string(mapper.writeValueAsString(responseDepartmentDto)));
     verify(mockDepartmentService).getDepartmentById(14L);
   }
 
@@ -135,8 +138,8 @@ public class TestDepartmentRestController {
   @Test
   public void testUpdateDepartment() throws Exception {
     LOGGER.debug("test TestDepartmentRestController: run testUpdateDepartment()");
-    when((mockDepartmentService.getDepartmentById(14L))).thenReturn(correctDepartment);
-    when(mockDepartmentService.updateDepartment(correctDepartment)).thenReturn(true);
+    when(mockDepartmentService.updateDepartment(any(Department.class)))
+        .thenReturn(true);
     String departmentJson = createObjectMapperWithJacksonConverter().writeValueAsString(
         saveDepartment);
     mockMvc.perform(
@@ -147,8 +150,7 @@ public class TestDepartmentRestController {
         .andDo(print())
         .andExpect(content().string(String.valueOf(true)))
         .andExpect(status().isAccepted());
-    verify(mockDepartmentService).getDepartmentById(14L);
-    verify(mockDepartmentService).updateDepartment(correctDepartment);
+    verify(mockDepartmentService).updateDepartment(any(Department.class));
   }
 
 }

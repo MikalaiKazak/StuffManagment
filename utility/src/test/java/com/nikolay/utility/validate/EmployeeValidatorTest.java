@@ -96,9 +96,9 @@ public class EmployeeValidatorTest {
   }
 
   private Employee createEmployee() {
-    return new Employee(1L,
+    return new Employee(
         1L,
-        "Java",
+        1L,
         "jack",
         LocalDate.of(1999, 2, 2),
         BigDecimal.ONE);
