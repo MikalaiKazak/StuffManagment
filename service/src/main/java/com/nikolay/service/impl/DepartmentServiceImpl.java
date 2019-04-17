@@ -14,16 +14,10 @@ import com.nikolay.model.dto.ResponseDepartmentDto;
 import com.nikolay.service.DepartmentService;
 import com.nikolay.service.exception.OperationFailedException;
 
-/**
- * The type Department service.
- */
 @Service
 @Transactional
 public class DepartmentServiceImpl implements DepartmentService {
 
-  /**
-   * The constant LOGGER.
-   */
   public static final Logger LOGGER = LogManager.getLogger();
 
   @Value("${departmentService.notUpdated}")
@@ -41,14 +35,9 @@ public class DepartmentServiceImpl implements DepartmentService {
   @Value("${department.incorrectDepartmentName}")
   private String incorrectDepartmentName;
 
-  private DepartmentDao departmentDao;
+  private final DepartmentDao departmentDao;
 
-  /**
-   * Sets department dao.
-   *
-   * @param departmentDao the department dao
-   */
-  public void setDepartmentDao(DepartmentDao departmentDao) {
+  public DepartmentServiceImpl(DepartmentDao departmentDao) {
     LOGGER.debug("getAllDepartments()");
     this.departmentDao = departmentDao;
   }
@@ -60,7 +49,7 @@ public class DepartmentServiceImpl implements DepartmentService {
   }
 
   @Override
-  public ResponseDepartmentDto getDepartmentById(Long departmentId) {
+  public ResponseDepartmentDto getDepartmentById(final Long departmentId) {
     LOGGER.debug("getDepartmentById(id): id = {}", departmentId);
     if (departmentId == null || departmentId < 0) {
       throw new OperationFailedException(incorrectDepartmentId);
@@ -69,7 +58,7 @@ public class DepartmentServiceImpl implements DepartmentService {
   }
 
   @Override
-  public Long saveDepartment(Department department) {
+  public Long saveDepartment(final Department department) {
     LOGGER.debug("saveDepartment(department): departmentName = {}",
         department.getDepartmentName());
     if (department.getDepartmentName() == null) {
@@ -79,7 +68,7 @@ public class DepartmentServiceImpl implements DepartmentService {
   }
 
   @Override
-  public Boolean updateDepartment(Department department) {
+  public Boolean updateDepartment(final Department department) {
     LOGGER.debug("updateDepartment(department)");
     if (department.getId() == null || department.getId() < 0) {
       throw new OperationFailedException(incorrectDepartmentId);
@@ -95,7 +84,7 @@ public class DepartmentServiceImpl implements DepartmentService {
   }
 
   @Override
-  public Boolean deleteDepartment(Long departmentId) {
+  public Boolean deleteDepartment(final Long departmentId) {
     LOGGER.debug("deleteDepartment(id) id = {}", departmentId);
     Boolean resultDeleteDepartment = departmentDao.deleteDepartment(departmentId);
     if (departmentId == null || departmentId < 0) {

@@ -36,7 +36,7 @@ public class DepartmentRestDaoImpl implements DepartmentDao {
   @Value("${department.endpoint.with.id}")
   private String urlWithIdParam;
 
-  private RestTemplate restTemplate;
+  private final RestTemplate restTemplate;
 
   /**
    * Instantiates a new Department rest dao.
@@ -60,7 +60,7 @@ public class DepartmentRestDaoImpl implements DepartmentDao {
   }
 
   @Override
-  public ResponseDepartmentDto getDepartmentById(Long departmentId)
+  public ResponseDepartmentDto getDepartmentById(final Long departmentId)
       throws ServerDataAccessException {
     LOGGER.debug("getDepartmentById(departmentId): departmentId = {}", departmentId);
     ResponseDepartmentDto department = restTemplate
@@ -74,7 +74,7 @@ public class DepartmentRestDaoImpl implements DepartmentDao {
   }
 
   @Override
-  public Long saveDepartment(Department department) throws ServerDataAccessException {
+  public Long saveDepartment(final Department department) throws ServerDataAccessException {
     LOGGER.debug("saveDepartment(department): departmentName = {}",
         department.getDepartmentName());
     ResponseEntity<Long> responseEntity = restTemplate
@@ -88,7 +88,7 @@ public class DepartmentRestDaoImpl implements DepartmentDao {
   }
 
   @Override
-  public Boolean updateDepartment(Department department)
+  public Boolean updateDepartment(final Department department)
       throws ServerDataAccessException {
     LOGGER.debug("updateDepartment(department)");
     HttpEntity<?> entity = new HttpEntity<>(department, createHeaders());
@@ -103,7 +103,7 @@ public class DepartmentRestDaoImpl implements DepartmentDao {
   }
 
   @Override
-  public Boolean deleteDepartment(Long departmentId) throws ServerDataAccessException {
+  public Boolean deleteDepartment(final Long departmentId) throws ServerDataAccessException {
     LOGGER.debug("deleteDepartment(departmentId): departmentId = {}", departmentId);
     HttpEntity<?> entity = new HttpEntity<>(createHeaders());
     ResponseEntity<Boolean> response = restTemplate

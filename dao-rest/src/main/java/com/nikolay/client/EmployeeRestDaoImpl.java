@@ -39,7 +39,7 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   @Value("${employee.endpoint.with.id}")
   private String urlWithParamUrl;
 
-  private RestTemplate restTemplate;
+  private final RestTemplate restTemplate;
 
   /**
    * Instantiates a new Employee rest dao.
@@ -51,7 +51,7 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public ResponseEmployeeDto getEmployeeById(Long employeeId) throws ServerDataAccessException {
+  public ResponseEmployeeDto getEmployeeById(final Long employeeId) throws ServerDataAccessException {
     LOGGER.debug("getEmployeeById(employeeId): employeeId = {}", employeeId);
     ResponseEmployeeDto employee = restTemplate
         .getForObject(urlWithParamUrl, ResponseEmployeeDto.class, employeeId);
@@ -64,7 +64,7 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public Long saveEmployee(Employee employee) throws ServerDataAccessException {
+  public Long saveEmployee(final Employee employee) throws ServerDataAccessException {
     LOGGER.debug("saveEmployee(employee): employeeFullName = {}", employee.getFullName());
     ResponseEntity<Long> responseEntity = restTemplate
         .postForEntity(url, employee, Long.class);
@@ -77,7 +77,7 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public Boolean updateEmployee(Employee employee)
+  public Boolean updateEmployee(final Employee employee)
       throws ServerDataAccessException {
     LOGGER.debug("updateEmployee(employee)");
     HttpHeaders headers = new HttpHeaders();
@@ -89,7 +89,7 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public Boolean deleteEmployee(Long employeeId) throws ServerDataAccessException {
+  public Boolean deleteEmployee(final Long employeeId) throws ServerDataAccessException {
     LOGGER.debug("deleteEmployee(employeeId): employeeId = {}", employeeId);
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
@@ -111,7 +111,7 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public List<ResponseEmployeeDto> getEmployeesByDateOfBirthday(LocalDate date)
+  public List<ResponseEmployeeDto> getEmployeesByDateOfBirthday(final LocalDate date)
       throws ServerDataAccessException {
     LOGGER.debug("getEmployeesByDateOfBirthday(date): date = {}",
         date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
@@ -126,8 +126,8 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
   }
 
   @Override
-  public List<ResponseEmployeeDto> getEmployeesBetweenDatesOfBirthday(LocalDate dateFrom,
-      LocalDate dateTo)
+  public List<ResponseEmployeeDto> getEmployeesBetweenDatesOfBirthday(final LocalDate dateFrom,
+      final LocalDate dateTo)
       throws ServerDataAccessException {
     LOGGER.debug(
         "getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo): dateFrom = {}, dateTo = {}",

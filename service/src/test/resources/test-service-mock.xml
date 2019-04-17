@@ -15,7 +15,7 @@
   </bean>
 
   <bean class="com.nikolay.service.impl.DepartmentServiceImpl" id="departmentService">
-    <property name="departmentDao" ref="departmentDao"/>
+    <constructor-arg name="departmentDao" ref="departmentDao"/>
   </bean>
 
   <bean class="org.mockito.Mockito" factory-method="mock" id="employeeDao">
@@ -23,7 +23,7 @@
   </bean>
 
   <bean class="com.nikolay.service.impl.EmployeeServiceImpl" id="employeeService">
-    <property name="employeeDao" ref="employeeDao"/>
+    <constructor-arg name="employeeDao" ref="employeeDao"/>
   </bean>
 
 </beans>

@@ -45,11 +45,11 @@
   </bean>
 
   <bean class="com.nikolay.service.impl.DepartmentServiceImpl" id="departmentService">
-    <property name="departmentDao" ref="departmentRestDao"/>
+    <constructor-arg name="departmentDao" ref="departmentRestDao"/>
   </bean>
 
   <bean class="com.nikolay.service.impl.EmployeeServiceImpl" id="employeeService">
-    <property name="employeeDao" ref="employeeRestDao"/>
+    <constructor-arg name="employeeDao" ref="employeeRestDao"/>
   </bean>
 
   <bean class="com.nikolay.utility.validate.EmployeeValidator" id="employeeValidator"/>
