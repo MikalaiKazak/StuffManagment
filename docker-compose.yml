@@ -1,33 +1,9 @@
-version: "3.3"
+version: "2.1"
 
 services:
 
-  rest-server:
-    image: tomcat:9-jre8
-    container_name: rest-server
-    volumes:
-      - ./rest/target/rest.war:/usr/local/tomcat/webapps/rest.war
-      - rest-logs:/usr/local/tomcat/logs
-    ports:
-      - "8081:8080"
-    depends_on:
-      - "logstash"
-
-  rest-client:
-    image: tomcat:9-jre8
-    container_name: rest-client
-    environment:
-      - "JAVA_OPTS=-Dprofile=docker"
-    volumes:
-      - ./webapp/target/webapp.war:/usr/local/tomcat/webapps/webapp.war
-      - webapp-logs:/usr/local/tomcat/logs
-    ports:
-      - "8082:8080"
-    depends_on:
-      - "rest-server"
-      - "logstash"
-      
   elasticsearch:
+    container_name: elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.7.0
     volumes:
       - ./elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
@@ -41,6 +17,7 @@ services:
 
   logstash:
     image: docker.elastic.co/logstash/logstash-oss:6.7.0
+    container_name: logstash
     volumes:
       - ./elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./elk/logstash/pipeline:/usr/share/logstash/pipeline:ro
@@ -49,12 +26,15 @@ services:
       - "9600:9600"
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    healthcheck:
+      test: "printf 'GET / HTTP/1.1\n\n' > /dev/tcp/logstash/9600"
     networks:
-      - elk
+      - "elk"
     depends_on:
       - "elasticsearch"
 
   kibana:
+    container_name: kibana
     image: docker.elastic.co/kibana/kibana-oss:6.7.0
     volumes:
       - ./elk/kibana/config/:/usr/share/kibana/config:ro
@@ -64,6 +44,39 @@ services:
       - "elk"
     depends_on:
       - "elasticsearch"
+      - "logstash"
+
+  rest-server:
+    image: tomcat:9-jre8
+    container_name: rest-server
+    volumes:
+      - ./rest/target/rest.war:/usr/local/tomcat/webapps/rest.war
+      - rest-logs:/usr/local/tomcat/logs
+    ports:
+      - "8081:8080"
+    depends_on:
+      logstash:
+        condition: service_healthy
+    networks:
+      - "elk"
+
+  rest-client:
+    image: tomcat:9-jre8
+    container_name: rest-client
+    environment:
+      - "JAVA_OPTS=-Dprofile=docker"
+    volumes:
+      - ./webapp/target/webapp.war:/usr/local/tomcat/webapps/webapp.war
+      - webapp-logs:/usr/local/tomcat/logs
+    ports:
+      - "8082:8080"
+    depends_on:
+      logstash:
+        condition: service_healthy
+      rest-server:
+        condition: service_started
+    networks:
+      - "elk"
 
 volumes:
   webapp-logs:
