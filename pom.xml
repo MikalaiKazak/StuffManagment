@@ -19,6 +19,7 @@
     <module>service-api</module>
     <module>utility</module>
     <module>functional-test</module>
+    <module>soap</module>
   </modules>
 
   <properties>
@@ -39,6 +40,8 @@
     <maven-surefire-plugin.version>2.12.4</maven-surefire-plugin.version>
     <rest-assured.version>3.3.0</rest-assured.version>
     <org.testng.version>6.14.3</org.testng.version>
+    <wsdl4j.version>1.6.3</wsdl4j.version>
+    <spring.ws.version>2.2.0.RELEASE</spring.ws.version>
   </properties>
 
   <dependencyManagement>
@@ -78,6 +81,18 @@
         <groupId>com.nikolay.department-app</groupId>
         <artifactId>service</artifactId>
         <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.ws</groupId>
+        <artifactId>spring-ws-core</artifactId>
+        <version>${spring.ws.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>wsdl4j</groupId>
+        <artifactId>wsdl4j</artifactId>
+        <version>${wsdl4j.version}</version>
       </dependency>
 
       <dependency>
@@ -169,6 +184,12 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-tx</artifactId>
         <version>${spring.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.3.0</version>
       </dependency>
 
       <dependency>
