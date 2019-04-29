@@ -10,6 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>soap</artifactId>
+  <packaging>war</packaging>
 
   <dependencies>
 
@@ -85,11 +86,29 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
-
   </dependencies>
 
   <build>
     <finalName>soap</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.jvnet.jaxb2.maven2</groupId>
+        <artifactId>maven-jaxb2-plugin</artifactId>
+        <version>0.12.3</version>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <schemaDirectory>src/main/webapp/WEB-INF/xsds</schemaDirectory>
+          <generatePackage>com.nikolay.model.xsds</generatePackage>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
 </project>

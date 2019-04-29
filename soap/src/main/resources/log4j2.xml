@@ -1,0 +1,28 @@
+<Configuration status="WARN">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>
+    <File name="File" fileName="logs/server.log">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    </File>
+    <Socket name="Socket" host="logstash" port="5000" protocol="TCP" reconnectionDelayMillis="30000"
+      immediateFail="false">
+      <JsonLayout compact="false"complete="true" eventEol="true" />
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+      </Policies>
+      <DefaultRolloverStrategy max="10"/>
+    </Socket>
+  </Appenders>
+  <Loggers>
+    <Root level="ERROR">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="File"/>
+      <appender-ref ref="Socket"/>
+    </Root>
+    <Logger name="org.springframework" level="DEBUG"/>
+    <Logger name="com.nikolay" level="DEBUG"/>
+  </Loggers>
+</Configuration>

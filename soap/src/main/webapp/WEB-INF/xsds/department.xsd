@@ -1,32 +1,25 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  xmlns:tns="http://www.javaspringclub.com/deparmtent"
-  targetNamespace="http://www.javaspringclub.com/deparmtent"
+  xmlns:tns="http://www.human-resources.com/definition"
+  targetNamespace="http://www.human-resources.com/definition"
   elementFormDefault="qualified">
 
-  <xs:complexType name="departmentDtoResponse">
-    <xs:sequence>
-      <xs:element name="departmentId  " type="xs:long" />
-      <xs:element name="departmentName" type="xs:string" />
-      <xs:element name="averageSalary" type="xs:decimal" />
-    </xs:sequence>
-  </xs:complexType>
   <xs:complexType name="departmentResponse">
     <xs:sequence>
-      <xs:element name="departmentId  " type="xs:long" />
-      <xs:element name="departmentName" type="xs:string" />
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="averageSalary" type="xs:decimal" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="getDepartmentByIdRequest">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="departmentId" type="xs:long" />
+        <xs:element name="id" type="xs:long" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="getDepartmentByIdResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="departmentDtoResponse" type="tns:departmentDtoResponse" />
+        <xs:element name="departmentResponse" type="tns:departmentResponse"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -36,7 +29,7 @@
   <xs:element name="getAllDepartmentsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="departmentDtoResponse" type="tns:departmentDtoResponse"
+        <xs:element name="departmentResponse" type="tns:departmentResponse"
           maxOccurs="unbounded" />
       </xs:sequence>
     </xs:complexType>
@@ -51,35 +44,36 @@
   <xs:element name="addDepartmentResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="departmentId" type="xs:long" />
+        <xs:element name="id" type="xs:long" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="updateDepartmentRequest">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="departmentResponse" type="tns:departmentResponse" />
+        <xs:element name="id" type="xs:long"/>
+        <xs:element name="departmentName" type="xs:string"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="updateDepartmentResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="departmentId" type="xs:boolean" />
+        <xs:element name="result" type="xs:boolean"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="deleteDepartmentRequest">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="departmentId" type="xs:long" />
+        <xs:element name="id" type="xs:long" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="deleteDepartmentResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="departmentId" type="xs:boolean" />
+        <xs:element name="result" type="xs:boolean"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>

@@ -1,0 +1,134 @@
+<xs:schema xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+  xmlns:tns="http://www.human-resources.com/definition" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified"
+  targetNamespace="http://www.human-resources.com/definition"
+  jaxb:version="2.0"
+  jaxb:extensionBindingPrefixes="xjc">
+
+
+  <xs:annotation>
+    <xs:appinfo>
+      <jaxb:globalBindings>
+        <xjc:javaType adapter="com.nikolay.soap.config.LocalDateAdapter"
+          name="java.time.LocalDate" xmlType="xs:date"/>
+      </jaxb:globalBindings>
+    </xs:appinfo>
+  </xs:annotation>
+
+  <xs:complexType name="employeeResponse">
+    <xs:sequence>
+      <xs:element name="id" type="xs:long"/>
+      <xs:element name="departmentId" type="xs:long"/>
+      <xs:element name="departmentName" type="xs:string"/>
+      <xs:element name="fullName" type="xs:string"/>
+      <xs:element name="birthday" type="xs:date"/>
+      <xs:element name="salary" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="getEmployeeByIdRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="id" type="xs:long"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getEmployeeByIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="employeeResponse" type="tns:employeeResponse"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getAllEmployeesRequest">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="getAllEmployeesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="employeeResponse"
+          type="tns:employeeResponse"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getEmployeesByDateOfBirthdayRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="date" type="xs:date"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getEmployeesByDateOfBirthdayResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="employeeResponse"
+          type="tns:employeeResponse"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getEmployeesBetweenDatesOfBirthdayResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="employeeResponse"
+          type="tns:employeeResponse"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getEmployeesBetweenDatesOfBirthdayRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="dateFrom" type="xs:date"/>
+        <xs:element name="dateTo" type="xs:date"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="addEmployeeRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="departmentId" type="xs:long"/>
+        <xs:element name="fullName" type="xs:string"/>
+        <xs:element name="birthday" type="xs:date"/>
+        <xs:element name="salary" type="xs:decimal"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="addEmployeeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="id" type="xs:long"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="updateEmployeeRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="id" type="xs:long"/>
+        <xs:element name="departmentId" type="xs:long"/>
+        <xs:element name="fullName" type="xs:string"/>
+        <xs:element name="birthday" type="xs:date"/>
+        <xs:element name="salary" type="xs:decimal"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="updateEmployeeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="result" type="xs:boolean"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="deleteEmployeeRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Id" type="xs:long"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="deleteEmployeeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="result" type="xs:boolean"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
