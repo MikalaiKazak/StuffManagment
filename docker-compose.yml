@@ -1,6 +1,25 @@
-version: "3"
+version: "2.1"
 
 services:
+  storage:
+    image: openzipkin/zipkin-mysql
+    container_name: mysql
+    networks:
+      - app
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    environment:
+      - STORAGE_TYPE=mysql
+      - MYSQL_HOST=mysql
+    ports:
+      - 9411:9411
+    depends_on:
+      - storage
+    networks:
+      - app
+
   rest-server:
     image: tomcat:9-jre8
     container_name: rest-server
@@ -8,7 +27,12 @@ services:
       - ./rest/target/rest.war:/usr/local/tomcat/webapps/rest.war
       - rest-logs:/usr/local/tomcat/logs
     ports:
-      - "8081:8080"
+      - 8081:8080
+    depends_on:
+      - zipkin
+    networks:
+      - app
+
   rest-client:
     image: tomcat:9-jre8
     container_name: rest-client
@@ -18,9 +42,18 @@ services:
       - ./webapp/target/webapp.war:/usr/local/tomcat/webapps/webapp.war
       - webapp-logs:/usr/local/tomcat/logs
     ports:
-      - "8082:8080"
+      - 8082:8080
     depends_on:
-      - "rest-server"
+      zipkin:
+        condition: service_started
+      rest-server:
+        condition: service_started
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge
 
 volumes:
   webapp-logs:

@@ -14,6 +14,11 @@
   <context:component-scan base-package="com.nikolay.rest"/>
 
   <mvc:annotation-driven/>
+  <context:annotation-config/>
+
+  <mvc:interceptors>
+    <bean class="brave.spring.webmvc.SpanCustomizingHandlerInterceptor"/>
+  </mvc:interceptors>
 
   <context:property-placeholder
     location="classpath*:/sql.properties,
@@ -55,6 +60,35 @@
   <bean class="com.nikolay.utility.validate.EmployeeValidator" id="employeeValidator"/>
 
   <bean class="com.nikolay.utility.validate.DepartmentValidator" id="departmentValidator"/>
+
+  <bean id="sender" class="zipkin2.reporter.beans.OkHttpSenderFactoryBean">
+    <property name="endpoint" value="http://zipkin:9411/api/v2/spans"/>
+  </bean>
+
+  <bean id="tracing" class="brave.spring.beans.TracingFactoryBean">
+    <property name="localServiceName" value="rest"/>
+    <property name="spanReporter">
+      <bean class="zipkin2.reporter.beans.AsyncReporterFactoryBean">
+        <property name="sender" ref="sender"/>
+        <property name="closeTimeout" value="500"/>
+      </bean>
+    </property>
+    <property name="currentTraceContext">
+      <bean class="brave.spring.beans.CurrentTraceContextFactoryBean">
+        <property name="scopeDecorators">
+          <bean class="brave.context.log4j2.ThreadContextScopeDecorator" factory-method="create"/>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="httpTracing" class="brave.spring.beans.HttpTracingFactoryBean">
+    <property name="tracing" ref="tracing"/>
+  </bean>
+
+  <bean id="spanCustomizer" class="brave.CurrentSpanCustomizer" factory-method="create">
+    <constructor-arg index="0" ref="tracing"/>
+  </bean>
 
   <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
     <property name="messageConverters">

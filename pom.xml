@@ -39,6 +39,8 @@
     <maven-surefire-plugin.version>2.12.4</maven-surefire-plugin.version>
     <rest-assured.version>3.3.0</rest-assured.version>
     <org.testng.version>6.14.3</org.testng.version>
+    <brave.version>5.6.3</brave.version>
+    <httpclient.version>4.5.7</httpclient.version>
   </properties>
 
   <dependencyManagement>
@@ -87,6 +89,20 @@
       </dependency>
 
       <dependency>
+        <groupId>io.zipkin.brave</groupId>
+        <artifactId>brave-bom</artifactId>
+        <version>${brave.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>${httpclient.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>org.thymeleaf</groupId>
         <artifactId>thymeleaf</artifactId>
         <version>${thymeleaf.version}</version>
@@ -125,13 +141,25 @@
       <!--Log4j-->
       <dependency>
         <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-api</artifactId>
+        <artifactId>log4j-core</artifactId>
         <version>${log4j.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-core</artifactId>
+        <artifactId>log4j-jul</artifactId>
+        <version>${log4j.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-jcl</artifactId>
+        <version>${log4j.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-slf4j-impl</artifactId>
         <version>${log4j.version}</version>
       </dependency>
 
