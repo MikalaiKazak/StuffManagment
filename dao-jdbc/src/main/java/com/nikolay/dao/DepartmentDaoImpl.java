@@ -88,7 +88,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
     KeyHolder keyHolder = new GeneratedKeyHolder();
     this.namedParameterJdbcTemplate
         .update(addDepartment, new MapSqlParameterSource(parameterDepartmentName,
-            department.getDepartmentName()), keyHolder, new String[]{DEPARTMENT_ID});
+            department.getDepartmentName()), keyHolder, new String[]{"department_id"});
     return Objects.requireNonNull(keyHolder.getKey()).longValue();
   }
 
