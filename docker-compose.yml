@@ -1,20 +1,12 @@
 version: "3"
 
 services:
-  rest-server:
-    image: tomcat:9-jre8
-    container_name: rest-server
-    volumes:
-      - ./rest/target/rest.war:/usr/local/tomcat/webapps/rest.war
-      - rest-logs:/usr/local/tomcat/logs
-    ports:
-      - "8081:8080"
   soap-server:
     image: tomcat:9-jre8
     container_name: soap-server
     volumes:
       - ./soap/target/soap.war:/usr/local/tomcat/webapps/soap.war
-      - soap-logs:/usr/local/tomcat/logs
+      - /tmp/logs/soap_logs:/usr/local/tomcat/logs
     ports:
       - "8083:8080"
   rest-client:
@@ -24,28 +16,6 @@ services:
       - "JAVA_OPTS=-Dprofile=docker"
     volumes:
       - ./webapp/target/webapp.war:/usr/local/tomcat/webapps/webapp.war
-      - webapp-logs:/usr/local/tomcat/logs
+      - /tmp/logs/webapp_logs:/usr/local/tomcat/logs
     ports:
       - "8082:8080"
-    depends_on:
-      - "rest-server"
-
-volumes:
-  soap-logs:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./tmp/logs/soap_logs
-  webapp-logs:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./tmp/logs/webapp_logs
-  rest-logs:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./tmp/logs/rest_logs

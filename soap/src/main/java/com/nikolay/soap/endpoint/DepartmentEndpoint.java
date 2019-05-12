@@ -35,7 +35,6 @@ public class DepartmentEndpoint {
 
   private final DepartmentService departmentService;
 
-
   @Autowired
   public DepartmentEndpoint(DepartmentService departmentService) {
     this.departmentService = departmentService;
@@ -60,9 +59,9 @@ public class DepartmentEndpoint {
       @RequestPayload GetAllDepartmentsRequest request) {
     LOGGER.debug("getAllDepartment()");
     GetAllDepartmentsResponse response = new GetAllDepartmentsResponse();
-    DepartmentResponse departmentResponse = new DepartmentResponse();
     List<ResponseDepartmentDto> departments = departmentService.getAllDepartments();
     for (ResponseDepartmentDto department : departments) {
+      DepartmentResponse departmentResponse = new DepartmentResponse();
       BeanUtils.copyProperties(department, departmentResponse);
       response.getDepartmentResponse().add(departmentResponse);
     }

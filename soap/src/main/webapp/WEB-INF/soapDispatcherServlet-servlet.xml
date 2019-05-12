@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:context="http://www.springframework.org/schema/context"
-  xmlns:sws="http://www.springframework.org/schema/web-services"
+  xmlns:web-services="http://www.springframework.org/schema/web-services"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://www.springframework.org/schema/beans"
   xmlns:jdbc="http://www.springframework.org/schema/jdbc"
@@ -8,6 +8,48 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
+  <bean
+    class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping">
+    <property name="interceptors" ref="validatingInterceptor"/>
+  </bean>
+
+  <bean class="org.springframework.ws.soap.server.endpoint.interceptor.PayloadValidatingInterceptor"
+    id="validatingInterceptor">
+    <property name="schemas">
+      <list>
+        <value>/WEB-INF/xsds/department.xsd</value>
+        <value>/WEB-INF/xsds/employee.xsd</value>
+      </list>
+    </property>
+    <property name="validateRequest" value="false"/>
+    <property name="validateResponse" value="true"/>
+  </bean>
+
+  <bean class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory" id="messageFactory">
+  </bean>
+
+  <bean id="exceptionResolver"
+    class="org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver">
+    <property name="defaultFault" value="SERVER"/>
+    <property name="exceptionMappings">
+      <value>
+        org.springframework.oxm.ValidationFailureException=CLIENT,Invalid request
+      </value>
+    </property>
+  </bean>
+
+  <context:component-scan base-package="com.nikolay"  />
+
+  <context:property-placeholder
+    location="classpath*:/sql.properties,
+              classpath*:/messages.properties,
+              classpath*:/database.properties"/>
+
+  <web-services:annotation-driven/>
+
+  <web-services:interceptors>
+    <bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
+  </web-services:interceptors>
 
   <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
     <property name="driverClassName" value="${jdbc.driverClassName}"/>
@@ -37,33 +79,8 @@
     <constructor-arg name="employeeDao" ref="employeeDao"/>
   </bean>
 
-  <bean class="com.nikolay.utility.validate.EmployeeValidator" id="employeeValidator"/>
-
-  <bean class="com.nikolay.utility.validate.DepartmentValidator" id="departmentValidator"/>
-
-  <context:component-scan base-package="com.nikolay"/>
-
-  <context:property-placeholder
-    location="classpath*:/sql.properties,
-              classpath*:/messages.properties,
-              classpath*:/database.properties"/>
-
   <jdbc:initialize-database>
     <jdbc:script location="classpath*:/db/create_table.sql"/>
   </jdbc:initialize-database>
-
-  <sws:annotation-driven/>
-
-  <sws:dynamic-wsdl id="department"
-    locationUri="/department/"
-    portTypeName="department">
-    <sws:xsd location="/WEB-INF/xsds/department.xsd"/>
-  </sws:dynamic-wsdl>
-
-  <sws:dynamic-wsdl id="employee"
-    locationUri="/employee/"
-    portTypeName="employee">
-    <sws:xsd location="/WEB-INF/xsds/employee.xsd"/>
-  </sws:dynamic-wsdl>
 
 </beans>

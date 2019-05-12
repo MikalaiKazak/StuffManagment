@@ -1,0 +1,3 @@
+<addDepartmentRequest xmlns='http://www.human-resources.com/definition'>
+  <departmentName>John</departmentName>
+</addDepartmentRequest>

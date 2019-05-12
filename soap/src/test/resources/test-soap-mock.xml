@@ -2,17 +2,56 @@
 <beans xmlns:context="http://www.springframework.org/schema/context"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://www.springframework.org/schema/beans"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+  xmlns:web-services="http://www.springframework.org/schema/web-services"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd">
 
-  <context:component-scan base-package="com.nikolay.soap"/>
+  <context:component-scan base-package="com.nikolay"/>
 
-  <bean class="org.mockito.Mockito" factory-method="mock" id="departmentService">
-    <constructor-arg value="com.nikolay.service.DepartmentService"/>
+  <web-services:annotation-driven/>
+
+  <web-services:interceptors>
+    <bean class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
+  </web-services:interceptors>
+
+  <bean
+    class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping">
+    <property name="interceptors" ref="validatingInterceptor"/>
   </bean>
 
-  <bean class="org.mockito.Mockito" factory-method="mock" id="employeeService">
-    <constructor-arg value="com.nikolay.service.EmployeeService"/>
+  <bean class="org.springframework.ws.soap.server.endpoint.interceptor.PayloadValidatingInterceptor"
+    id="validatingInterceptor">
+    <property name="schemas">
+      <list>
+        <value>department.xsd</value>
+        <value>employee.xsd</value>
+      </list>
+    </property>
+    <property name="validateRequest" value="false"/>
+    <property name="validateResponse" value="true"/>
   </bean>
+
+  <bean class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory" id="messageFactory">
+  </bean>
+
+  <bean class="org.springframework.ws.soap.server.endpoint.SoapFaultMappingExceptionResolver"
+    id="exceptionResolver">
+    <property name="defaultFault" value="SERVER"/>
+    <property name="exceptionMappings">
+      <value>
+        org.springframework.oxm.ValidationFailureException=CLIENT,Invalid request
+      </value>
+    </property>
+  </bean>
+
+  <bean id="departmentService" class="org.mockito.Mockito" factory-method="mock">
+    <constructor-arg value="com.nikolay.service.impl.DepartmentServiceImpl" />
+  </bean>
+
+  <bean id="employeeService" class="org.mockito.Mockito" factory-method="mock">
+    <constructor-arg value="com.nikolay.service.impl.EmployeeServiceImpl" />
+  </bean>
+
 
 </beans>

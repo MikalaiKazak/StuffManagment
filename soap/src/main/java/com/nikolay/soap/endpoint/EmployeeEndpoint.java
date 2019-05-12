@@ -39,7 +39,6 @@ public class EmployeeEndpoint {
 
   private final EmployeeService employeeService;
 
-
   @Autowired
   public EmployeeEndpoint(EmployeeService employeeService) {
     this.employeeService = employeeService;
@@ -64,9 +63,9 @@ public class EmployeeEndpoint {
       @RequestPayload GetAllEmployeesRequest request) {
     LOGGER.debug("getAllEmployees()");
     GetAllEmployeesResponse response = new GetAllEmployeesResponse();
-    EmployeeResponse employeeResponse = new EmployeeResponse();
     List<ResponseEmployeeDto> employees = employeeService.getAllEmployees();
     for (ResponseEmployeeDto employee : employees) {
+      EmployeeResponse employeeResponse = new EmployeeResponse();
       BeanUtils.copyProperties(employee, employeeResponse);
       response.getEmployeeResponse().add(employeeResponse);
     }
@@ -79,9 +78,9 @@ public class EmployeeEndpoint {
       @RequestPayload GetEmployeesByDateOfBirthdayRequest request) {
     LOGGER.debug("getEmployeesByDateOfBirthdayResponse()");
     GetEmployeesByDateOfBirthdayResponse response = new GetEmployeesByDateOfBirthdayResponse();
-    EmployeeResponse employeeResponse = new EmployeeResponse();
     List<ResponseEmployeeDto> employees = employeeService.getEmployeesByDateOfBirthday(request.getDate());
     for (ResponseEmployeeDto employee : employees) {
+      EmployeeResponse employeeResponse = new EmployeeResponse();
       BeanUtils.copyProperties(employee, employeeResponse);
       response.getEmployeeResponse().add(employeeResponse);
     }
@@ -94,9 +93,9 @@ public class EmployeeEndpoint {
       @RequestPayload GetEmployeesBetweenDatesOfBirthdayRequest request) {
     LOGGER.debug("getEmployeesBetweenDatesOfBirthdayResponse()");
     GetEmployeesBetweenDatesOfBirthdayResponse response = new GetEmployeesBetweenDatesOfBirthdayResponse();
-    EmployeeResponse employeeResponse = new EmployeeResponse();
     List<ResponseEmployeeDto> employees = employeeService.getEmployeesBetweenDatesOfBirthday(request.getDateFrom(), request.getDateFrom());
     for (ResponseEmployeeDto employee : employees) {
+      EmployeeResponse employeeResponse = new EmployeeResponse();
       BeanUtils.copyProperties(employee, employeeResponse);
       response.getEmployeeResponse().add(employeeResponse);
     }
