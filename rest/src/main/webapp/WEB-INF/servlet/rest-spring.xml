@@ -21,9 +21,9 @@
   </mvc:interceptors>
 
   <context:property-placeholder
-    location="classpath*:/sql.properties,
+    location="classpath*:/${DATABASE}/sql.properties,
               classpath*:/messages.properties,
-              classpath*:/database.properties"/>
+              classpath*:/${DATABASE}/db.properties"/>
 
   <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
     <property name="driverClassName" value="${jdbc.driverClassName}"/>
@@ -33,7 +33,7 @@
   </bean>
 
   <jdbc:initialize-database>
-    <jdbc:script location="classpath*:/db/create_table.sql"/>
+    <jdbc:script location="classpath*:/${DATABASE}/create_table.sql"/>
   </jdbc:initialize-database>
 
   <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager"

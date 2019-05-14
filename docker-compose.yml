@@ -1,6 +1,19 @@
 version: "2.1"
 
 services:
+  postgres:
+    image: postgres:11
+    container_name: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: 'department'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_USER: 'hr'
+    networks:
+      - "app"
+      
   storage:
     image: openzipkin/zipkin-mysql
     container_name: mysql
@@ -69,9 +82,17 @@ services:
     container_name: rest-server
     volumes:
       - ./rest/target/rest.war:/usr/local/tomcat/webapps/rest.war
-      - rest-logs:/usr/local/tomcat/logs
+      - /tmp/logs/rest-logs:/usr/local/tomcat/logs
+    environment:
+      - DRIVER_DB=org.postgresql.Driver
+      - HOST_DB=jdbc:postgresql://postgres:5432/department?stringtype=unspecified
+      - USER_NAME=hr
+      - PASSWORD_DB=postgres
+      - DATABASE=postgres
+    links:
+      - "postgres"
     ports:
-      - 8081:8080
+      - "8081:8080"
     depends_on:
       zipkin:
         condition: service_started
@@ -87,9 +108,9 @@ services:
       - "JAVA_OPTS=-Dprofile=docker"
     volumes:
       - ./webapp/target/webapp.war:/usr/local/tomcat/webapps/webapp.war
-      - ./tmp/logs/rest_logs:/usr/local/tomcat/logs
+      - /tmp/logs/webapp_logs:/usr/local/tomcat/logs
     ports:
-      - 8082:8080
+      - "8082:8080"
     depends_on:
       zipkin:
         condition: service_started
