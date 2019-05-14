@@ -10,12 +10,12 @@ import com.nikolay.model.dto.ResponseEmployeeDto;
 
 public class EmployeeMapper implements RowMapper<ResponseEmployeeDto> {
 
-  public static final String EMPLOYEE_ID = "EMPLOYEE_ID";
-  public static final String EMPLOYEE_DEPARTMENT_ID = "EMPLOYEE_DEPARTMENT_ID";
-  public static final String DEPARTMENT_NAME = "DEPARTMENT_NAME";
-  public static final String EMPLOYEE_FULL_NAME = "EMPLOYEE_FULL_NAME";
-  public static final String EMPLOYEE_DATE_OF_BIRTHDAY = "EMPLOYEE_DATE_OF_BIRTHDAY";
-  public static final String EMPLOYEE_SALARY = "EMPLOYEE_SALARY";
+  public static final String EMPLOYEE_ID = "employee_id";
+  public static final String EMPLOYEE_DEPARTMENT_ID = "employee_department_id";
+  public static final String DEPARTMENT_NAME = "department_name";
+  public static final String EMPLOYEE_FULL_NAME = "employee_full_name";
+  public static final String EMPLOYEE_DATE_OF_BIRTHDAY = "employee_date_of_birthday";
+  public static final String EMPLOYEE_SALARY = "employee_salary";
 
   @Override
   public ResponseEmployeeDto mapRow(ResultSet rs, int rowNum) throws SQLException {

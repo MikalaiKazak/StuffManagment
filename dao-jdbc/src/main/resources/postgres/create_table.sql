@@ -1,22 +1,22 @@
-DROP TABLE IF EXISTS "EMPLOYEES";
-DROP TABLE IF EXISTS "DEPARTMENTS";
+drop table if exists "employees";
+drop table if exists "departments";
 
-CREATE TABLE IF NOT EXISTS "DEPARTMENTS"
+create table if not exists "departments"
 (
-  "DEPARTMENT_ID"   BIGSERIAL    NOT NULL PRIMARY KEY,
-  "DEPARTMENT_NAME" VARCHAR(100) NOT NULL
+  "department_id"   bigserial    not null primary key,
+  "department_name" varchar(100) not null
 );
 
-CREATE TABLE IF NOT EXISTS "EMPLOYEES"
+create table if not exists "employees"
 (
-  "EMPLOYEE_ID"               BIGSERIAL          NOT NULL PRIMARY KEY,
-  "EMPLOYEE_DEPARTMENT_ID"    BIGINT             NULL,
-  "EMPLOYEE_FULL_NAME"        VARCHAR(100)       NULL,
-  "EMPLOYEE_DATE_OF_BIRTHDAY" TIMESTAMP          NULL,
-  "EMPLOYEE_SALARY"           DECIMAL(34, 2)     NULL,
-  CONSTRAINT "EMPLOYEES_DEPARTMENT_ID_FK"
-    FOREIGN KEY ("EMPLOYEE_DEPARTMENT_ID")
-    REFERENCES "DEPARTMENTS" ("DEPARTMENT_ID")
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
+  "employee_id"               bigserial          not null primary key,
+  "employee_department_id"    bigint             null,
+  "employee_full_name"        varchar(100)       null,
+  "employee_date_of_birthday" timestamp          null,
+  "employee_salary"           decimal(34, 2)     null,
+  constraint "employees_department_id_fk"
+    foreign key ("employee_department_id")
+    references "departments" ("department_id")
+    on delete cascade
+    on update cascade
 );

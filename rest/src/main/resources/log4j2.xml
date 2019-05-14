@@ -8,12 +8,11 @@
     </File>
     <Socket name="Socket" host="logstash" port="5000" protocol="TCP" reconnectionDelayMillis="30000"
       immediateFail="false">
-      <JsonLayout compact="false"complete="true" eventEol="true" />
-      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+      <JSONLayout complete="true" compact="false"/>
       <Policies>
-        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        <SizeBasedTriggeringPolicy size="1 KB" />
       </Policies>
-      <DefaultRolloverStrategy max="10"/>
+      <DefaultRolloverStrategy max="4"/>
     </Socket>
   </Appenders>
   <Loggers>

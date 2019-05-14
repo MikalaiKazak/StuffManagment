@@ -104,7 +104,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
         .addValue(parameterEmployeeSalary, employee.getSalary());
     this.namedParameterJdbcTemplate
         .update(addEmployee, sqlParameterSource, keyHolder,
-            new String[]{"employee_id"});
+            new String[]{EMPLOYEE_ID});
     return Objects.requireNonNull(keyHolder.getKey()).longValue();
   }
 
