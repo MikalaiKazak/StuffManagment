@@ -1,6 +1,24 @@
 version: "2.1"
 
 services:
+  storage:
+    image: openzipkin/zipkin-mysql
+    container_name: mysql
+    networks:
+      - "app"
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    environment:
+      - STORAGE_TYPE=mysql
+      - MYSQL_HOST=mysql
+    ports:
+      - "9411:9411"
+    depends_on:
+      - "storage"
+    networks:
+      - "app"
 
   elasticsearch:
     container_name: elasticsearch
@@ -13,7 +31,7 @@ services:
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
     networks:
-      - "elk"
+      - "app"
 
   logstash:
     image: docker.elastic.co/logstash/logstash-oss:6.7.0
@@ -29,7 +47,7 @@ services:
     healthcheck:
       test: "printf 'GET / HTTP/1.1\n\n' > /dev/tcp/logstash/9600"
     networks:
-      - "elk"
+      - "app"
     depends_on:
       - "elasticsearch"
 
@@ -41,11 +59,11 @@ services:
     ports:
       - "5601:5601"
     networks:
-      - "elk"
+      - "app"
     depends_on:
       - "elasticsearch"
       - "logstash"
-
+      
   rest-server:
     image: tomcat:9-jre8
     container_name: rest-server
@@ -53,12 +71,14 @@ services:
       - ./rest/target/rest.war:/usr/local/tomcat/webapps/rest.war
       - rest-logs:/usr/local/tomcat/logs
     ports:
-      - "8081:8080"
+      - 8081:8080
     depends_on:
+      zipkin:
+        condition: service_started
       logstash:
         condition: service_healthy
     networks:
-      - "elk"
+      - "app"
 
   rest-client:
     image: tomcat:9-jre8
@@ -67,33 +87,19 @@ services:
       - "JAVA_OPTS=-Dprofile=docker"
     volumes:
       - ./webapp/target/webapp.war:/usr/local/tomcat/webapps/webapp.war
-      - webapp-logs:/usr/local/tomcat/logs
+      - ./tmp/logs/rest_logs:/usr/local/tomcat/logs
     ports:
-      - "8082:8080"
+      - 8082:8080
     depends_on:
-      logstash:
-        condition: service_healthy
+      zipkin:
+        condition: service_started
       rest-server:
         condition: service_started
+      logstash:
+        condition: service_healthy
     networks:
-      - "elk"
-
-volumes:
-  webapp-logs:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./tmp/logs/webapp_logs
-  rest-logs:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./tmp/logs/rest_logs
+      - "app"
 
 networks:
-  elk:
+  app:
     driver: bridge
-
-
