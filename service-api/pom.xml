@@ -13,12 +13,10 @@
   <packaging>jar</packaging>
 
   <dependencies>
-
     <dependency>
       <groupId>com.nikolay.department-app</groupId>
       <artifactId>model</artifactId>
     </dependency>
-
   </dependencies>
 
 </project>
