@@ -5,7 +5,7 @@ services:
     image: openzipkin/zipkin-mysql
     container_name: mysql
     networks:
-      - app
+      - "app"
 
   zipkin:
     image: openzipkin/zipkin
@@ -14,12 +14,56 @@ services:
       - STORAGE_TYPE=mysql
       - MYSQL_HOST=mysql
     ports:
-      - 9411:9411
+      - "9411:9411"
     depends_on:
-      - storage
+      - "storage"
     networks:
-      - app
+      - "app"
 
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.7.0
+    volumes:
+      - ./elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - "app"
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash-oss:6.7.0
+    container_name: logstash
+    volumes:
+      - ./elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./elk/logstash/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - "5000:5000"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    healthcheck:
+      test: "printf 'GET / HTTP/1.1\n\n' > /dev/tcp/logstash/9600"
+    networks:
+      - "app"
+    depends_on:
+      - "elasticsearch"
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana-oss:6.7.0
+    volumes:
+      - ./elk/kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - "5601:5601"
+    networks:
+      - "app"
+    depends_on:
+      - "elasticsearch"
+      - "logstash"
+      
   rest-server:
     image: tomcat:9-jre8
     container_name: rest-server
@@ -29,9 +73,12 @@ services:
     ports:
       - 8081:8080
     depends_on:
-      - zipkin
+      zipkin:
+        condition: service_started
+      logstash:
+        condition: service_healthy
     networks:
-      - app
+      - "app"
 
   rest-client:
     image: tomcat:9-jre8
@@ -40,7 +87,7 @@ services:
       - "JAVA_OPTS=-Dprofile=docker"
     volumes:
       - ./webapp/target/webapp.war:/usr/local/tomcat/webapps/webapp.war
-      - webapp-logs:/usr/local/tomcat/logs
+      - ./tmp/logs/rest_logs:/usr/local/tomcat/logs
     ports:
       - 8082:8080
     depends_on:
@@ -48,23 +95,11 @@ services:
         condition: service_started
       rest-server:
         condition: service_started
+      logstash:
+        condition: service_healthy
     networks:
-      - app
+      - "app"
 
 networks:
   app:
     driver: bridge
-
-volumes:
-  webapp-logs:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./tmp/logs/webapp_logs
-  rest-logs:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./tmp/logs/rest_logs
