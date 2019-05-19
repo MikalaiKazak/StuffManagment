@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:context="http://www.springframework.org/schema/context"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns="http://www.springframework.org/schema/beans"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context.xsd">
+       http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
   <import resource="mvc-config.xml"/>
 
@@ -13,19 +13,48 @@
   <context:annotation-config/>
 
   <context:property-placeholder ignore-resource-not-found="true"
-    location="classpath*:/url.properties,
+    location="classpath*:/url-local.properties,
                 classpath*:/messages.properties,
                 classpath*:/url-${profile}.properties"/>
 
+  <bean id="sender" class="zipkin2.reporter.beans.OkHttpSenderFactoryBean">
+    <property name="endpoint" value="http://zipkin:9411/api/v2/spans"/>
+  </bean>
+
+  <bean id="tracing" class="brave.spring.beans.TracingFactoryBean">
+    <property name="localServiceName" value="webapp"/>
+    <property name="spanReporter">
+      <bean class="zipkin2.reporter.beans.AsyncReporterFactoryBean">
+        <property name="sender" ref="sender"/>
+        <property name="closeTimeout" value="500"/>
+      </bean>
+    </property>
+    <property name="currentTraceContext">
+      <bean class="brave.spring.beans.CurrentTraceContextFactoryBean">
+        <property name="scopeDecorators">
+          <bean class="brave.context.log4j2.ThreadContextScopeDecorator" factory-method="create"/>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="httpTracing" class="brave.spring.beans.HttpTracingFactoryBean">
+    <property name="tracing" ref="tracing"/>
+  </bean>
 
   <bean class="com.nikolay.client.handler.CustomResponseErrorHandler"
-    id="customResponseErrorHandler"/>
+        id="customResponseErrorHandler"/>
 
   <bean class="org.springframework.web.client.RestTemplate" id="restTemplate">
     <property name="messageConverters">
       <list>
         <ref bean="jsonConverter"/>
       </list>
+    </property>
+    <property name="interceptors">
+      <bean class="brave.spring.web.TracingClientHttpRequestInterceptor" factory-method="create">
+        <constructor-arg name="httpTracing" ref="httpTracing" />
+      </bean>
     </property>
     <property name="errorHandler" ref="customResponseErrorHandler"/>
   </bean>
@@ -55,6 +84,8 @@
   <bean class="com.nikolay.utility.validate.EmployeeValidator" id="employeeValidator"/>
 
   <bean class="com.nikolay.utility.validate.DepartmentValidator" id="departmentValidator"/>
+
+
 
 </beans>
 

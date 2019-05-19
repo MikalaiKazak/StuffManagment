@@ -10,9 +10,9 @@ import com.nikolay.model.dto.ResponseDepartmentDto;
 
 public class DepartmentMapper implements RowMapper<ResponseDepartmentDto> {
 
-  public static final String DEPARTMENT_ID = "DEPARTMENT_ID";
-  public static final String DEPARTMENT_NAME = "DEPARTMENT_NAME";
-  public static final String AVG_SALARY = "AVG_SALARY";
+  public static final String DEPARTMENT_ID = "department_id";
+  public static final String DEPARTMENT_NAME = "department_name";
+  public static final String AVG_SALARY = "avg_salary";
 
   @Override
   public ResponseDepartmentDto mapRow(ResultSet rs, int rowNum) throws SQLException {

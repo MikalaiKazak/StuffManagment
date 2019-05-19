@@ -9,6 +9,10 @@
 
   <mvc:annotation-driven/>
 
+  <mvc:interceptors>
+    <bean class="brave.spring.webmvc.SpanCustomizingHandlerInterceptor"/>
+  </mvc:interceptors>
+
   <mvc:resources location="/resources/" mapping="/resources/**"/>
 
   <bean class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver"

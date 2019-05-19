@@ -7,6 +7,10 @@ A project for departments and employees management
 * [Docker compose 1.23.2](https://docs.docker.com/compose/) - Docker Compose
 * [Maven 3.6.0](https://maven.apache.org/) - Dependency Management
 * [Apache Tomcat 9.0.13](http://tomcat.apache.org/) - Tomcat
+* [Zipkin Brave 5.6.3](https://github.com/apache/incubator-zipkin-brave) Zipkin
+* [ElasticSearch 6.7.0](https://www.elastic.co/) ElasticSearch
+* [Logstash 6.7.0](https://www.elastic.co/products/logstash) Logstash
+* [Kibana 6.7.0](https://www.elastic.co/products/kibana) Kibana 
 
 ## Get project
 * Clone this project, ``` git clone https://github.com/MikalaiKazak/department-app.git ```
@@ -35,6 +39,23 @@ A project for departments and employees management
 3. sudo chmod +x build.sh
 4. ./build.sh
 5. And then you can see result in browser: http://localhost:8082/webapp/ For Rest service: http://localhost:8081/rest/department or http://localhost:8081/rest/employee
+
+## Open Zipkin
+
+You can open Zipkin in the browser: http://localhost:9411
+
+## Open Kibana
+
+You can open Kibana in the browser: http://localhost:5601
+
+## Open Logstash
+
+You can open Logstash in the browser: http://localhost:9600
+
+## Open ElasticSearch
+
+You can open ElasticSearch in the browser: http://localhost:9200
+
 
 ## Explore Rest APIs
 

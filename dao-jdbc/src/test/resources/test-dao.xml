@@ -13,7 +13,7 @@
   <context:component-scan base-package="com.nikolay.dao"/>
 
   <context:property-placeholder
-    location="classpath*:/sql.properties,
+    location="classpath*:/hsqldb/sql.properties,
                       classpath*:/test-database.properties"/>
 
   <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
@@ -29,7 +29,7 @@
   </bean>
 
   <jdbc:initialize-database>
-    <jdbc:script location="classpath*:/db/create_table.sql"/>
+    <jdbc:script location="classpath*:/hsqldb/create_table.sql"/>
     <jdbc:script location="classpath*:/db/init_table.sql"/>
   </jdbc:initialize-database>
 
