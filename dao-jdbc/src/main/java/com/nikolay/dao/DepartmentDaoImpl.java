@@ -17,6 +17,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.nikolay.dao.mapper.DepartmentMapper;
 import com.nikolay.model.Department;
@@ -25,7 +26,7 @@ import com.nikolay.model.dto.ResponseDepartmentDto;
 /**
  * The type Department dao.
  */
-@Component
+@Repository
 public class DepartmentDaoImpl implements DepartmentDao {
 
   private static final Logger LOGGER = LogManager.getLogger();

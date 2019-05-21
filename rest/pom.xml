@@ -15,65 +15,23 @@
   <dependencies>
     <dependency>
       <groupId>com.nikolay.department-app</groupId>
-      <artifactId>model</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.nikolay.department-app</groupId>
       <artifactId>utility</artifactId>
     </dependency>
     <dependency>
       <groupId>com.nikolay.department-app</groupId>
       <artifactId>service</artifactId>
     </dependency>
-    <!--log4j-->
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-jul</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-jcl</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-jsr310</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-webmvc</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
     </dependency>
-
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-log4j2</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
       <groupId>io.zipkin.brave</groupId>
@@ -100,37 +58,14 @@
       <artifactId>brave-context-log4j2</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
 
   <build>
     <finalName>rest</finalName>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.tomcat.maven</groupId>
-        <artifactId>tomcat7-maven-plugin</artifactId>
-        <version>2.2</version>
-        <configuration>
-          <contextFile>WEB-INF/web.xml</contextFile>
-          <path>/</path>
-          <port>8060</port>
-        </configuration>
-      </plugin>
-    </plugins>
   </build>
-
 
 </project>

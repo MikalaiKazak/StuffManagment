@@ -13,15 +13,6 @@
   <packaging>jar</packaging>
 
   <dependencies>
-
-    <dependency>
-      <groupId>com.nikolay.department-app</groupId>
-      <artifactId>model</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.nikolay.department-app</groupId>
-      <artifactId>dao</artifactId>
-    </dependency>
     <dependency>
       <groupId>com.nikolay.department-app</groupId>
       <artifactId>dao-jdbc</artifactId>
@@ -31,30 +22,13 @@
       <artifactId>service-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-log4j2</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-
   </dependencies>
-
 
 </project>

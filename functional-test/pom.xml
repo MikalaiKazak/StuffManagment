@@ -24,20 +24,21 @@
       <artifactId>model</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-log4j2</artifactId>
     </dependency>
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-test</artifactId>
     </dependency>
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
+      <version>6.14.3</version>
     </dependency>
   </dependencies>
 
