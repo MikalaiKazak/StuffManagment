@@ -11,7 +11,6 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -21,28 +20,30 @@ public class ApplicationFunctionalTest {
 
   private static final Logger LOGGER = LogManager.getLogger();
 
-  @BeforeClass
-  public static void setup() {
-    String port = System.getProperty("server.port");
+  private static final Integer DEFAULT_PORT = 8080;
+  private static final String DEFAULT_PATH = "/";
+  private static final String DEFAULT_URI = "127.0.0.1";
 
+  public ApplicationFunctionalTest() {
+    String port = System.getProperty("server.port");
     if (port == null) {
-      RestAssured.port = 8081;
+      RestAssured.port = DEFAULT_PORT;
     } else {
       RestAssured.port = Integer.valueOf(port);
     }
 
     String basePath = System.getProperty("server.base");
     if (basePath == null) {
-      basePath = "/rest/";
+      RestAssured.basePath = DEFAULT_PATH;
+    } else {
+      RestAssured.basePath = basePath;
     }
-    RestAssured.basePath = basePath;
 
-    String baseHost = System.getProperty("server.host");
-    if (baseHost == null) {
-      baseHost = "http://127.0.0.1";
+    String baseURI = System.getProperty("server.host");
+    if (baseURI == null) {
+      RestAssured.baseURI = DEFAULT_URI;
     }
-    RestAssured.baseURI = baseHost;
-
+    RestAssured.baseURI = baseURI;
   }
 
   @Test(dataProvider = "department", priority = 1)
@@ -136,7 +137,7 @@ public class ApplicationFunctionalTest {
   public void updateDepartment_success() {
     LOGGER.debug("updateDepartment_success");
     Map<String, String> dep = new HashMap<>();
-    dep.put("id", "0");
+    dep.put("id", "1");
     dep.put("departmentName", "bigdata");
 
     given().log().all()
@@ -153,9 +154,9 @@ public class ApplicationFunctionalTest {
     LOGGER.debug("getUpdateDepartment_WithCorrectId_success");
     given().log().all()
         .when()
-        .get("department/{id}", 0)
+        .get("department/{id}", 1)
         .then().assertThat()
-        .body("id", equalTo(0))
+        .body("id", equalTo(1))
         .body("departmentName", equalTo("bigdata"))
         .statusCode(302);
   }
@@ -165,8 +166,8 @@ public class ApplicationFunctionalTest {
   public void updateEmployee_success() {
     LOGGER.debug("updateEmployee_success");
     Map<String, String> employee = new HashMap<>();
-    employee.put("id", "0");
-    employee.put("departmentId", "1");
+    employee.put("id", "1");
+    employee.put("departmentId", "2");
     employee.put("fullName", "Nikolay");
     employee.put("birthday", "1999-02-02");
     employee.put("salary", "200");
@@ -184,10 +185,10 @@ public class ApplicationFunctionalTest {
     LOGGER.debug("getUpdateEmployee_WithCorrectId_success");
     given().log().all()
         .when()
-        .get("employee/{id}", 0)
+        .get("employee/{id}", 1)
         .then().assertThat()
-        .body("id", equalTo(0))
-        .body("departmentId", equalTo(1))
+        .body("id", equalTo(1))
+        .body("departmentId", equalTo(2))
         .body("departmentName", equalTo("java"))
         .body("fullName", equalTo("Nikolay"))
         .body("birthday", equalTo("1999-02-02"))
@@ -219,27 +220,27 @@ public class ApplicationFunctionalTest {
   @DataProvider(name = "id")
   public Object[][] createTestDataRecords() {
     return new Object[][]{
-        {0L},
         {1L},
-        {2L}
+        {2L},
+        {3L}
     };
   }
 
   @DataProvider(name = "department")
   public Object[][] createTestDepartmentDataRecords() {
     return new Object[][]{
-        {0L, "management"},
-        {1L, "java"},
-        {2L, "gameDev"}
+        {1L, "management"},
+        {2L, "java"},
+        {3L, "gameDev"}
     };
   }
 
   @DataProvider(name = "employee")
   public Object[][] createTestEmployeeDataRecords() {
     return new Object[][]{
-        {0L, 0L, "Nikolay", "1999-02-02", "200.0"},
-        {1L, 1L, "Jack", "1998-02-02", "200.0"},
-        {2L, 2L, "Dmitry", "1998-02-02", "200.0"},
+        {1L, 1L, "Nikolay", "1999-02-02", "200.0"},
+        {2L, 2L, "Jack", "1998-02-02", "200.0"},
+        {3L, 3L, "Dmitry", "1998-02-02", "200.0"},
     };
   }
 
