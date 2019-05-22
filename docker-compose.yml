@@ -74,7 +74,7 @@ services:
     container_name: rest-server
     volumes:
       - ./rest/target/rest.jar:/usr/src/rest.jar
-      - /tmp/logs/rest-logs:/usr/local/tomcat/logs
+      - /tmp/logs/rest-logs:/usr/src/logs
     links:
       - "postgres"
     command: bash -c "cd /usr/src/ && java -jar rest.jar"
@@ -93,7 +93,7 @@ services:
     container_name: rest-client
     volumes:
       - ./webapp/target/webapp.jar:/usr/src/webapp.jar
-      - /tmp/logs/webapp_logs:/usr/local/tomcat/logs
+      - /tmp/logs/webapp_logs:/usr/src/logs
     command: bash -c "cd /usr/src/ && java -jar webapp.jar"
     ports:
       - "8082:8080"
