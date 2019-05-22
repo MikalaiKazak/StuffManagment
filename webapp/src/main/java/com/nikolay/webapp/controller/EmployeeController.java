@@ -40,26 +40,25 @@ public class EmployeeController {
    */
   public static final Logger LOGGER = LogManager.getLogger();
 
-  private final EmployeeService employeeRestService;
+  private final EmployeeService employeeService;
 
-  private final DepartmentService departmentRestService;
+  private final DepartmentService departmentService;
 
-  @Autowired
   private final Validator employeeValidator;
 
   /**
    * Instantiates a new Employee controller.
    *
-   * @param employeeRestService the employee rest service
-   * @param departmentRestService the department rest service
+   * @param employeeService the employee rest service
+   * @param departmentService the department rest service
    * @param employeeValidator the employee validator
    */
   @Autowired
-  public EmployeeController(EmployeeService employeeRestService,
-      DepartmentService departmentRestService,
+  public EmployeeController(EmployeeService employeeService,
+      DepartmentService departmentService,
       Validator employeeValidator) {
-    this.employeeRestService = employeeRestService;
-    this.departmentRestService = departmentRestService;
+    this.employeeService = employeeService;
+    this.departmentService = departmentService;
     this.employeeValidator = employeeValidator;
   }
 
@@ -94,18 +93,18 @@ public class EmployeeController {
     LOGGER.debug("getAllEmployees()");
     List<ResponseEmployeeDto> employeeList;
     if (dateFrom != null && dateTo != null) {
-      employeeList = employeeRestService.getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo);
+      employeeList = employeeService.getEmployeesBetweenDatesOfBirthday(dateFrom, dateTo);
       model.addAttribute("message", "List of employees born between "
           + dateFrom.toString() + " and " + dateTo.toString());
       model.addAttribute("employeeList", employeeList);
       return "employeeFilter";
     } else if (date != null) {
-      employeeList = employeeRestService.getEmployeesByDateOfBirthday(date);
+      employeeList = employeeService.getEmployeesByDateOfBirthday(date);
       model.addAttribute("message", "List of employees born: " + date.toString());
       model.addAttribute("employeeList", employeeList);
       return "employeeFilter";
     } else {
-      employeeList = employeeRestService.getAllEmployees();
+      employeeList = employeeService.getAllEmployees();
       model.addAttribute("employeeList", employeeList);
       return "employees";
     }
@@ -121,8 +120,8 @@ public class EmployeeController {
   @GetMapping("/employee/{id}")
   public String getEmployeePage(@PathVariable("id") Long id, Model model) {
     LOGGER.debug("getEmployeePage() id = {}", id);
-    ResponseEmployeeDto employee = employeeRestService.getEmployeeById(id);
-    ResponseDepartmentDto department = departmentRestService
+    ResponseEmployeeDto employee = employeeService.getEmployeeById(id);
+    ResponseDepartmentDto department = departmentService
         .getDepartmentById(employee.getDepartmentId());
     model.addAttribute("employee", employee);
     model.addAttribute("departmentName", employee.getDepartmentName());
@@ -139,7 +138,7 @@ public class EmployeeController {
   public String addEmployeePage(Model model) {
     LOGGER.debug("addEmployeePage()");
     model.addAttribute("employee", new Employee());
-    model.addAttribute("departmentList", departmentRestService.getAllDepartments());
+    model.addAttribute("departmentList", departmentService.getAllDepartments());
     return "addEmployee";
   }
 
@@ -158,10 +157,10 @@ public class EmployeeController {
     LOGGER.debug("addEmployee()");
     employeeValidator.validate(employee, br);
     if (br.hasErrors()) {
-      model.addAttribute("departmentList", departmentRestService.getAllDepartments());
+      model.addAttribute("departmentList", departmentService.getAllDepartments());
       return "addEmployee";
     }
-    Long employeeId = employeeRestService.saveEmployee(employee);
+    Long employeeId = employeeService.saveEmployee(employee);
     redirectAttributes.addFlashAttribute("message",
         "Employee " + employee.getFullName() + " has been saved");
     return "redirect:/employees";
@@ -177,9 +176,9 @@ public class EmployeeController {
   @GetMapping("/employee/{id}/edit")
   public String editEmployeePage(@PathVariable("id") Long id, Model model) {
     LOGGER.debug("editEmployeePage() id = {}", id);
-    ResponseEmployeeDto employee = employeeRestService.getEmployeeById(id);
+    ResponseEmployeeDto employee = employeeService.getEmployeeById(id);
     model.addAttribute("employee", employee);
-    model.addAttribute("departmentList", departmentRestService.getAllDepartments());
+    model.addAttribute("departmentList", departmentService.getAllDepartments());
     return "editEmployee";
   }
 
@@ -200,10 +199,10 @@ public class EmployeeController {
     employeeValidator.validate(employee, br);
     LOGGER.debug("editEmployee() id = {]", id);
     if (br.hasErrors()) {
-      model.addAttribute("departmentList", departmentRestService.getAllDepartments());
+      model.addAttribute("departmentList", departmentService.getAllDepartments());
       return "editEmployee";
     }
-    employeeRestService.updateEmployee(employee);
+    employeeService.updateEmployee(employee);
     redirectAttributes.addFlashAttribute("message",
         "Employee " + employee.getFullName() + " has been updated");
     return "redirect:/employees";
@@ -220,7 +219,7 @@ public class EmployeeController {
   public String deleteDepartmentPage(@PathVariable("id") Long id,
       RedirectAttributes redirectAttributes) {
     LOGGER.debug("deleteDepartmentPage() id = {]", id);
-    employeeRestService.deleteEmployee(id);
+    employeeService.deleteEmployee(id);
     redirectAttributes.addFlashAttribute("message", "Employee has been removed");
     return "redirect:/employees";
   }

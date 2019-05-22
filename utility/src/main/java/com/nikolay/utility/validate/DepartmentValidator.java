@@ -2,6 +2,7 @@ package com.nikolay.utility.validate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -11,6 +12,7 @@ import com.nikolay.model.Department;
 /**
  * The type Department validator.
  */
+@Component
 public class DepartmentValidator implements Validator {
 
   /**

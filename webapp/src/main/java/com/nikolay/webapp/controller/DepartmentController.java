@@ -1,8 +1,7 @@
 package com.nikolay.webapp.controller;
 
-import com.nikolay.model.Department;
-import com.nikolay.model.dto.ResponseDepartmentDto;
-import com.nikolay.service.DepartmentService;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
+import com.nikolay.model.Department;
+import com.nikolay.model.dto.ResponseDepartmentDto;
+import com.nikolay.service.DepartmentService;
 
 /**
  * The type Department controller.
@@ -30,21 +31,20 @@ public class DepartmentController {
    */
   public static final Logger LOGGER = LogManager.getLogger();
 
-  private final DepartmentService departmentRestService;
+  private final DepartmentService departmentService;
 
-  @Autowired
   private final Validator departmentValidator;
 
   /**
    * Instantiates a new Department controller.
    *
-   * @param departmentRestService the department rest service
+   * @param departmentService the department rest service
    * @param departmentValidator the department validator
    */
   @Autowired
-  public DepartmentController(DepartmentService departmentRestService,
+  public DepartmentController(DepartmentService departmentService,
       Validator departmentValidator) {
-    this.departmentRestService = departmentRestService;
+    this.departmentService = departmentService;
     this.departmentValidator = departmentValidator;
   }
 
@@ -57,7 +57,7 @@ public class DepartmentController {
   @GetMapping("/departments")
   public String getAllDepartment(Model model) {
     LOGGER.debug("getAllDepartment()");
-    List<ResponseDepartmentDto> departments = departmentRestService.getAllDepartments();
+    List<ResponseDepartmentDto> departments = departmentService.getAllDepartments();
     model.addAttribute("departmentList", departments);
     return "departments";
   }
@@ -86,7 +86,7 @@ public class DepartmentController {
   @GetMapping("/department/{id}")
   public String getDepartmentPage(@PathVariable("id") Long id, Model model) {
     LOGGER.debug("getDepartmentPage() id = {}", id);
-    ResponseDepartmentDto department = departmentRestService.getDepartmentById(id);
+    ResponseDepartmentDto department = departmentService.getDepartmentById(id);
     model.addAttribute("department", department);
     return "department";
   }
@@ -107,7 +107,7 @@ public class DepartmentController {
     if (br.hasErrors()) {
       return "addDepartment";
     }
-    Long departmentId = departmentRestService.saveDepartment(department);
+    Long departmentId = departmentService.saveDepartment(department);
     redirectAttributes.addFlashAttribute("message",
         "Department " + department.getDepartmentName() + " has been saved");
     return "redirect:/departments";
@@ -123,7 +123,7 @@ public class DepartmentController {
   @GetMapping("/department/{id}/edit")
   public String editDepartmentPage(@PathVariable("id") Long id, Model model) {
     LOGGER.debug("editDepartmentPage() id = {]", id);
-    ResponseDepartmentDto department = departmentRestService.getDepartmentById(id);
+    ResponseDepartmentDto department = departmentService.getDepartmentById(id);
     model.addAttribute("department", department);
     return "editDepartment";
   }
@@ -146,7 +146,7 @@ public class DepartmentController {
     if (br.hasErrors()) {
       return "editDepartment";
     }
-    departmentRestService.updateDepartment(department);
+    departmentService.updateDepartment(department);
     redirectAttributes.addFlashAttribute("message",
         "Department " + department.getDepartmentName() + " has been updated");
     return "redirect:/departments";
@@ -163,7 +163,7 @@ public class DepartmentController {
   public String deleteDepartmentPage(@PathVariable("id") Long id,
       RedirectAttributes redirectAttributes) {
     LOGGER.debug("deleteDepartmentPage() id = {}", id);
-    departmentRestService.deleteDepartment(id);
+    departmentService.deleteDepartment(id);
     redirectAttributes.addFlashAttribute("message", "Department has been removed");
     return "redirect:/departments";
   }

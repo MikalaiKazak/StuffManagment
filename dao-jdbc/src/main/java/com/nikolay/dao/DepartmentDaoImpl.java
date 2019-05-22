@@ -16,7 +16,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import com.nikolay.dao.mapper.DepartmentMapper;
@@ -32,7 +31,7 @@ public class DepartmentDaoImpl implements DepartmentDao {
   private static final Logger LOGGER = LogManager.getLogger();
 
   private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-  private final DepartmentMapper departmentMapper = new DepartmentMapper();
+  private final DepartmentMapper departmentMapper;
 
   @Value("${parameters.department_id}")
   private String parameterDepartmentId;
@@ -64,8 +63,9 @@ public class DepartmentDaoImpl implements DepartmentDao {
    * @param dataSource the data source
    */
   @Autowired
-  public DepartmentDaoImpl(DataSource dataSource) {
+  public DepartmentDaoImpl(DataSource dataSource, DepartmentMapper departmentMapper) {
     this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    this.departmentMapper = departmentMapper;
   }
 
   @Override

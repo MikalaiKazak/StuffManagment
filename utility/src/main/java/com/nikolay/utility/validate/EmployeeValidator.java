@@ -6,6 +6,7 @@ import java.time.Period;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -15,6 +16,7 @@ import com.nikolay.model.Employee;
 /**
  * The type Employee validator.
  */
+@Component
 public class EmployeeValidator implements Validator {
 
   /**

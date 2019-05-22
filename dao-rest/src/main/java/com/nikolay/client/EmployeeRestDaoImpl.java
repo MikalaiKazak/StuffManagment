@@ -32,14 +32,11 @@ public class EmployeeRestDaoImpl implements EmployeeDao {
    * The constant LOGGER.
    */
   public static final Logger LOGGER = LogManager.getLogger();
-
+  private final RestTemplate restTemplate;
   @Value("${employee.endpoint}")
   private String url;
-
   @Value("${employee.endpoint.with.id}")
   private String urlWithParamUrl;
-
-  private final RestTemplate restTemplate;
 
   /**
    * Instantiates a new Employee rest dao.

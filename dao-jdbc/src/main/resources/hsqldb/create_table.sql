@@ -1,18 +1,18 @@
-DROP TABLE IF EXISTS EMPLOYEES;
-DROP TABLE IF EXISTS DEPARTMENTS;
+drop table if exists employees;
+drop table if exists departments;
 
-CREATE TABLE IF NOT EXISTS DEPARTMENTS
+create table if not exists departments
 (
-  DEPARTMENT_ID   BIGINT PRIMARY KEY NOT NULL IDENTITY,
-  DEPARTMENT_NAME VARCHAR(100)       NOT NULL
+  department_id   bigint primary key not null identity,
+  department_name varchar(100)       not null
 );
 
-CREATE TABLE IF NOT EXISTS EMPLOYEES
+create table if not exists employees
 (
-  EMPLOYEE_ID               BIGINT PRIMARY KEY NOT NULL IDENTITY,
-  EMPLOYEE_DEPARTMENT_ID    BIGINT             NOT NULL,
-  EMPLOYEE_FULL_NAME        VARCHAR(100)       NOT NULL,
-  EMPLOYEE_DATE_OF_BIRTHDAY DATE               NOT NULL,
-  EMPLOYEE_SALARY           DECIMAL(34, 2)     NOT NULL,
-  CONSTRAINT EMPLOYEES_DEPARTMENT_ID_FK FOREIGN KEY (EMPLOYEE_DEPARTMENT_ID) REFERENCES DEPARTMENTS (DEPARTMENT_ID)
+  employee_id               bigint primary key not null identity,
+  employee_department_id    bigint             not null,
+  employee_full_name        varchar(100)       not null,
+  employee_date_of_birthday date               not null,
+  employee_salary           decimal(34, 2)     not null,
+  constraint employees_department_id_fk foreign key (employee_department_id) references departments (department_id)
 );

@@ -41,20 +41,26 @@
     <property name="dataSource" ref="dataSource"/>
   </bean>
 
+  <bean class="com.nikolay.dao.mapper.DepartmentMapper" id="departmentMapper"/>
+
+  <bean class="com.nikolay.dao.mapper.EmployeeMapper" id="employeeMapper"/>
+
   <bean class="com.nikolay.dao.DepartmentDaoImpl" id="departmentDao">
     <constructor-arg ref="dataSource"/>
+    <constructor-arg ref="departmentMapper"/>
   </bean>
 
   <bean class="com.nikolay.dao.EmployeeDaoImpl" id="employeeDao">
     <constructor-arg ref="dataSource"/>
+    <constructor-arg ref="employeeMapper"/>
   </bean>
 
   <bean class="com.nikolay.service.impl.DepartmentServiceImpl" id="departmentService">
-    <constructor-arg name="departmentDao" ref="departmentDao"/>
+    <constructor-arg ref="departmentDao"/>
   </bean>
 
   <bean class="com.nikolay.service.impl.EmployeeServiceImpl" id="employeeService">
-    <constructor-arg name="employeeDao" ref="employeeDao"/>
+    <constructor-arg ref="employeeDao"/>
   </bean>
 
   <bean class="com.nikolay.utility.validate.EmployeeValidator" id="employeeValidator"/>

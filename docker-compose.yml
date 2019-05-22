@@ -82,10 +82,6 @@ services:
       - ./rest/target/rest.war:/usr/local/tomcat/webapps/rest.war
       - /tmp/logs/rest-logs:/usr/local/tomcat/logs
     environment:
-      - DRIVER_DB=org.postgresql.Driver
-      - HOST_DB=jdbc:postgresql://postgres:5432/department?stringtype=unspecified
-      - USER_NAME=hr
-      - PASSWORD_DB=postgres
       - DATABASE=postgres
     links:
       - "postgres"

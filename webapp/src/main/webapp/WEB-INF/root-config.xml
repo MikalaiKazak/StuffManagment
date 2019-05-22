@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.springframework.org/schema/beans"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+       http://www.springframework.org/schema/context/spring-context.xsd">
 
   <import resource="mvc-config.xml"/>
 
@@ -13,9 +13,8 @@
   <context:annotation-config/>
 
   <context:property-placeholder ignore-resource-not-found="true"
-    location="classpath*:/url-local.properties,
-                classpath*:/messages.properties,
-                classpath*:/url-${profile}.properties"/>
+    location="classpath*:/messages.properties,
+              classpath*:/url-${PROFILE}.properties"/>
 
   <bean id="sender" class="zipkin2.reporter.beans.OkHttpSenderFactoryBean">
     <property name="endpoint" value="http://zipkin:9411/api/v2/spans"/>
@@ -66,19 +65,19 @@
   </bean>
 
   <bean class="com.nikolay.client.DepartmentRestDaoImpl" id="departmentRestDao">
-    <constructor-arg name="restTemplate" ref="restTemplate"/>
+    <constructor-arg ref="restTemplate"/>
   </bean>
 
   <bean class="com.nikolay.client.EmployeeRestDaoImpl" id="employeeRestDao">
-    <constructor-arg name="restTemplate" ref="restTemplate"/>
+    <constructor-arg ref="restTemplate"/>
   </bean>
 
   <bean class="com.nikolay.service.impl.DepartmentServiceImpl" id="departmentService">
-    <constructor-arg name="departmentDao" ref="departmentRestDao"/>
+    <constructor-arg ref="departmentRestDao"/>
   </bean>
 
   <bean class="com.nikolay.service.impl.EmployeeServiceImpl" id="employeeService">
-    <constructor-arg name="employeeDao" ref="employeeRestDao"/>
+    <constructor-arg ref="employeeRestDao"/>
   </bean>
 
   <bean class="com.nikolay.utility.validate.EmployeeValidator" id="employeeValidator"/>

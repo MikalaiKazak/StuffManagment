@@ -13,11 +13,10 @@
   <context:annotation-config/>
 
   <context:property-placeholder ignore-resource-not-found="true"
-    location="classpath*:/url-local.properties,
-                                        classpath*:/url-${profile}.properties"/>
+    location="classpath*:/url-local.properties"/>
 
   <bean class="com.nikolay.client.handler.CustomResponseErrorHandler"
-    id="customResponseErrorHandler"/>
+        id="customResponseErrorHandler"/>
 
   <bean class="org.mockito.Mockito" factory-method="mock" id="mockRestTemplate">
     <constructor-arg value="org.springframework.web.client.RestTemplate"/>

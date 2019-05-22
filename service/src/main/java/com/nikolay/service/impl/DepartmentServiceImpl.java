@@ -19,23 +19,17 @@ import com.nikolay.service.exception.OperationFailedException;
 public class DepartmentServiceImpl implements DepartmentService {
 
   public static final Logger LOGGER = LogManager.getLogger();
-
+  private final DepartmentDao departmentDao;
   @Value("${departmentService.notUpdated}")
   private String departmentNotUpdated;
-
   @Value("${departmentService.notDeleted}")
   private String departmentNotDeleted;
-
   @Value("${departmentService.notSaved}")
   private String departmentNotSave;
-
   @Value("${department.incorrectDepartmentId}")
   private String incorrectDepartmentId;
-
   @Value("${department.incorrectDepartmentName}")
   private String incorrectDepartmentName;
-
-  private final DepartmentDao departmentDao;
 
   public DepartmentServiceImpl(DepartmentDao departmentDao) {
     LOGGER.debug("getAllDepartments()");

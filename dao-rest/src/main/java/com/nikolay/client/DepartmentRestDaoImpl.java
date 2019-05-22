@@ -29,14 +29,11 @@ public class DepartmentRestDaoImpl implements DepartmentDao {
    * The constant LOGGER.
    */
   public static final Logger LOGGER = LogManager.getLogger();
-
+  private final RestTemplate restTemplate;
   @Value("${department.endpoint}")
   private String url;
-
   @Value("${department.endpoint.with.id}")
   private String urlWithIdParam;
-
-  private final RestTemplate restTemplate;
 
   /**
    * Instantiates a new Department rest dao.

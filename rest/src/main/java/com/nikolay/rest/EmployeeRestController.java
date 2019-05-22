@@ -40,9 +40,9 @@ public class EmployeeRestController {
    */
   public static final Logger LOGGER = LogManager.getLogger();
 
-  private EmployeeService employeeService;
+  private final EmployeeService employeeService;
 
-  private Validator employeeValidator;
+  private final Validator employeeValidator;
 
   /**
    * Instantiates a new Employee rest controller.

@@ -5,9 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.nikolay.model.dto.ResponseDepartmentDto;
 
+@Component
 public class DepartmentMapper implements RowMapper<ResponseDepartmentDto> {
 
   public static final String DEPARTMENT_ID = "department_id";

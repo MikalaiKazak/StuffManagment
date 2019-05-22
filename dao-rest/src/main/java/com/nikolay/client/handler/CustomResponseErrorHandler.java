@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResponseErrorHandler;
@@ -14,6 +15,7 @@ import com.nikolay.client.exception.ServerDataAccessException;
 /**
  * The type Custom response error handler.
  */
+@ControllerAdvice
 public class CustomResponseErrorHandler implements ResponseErrorHandler {
 
   private static final Logger LOGGER = LogManager.getLogger();

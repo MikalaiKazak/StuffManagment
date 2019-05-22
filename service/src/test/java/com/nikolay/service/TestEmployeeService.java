@@ -50,10 +50,10 @@ public class TestEmployeeService {
   private static final Long INCORRECT_EMPLOYEE_ID = -20L;
 
   @Autowired
-  EmployeeDao employeeDaoMock;
+  private EmployeeDao employeeDao;
 
   @Autowired
-  EmployeeService employeeService;
+  private EmployeeService employeeService;
 
   private Employee saveEmployee;
   private ResponseEmployeeDto responseEmployeeDto;
@@ -86,19 +86,19 @@ public class TestEmployeeService {
 
   @After
   public void afterTest() {
-    verifyNoMoreInteractions(employeeDaoMock);
-    reset(employeeDaoMock);
+    verifyNoMoreInteractions(employeeDao);
+    reset(employeeDao);
     LOGGER.error("execute: afterTest()");
   }
 
   @Test
   public void testGetEmployeeById() {
     LOGGER.debug("test Service: run testGetEmployeeById()");
-    when(employeeDaoMock.getEmployeeById(CORRECT_EMPLOYEE_ID)).thenReturn(responseEmployeeDto);
+    when(employeeDao.getEmployeeById(CORRECT_EMPLOYEE_ID)).thenReturn(responseEmployeeDto);
 
     ResponseEmployeeDto newEmployee = employeeService.getEmployeeById(CORRECT_EMPLOYEE_ID);
 
-    verify(employeeDaoMock).getEmployeeById(CORRECT_EMPLOYEE_ID);
+    verify(employeeDao).getEmployeeById(CORRECT_EMPLOYEE_ID);
     assertNotNull(newEmployee);
     assertEquals(CORRECT_EMPLOYEE_ID, newEmployee.getId().longValue());
     assertEquals(CORRECT_EMPLOYEE_FULL_NAME, newEmployee.getFullName());
@@ -111,11 +111,11 @@ public class TestEmployeeService {
   @Test
   public void testSaveEmployee() {
     LOGGER.debug("test Service: run testSaveEmployee()");
-    when(employeeDaoMock.saveEmployee(saveEmployee)).thenReturn(NEW_EMPLOYEE_ID);
+    when(employeeDao.saveEmployee(saveEmployee)).thenReturn(NEW_EMPLOYEE_ID);
 
     Long employeeId = employeeService.saveEmployee(saveEmployee);
 
-    verify(employeeDaoMock).saveEmployee(saveEmployee);
+    verify(employeeDao).saveEmployee(saveEmployee);
     assertNotNull(employeeId);
     assertEquals(NEW_EMPLOYEE_ID, employeeId.longValue());
   }
@@ -123,31 +123,31 @@ public class TestEmployeeService {
   @Test
   public void testUpdateEmployee() {
     LOGGER.debug("test Service: run testUpdateEmployee()");
-    when(employeeDaoMock.updateEmployee(saveEmployee)).thenReturn(true);
+    when(employeeDao.updateEmployee(saveEmployee)).thenReturn(true);
 
     employeeService.updateEmployee(saveEmployee);
 
-    verify(employeeDaoMock).updateEmployee(saveEmployee);
+    verify(employeeDao).updateEmployee(saveEmployee);
   }
 
   @Test
   public void testDeleteEmployee() {
     LOGGER.debug("test Service: run testDeleteEmployee()");
-    when(employeeDaoMock.deleteEmployee(CORRECT_EMPLOYEE_ID)).thenReturn(true);
+    when(employeeDao.deleteEmployee(CORRECT_EMPLOYEE_ID)).thenReturn(true);
 
     employeeService.deleteEmployee(CORRECT_EMPLOYEE_ID);
 
-    verify(employeeDaoMock).deleteEmployee(CORRECT_EMPLOYEE_ID);
+    verify(employeeDao).deleteEmployee(CORRECT_EMPLOYEE_ID);
   }
 
   @Test
   public void testGetAllEmployee() {
     LOGGER.debug("test Service: run testGetAllEmployee()");
-    when(employeeDaoMock.getAllEmployees()).thenReturn(employees);
+    when(employeeDao.getAllEmployees()).thenReturn(employees);
 
     List<ResponseEmployeeDto> employees = employeeService.getAllEmployees();
 
-    verify(employeeDaoMock).getAllEmployees();
+    verify(employeeDao).getAllEmployees();
     assertNotNull(employees);
     assertEquals(CORRECT_AMOUNT_EMPLOYEES, employees.size());
   }
@@ -156,25 +156,25 @@ public class TestEmployeeService {
   @Test
   public void testGetEmployeeByDateOfBirthday() {
     LOGGER.debug("test Service: run testGetEmployeeByDateOfBirthday()");
-    when(employeeDaoMock.getEmployeesByDateOfBirthday(DATE))
+    when(employeeDao.getEmployeesByDateOfBirthday(DATE))
         .thenReturn(Collections.singletonList(responseEmployeeDto));
 
     List<ResponseEmployeeDto> employees = employeeService.getEmployeesByDateOfBirthday(DATE);
 
     assertNotNull(employees);
-    verify(employeeDaoMock).getEmployeesByDateOfBirthday(DATE);
+    verify(employeeDao).getEmployeesByDateOfBirthday(DATE);
   }
 
   @Test
   public void testGetEmployeeBetweenDatesOfBirthday() {
     LOGGER.debug("test Service: run testGetEmployeeBetweenDatesOfBirthday()");
-    when(employeeDaoMock.getEmployeesBetweenDatesOfBirthday(DATE_FROM, DATE_TO))
+    when(employeeDao.getEmployeesBetweenDatesOfBirthday(DATE_FROM, DATE_TO))
         .thenReturn(employees);
 
     List<ResponseEmployeeDto> employees = employeeService
         .getEmployeesBetweenDatesOfBirthday(DATE_FROM, DATE_TO);
 
-    verify(employeeDaoMock).getEmployeesBetweenDatesOfBirthday(DATE_FROM, DATE_TO);
+    verify(employeeDao).getEmployeesBetweenDatesOfBirthday(DATE_FROM, DATE_TO);
     assertNotNull(employees);
     assertEquals(CORRECT_AMOUNT_EMPLOYEES, employees.size());
   }
@@ -182,13 +182,13 @@ public class TestEmployeeService {
   @Test(expected = OperationFailedException.class)
   public void testGetEmployeeByIdException() {
     LOGGER.debug("test Service: run testGetEmployeeByIdException()");
-    when(employeeDaoMock.getEmployeeById(INCORRECT_EMPLOYEE_ID))
+    when(employeeDao.getEmployeeById(INCORRECT_EMPLOYEE_ID))
         .thenThrow(OperationFailedException.class);
 
     ResponseEmployeeDto employee = employeeService.getEmployeeById(INCORRECT_EMPLOYEE_ID);
 
     assertNull(employee);
-    verifyZeroInteractions(employeeDaoMock.getEmployeeById(CORRECT_EMPLOYEE_ID));
+    verifyZeroInteractions(employeeDao.getEmployeeById(CORRECT_EMPLOYEE_ID));
   }
 }
 

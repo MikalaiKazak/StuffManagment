@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import com.nikolay.dao.mapper.EmployeeMapper;
 import com.nikolay.model.Employee;
@@ -25,14 +25,13 @@ import com.nikolay.model.dto.ResponseEmployeeDto;
 /**
  * The type Employee dao.
  */
-@Component
+@Repository
 public class EmployeeDaoImpl implements EmployeeDao {
 
   private static final Logger LOGGER = LogManager.getLogger();
 
   private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-  private final EmployeeMapper employeeMapper = new EmployeeMapper();
-
+  private final EmployeeMapper employeeMapper;
   @Value("${parameters.employee_id}")
   private String parameterEmployeeId;
 
@@ -81,8 +80,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
    * @param dataSource the data source
    */
   @Autowired
-  public EmployeeDaoImpl(DataSource dataSource) {
+  public EmployeeDaoImpl(DataSource dataSource, EmployeeMapper employeeMapper) {
     this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    this.employeeMapper = employeeMapper;
   }
 
   @Override

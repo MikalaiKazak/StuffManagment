@@ -38,8 +38,8 @@ public class TestEmployeeDao {
 
   private static final long CORRECT_EMPLOYEE_ID = 1L;
   private static final long CORRECT_EMPLOYEE_DEPARTMENT_ID = 3L;
-  private static final String CORRECT_EMPLOYEE_DEPARTMENT_NAME = "Engineering";
-  private static final String CORRECT_EMPLOYEE_FULL_NAME = "Clem Hudspith";
+  private static final String CORRECT_EMPLOYEE_DEPARTMENT_NAME = "engineering";
+  private static final String CORRECT_EMPLOYEE_FULL_NAME = "clem hudspith";
   private static final LocalDate CORRECT_EMPLOYEE_BIRTHDAY = LocalDate.of(1982, 4, 2);
   private static final BigDecimal CORRECT_EMPLOYEE_SALARY = BigDecimal.valueOf(810).setScale(2);
 

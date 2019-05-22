@@ -37,7 +37,7 @@ public class DepartmentRestController {
   public static final Logger LOGGER = LogManager.getLogger();
 
   private final Validator departmentValidator;
-  private DepartmentService departmentService;
+  private final DepartmentService departmentService;
 
   /**
    * Instantiates a new Department rest controller.

@@ -36,7 +36,7 @@ public class TestDepartmentDao {
   private static final long CORRECT_AMOUNT_DEPARTMENTS = 14L;
 
   private static final long CORRECT_DEPARTMENT_ID = 1L;
-  private static final String CORRECT_DEPARTMENT_NAME = "Accounting";
+  private static final String CORRECT_DEPARTMENT_NAME = "accounting";
   private static final BigDecimal CORRECT_DEPARTMENT_AVERAGE_SALARY = new BigDecimal(2399.5)
       .setScale(2);
 

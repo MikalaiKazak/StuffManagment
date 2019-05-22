@@ -22,32 +22,23 @@ import com.nikolay.service.exception.OperationFailedException;
 public class EmployeeServiceImpl implements EmployeeService {
 
   public static final Logger LOGGER = LogManager.getLogger();
-
+  private final EmployeeDao employeeDao;
   @Value("${employeeService.notUpdated}")
   private String employeeNotUpdated;
-
   @Value("${employeeService.notDeleted}")
   private String employeeNotDeleted;
-
   @Value("${employee.incorrectId}")
   private String incorrectEmployeeId;
-
   @Value("${employee.incorrectEmployee}")
   private String incorrectEmployee;
-
   @Value("${department.incorrectDepartmentId}")
   private String incorrectDepartmentId;
-
   @Value("${employee.incorrectFullName}")
   private String incorrectFullName;
-
   @Value("${employee.incorrectBirthday}")
   private String incorrectBirthday;
-
   @Value("${employee.incorrectSalary}")
   private String incorrectSalary;
-
-  private final EmployeeDao employeeDao;
 
   public EmployeeServiceImpl(EmployeeDao employeeDao) {
     LOGGER.debug("setEmployeeDao");
