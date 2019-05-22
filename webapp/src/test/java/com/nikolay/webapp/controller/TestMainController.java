@@ -22,15 +22,12 @@ public class TestMainController {
 
   public static final Logger LOGGER = LogManager.getLogger();
 
-  @Autowired
-  private MainController mainController;
-
   private MockMvc mockMvc;
 
   @Before
   public void setUp() {
     LOGGER.debug("execute before test method");
-    mockMvc = MockMvcBuilders.standaloneSetup(mainController)
+    mockMvc = MockMvcBuilders.standaloneSetup(new MainController())
         .setMessageConverters(new MappingJackson2HttpMessageConverter())
         .build();
   }

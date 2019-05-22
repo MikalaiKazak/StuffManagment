@@ -16,11 +16,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
+import java.beans.ConstructorProperties;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.annotation.Resource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,15 +28,20 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nikolay.model.Department;
 import com.nikolay.model.dto.ResponseDepartmentDto;
+import com.nikolay.rest.controller.DepartmentRestController;
 import com.nikolay.service.DepartmentService;
+import com.nikolay.utility.validate.DepartmentValidator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-rest-mock.xml"})
@@ -46,15 +50,14 @@ public class TestDepartmentRestController {
   public static final Logger LOGGER = LogManager.getLogger();
 
   @Autowired
-  DepartmentService mockDepartmentService;
+  private DepartmentService mockDepartmentService;
 
-  @Resource
-  private DepartmentRestController departmentRestController;
+  @Autowired
+  private DepartmentValidator departmentValidator;
 
   private MockMvc mockMvc;
   private Department saveDepartment;
   private ResponseDepartmentDto responseDepartmentDto;
-  private Department correctDepartment;
   private List<ResponseDepartmentDto> departments;
 
   @Before
@@ -62,9 +65,8 @@ public class TestDepartmentRestController {
     LOGGER.error("execute: beforeTest()");
     saveDepartment = new Department(1L, "New Department");
     responseDepartmentDto = new ResponseDepartmentDto(14L, "Services", BigDecimal.valueOf(3249));
-    correctDepartment = new Department(14L, "JAVA");
     departments = Arrays.asList(responseDepartmentDto, responseDepartmentDto);
-    mockMvc = standaloneSetup(departmentRestController)
+    mockMvc = standaloneSetup(new DepartmentRestController(mockDepartmentService, departmentValidator))
         .setMessageConverters(createJacksonMessageConverter())
         .build();
   }

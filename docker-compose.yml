@@ -13,23 +13,17 @@ services:
       POSTGRES_USER: 'hr'
     networks:
       - "app"
-      
-  storage:
-    image: openzipkin/zipkin-mysql
-    container_name: mysql
-    networks:
-      - "app"
 
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
     environment:
-      - STORAGE_TYPE=mysql
-      - MYSQL_HOST=mysql
+      - STORAGE_TYPE=elasticsearch
+      - ES_HOSTS=elasticsearch
     ports:
       - "9411:9411"
     depends_on:
-      - "storage"
+      - "elasticsearch"
     networks:
       - "app"
 
@@ -76,15 +70,16 @@ services:
       - "logstash"
       
   rest-server:
-    image: tomcat:9-jre8
+    image: openjdk:8
     container_name: rest-server
     volumes:
-      - ./rest/target/rest.war:/usr/local/tomcat/webapps/rest.war
+      - ./rest/target/rest.jar:/usr/src/rest.jar
       - /tmp/logs/rest-logs:/usr/local/tomcat/logs
-    environment:
-      - DATABASE=postgres
     links:
       - "postgres"
+    command: bash -c "cd /usr/src/ && java -jar rest.jar"
+    stdin_open: false
+    tty: true
     ports:
       - "8081:8080"
     depends_on:
@@ -94,15 +89,16 @@ services:
       - "app"
 
   rest-client:
-    image: tomcat:9-jre8
+    image: openjdk:8
     container_name: rest-client
-    environment:
-      - "JAVA_OPTS=-Dprofile=docker"
     volumes:
-      - ./webapp/target/webapp.war:/usr/local/tomcat/webapps/webapp.war
+      - ./webapp/target/webapp.jar:/usr/src/webapp.jar
       - /tmp/logs/webapp_logs:/usr/local/tomcat/logs
+    command: bash -c "cd /usr/src/ && java -jar webapp.jar"
     ports:
       - "8082:8080"
+    stdin_open: false
+    tty: true
     depends_on:
       - "zipkin"
       - "logstash"

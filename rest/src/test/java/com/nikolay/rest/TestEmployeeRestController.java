@@ -22,8 +22,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -39,7 +37,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nikolay.model.Employee;
 import com.nikolay.model.dto.ResponseEmployeeDto;
+import com.nikolay.rest.controller.EmployeeRestController;
 import com.nikolay.service.EmployeeService;
+import com.nikolay.utility.validate.EmployeeValidator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/test-rest-mock.xml"})
@@ -48,10 +48,10 @@ public class TestEmployeeRestController {
   public static final Logger LOGGER = LogManager.getLogger();
 
   @Autowired
-  EmployeeService mockEmployeeService;
+  private EmployeeService mockEmployeeService;
 
-  @Resource
-  private EmployeeRestController employeeRestController;
+  @Autowired
+  private EmployeeValidator employeeValidator;
 
   private MockMvc mockMvc;
 
@@ -68,7 +68,7 @@ public class TestEmployeeRestController {
         LocalDate.of(1999, 2, 28),
         BigDecimal.valueOf(350));
     employees = Arrays.asList(correctEmployee, correctEmployee);
-    mockMvc = standaloneSetup(employeeRestController)
+    mockMvc = standaloneSetup(new EmployeeRestController(mockEmployeeService, employeeValidator))
         .setMessageConverters(createJacksonMessageConverter())
         .build();
   }

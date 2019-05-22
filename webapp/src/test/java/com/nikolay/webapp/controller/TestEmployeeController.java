@@ -34,7 +34,9 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import com.nikolay.model.Employee;
 import com.nikolay.model.dto.ResponseDepartmentDto;
 import com.nikolay.model.dto.ResponseEmployeeDto;
+import com.nikolay.service.DepartmentService;
 import com.nikolay.service.EmployeeService;
+import com.nikolay.utility.validate.EmployeeValidator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/mock-test-webapp.xml"})
@@ -43,12 +45,14 @@ public class TestEmployeeController {
   public static final Logger LOGGER = LogManager.getLogger();
 
   @Autowired
-  private EmployeeController employeeController;
+  private EmployeeValidator employeeValidator;
 
   @Autowired
   private EmployeeService mockEmployeeService;
 
-  private ResponseDepartmentDto dep1;
+  @Autowired
+  private DepartmentService mockDepartmentService;
+
   private Employee emp1;
   private ResponseEmployeeDto emp2;
   private List<ResponseEmployeeDto> employees;
@@ -60,14 +64,15 @@ public class TestEmployeeController {
     LOGGER.error("execute: beforeTest()");
     InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
     viewResolver.setSuffix(".html");
-    viewResolver.setPrefix("/WEB-INF/templates/");
-    dep1 = new ResponseDepartmentDto(1L, "Services", BigDecimal.valueOf(200));
+    viewResolver.setPrefix("/templates/");
+    ResponseDepartmentDto dep1 = new ResponseDepartmentDto(1L, "Services", BigDecimal.valueOf(200));
     emp1 = new Employee(1L, 1L, "Nikolay Kozak", LocalDate.of(1999, 2, 28),
         BigDecimal.valueOf(350));
     emp2 = new ResponseEmployeeDto(2L, 1L, "Services", "Dmitry Kozak", LocalDate.of(2000, 12, 5),
         BigDecimal.valueOf(300));
     employees = Arrays.asList(emp2, emp2);
-    mockMvc = MockMvcBuilders.standaloneSetup(new ErrorController(), employeeController)
+    mockMvc = MockMvcBuilders.standaloneSetup(new ErrorController(),
+        new EmployeeController(mockEmployeeService, mockDepartmentService, employeeValidator))
         .setViewResolvers(viewResolver)
         .build();
   }

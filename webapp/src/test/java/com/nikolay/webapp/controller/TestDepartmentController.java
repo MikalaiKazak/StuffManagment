@@ -33,6 +33,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import com.nikolay.model.Department;
 import com.nikolay.model.dto.ResponseDepartmentDto;
 import com.nikolay.service.DepartmentService;
+import com.nikolay.utility.validate.DepartmentValidator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:/mock-test-webapp.xml"})
@@ -41,10 +42,10 @@ public class TestDepartmentController {
   public static final Logger LOGGER = LogManager.getLogger();
 
   @Autowired
-  private DepartmentController departmentController;
+  private DepartmentService mockDepartmentService;
 
   @Autowired
-  private DepartmentService mockDepartmentService;
+  private DepartmentValidator departmentValidator;
 
   private Department dep1;
   private ResponseDepartmentDto dep2;
@@ -56,13 +57,14 @@ public class TestDepartmentController {
   public void setUp() throws ParseException {
     InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
     viewResolver.setSuffix(".html");
-    viewResolver.setPrefix("/WEB-INF/templates/");
+    viewResolver.setPrefix("/templates/");
 
     LOGGER.debug("execute before test method");
     dep1 = new Department(1L, "New Department");
     dep2 = new ResponseDepartmentDto(14L, "Services", BigDecimal.valueOf(3249));
     departments = Arrays.asList(dep2, dep2);
-    mockMvc = MockMvcBuilders.standaloneSetup(new ErrorController(), departmentController)
+    mockMvc = MockMvcBuilders
+        .standaloneSetup(new ErrorController(), new DepartmentController(mockDepartmentService, departmentValidator))
         .setViewResolvers(viewResolver)
         .build();
   }

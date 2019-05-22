@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns:context="http://www.springframework.org/schema/context"
+<beans
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://www.springframework.org/schema/beans"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-  <context:component-scan base-package="com.nikolay.rest"/>
-
-  <bean class="org.mockito.Mockito" factory-method="mock" id="departmentService">
-    <constructor-arg value="com.nikolay.service.DepartmentService"/>
+  <bean class="org.mockito.Mockito" factory-method="mock" id="mockDepartmentService">
+    <constructor-arg value="com.nikolay.service.impl.DepartmentServiceImpl"/>
   </bean>
 
-  <bean class="org.mockito.Mockito" factory-method="mock" id="employeeService">
-    <constructor-arg value="com.nikolay.service.EmployeeService"/>
+  <bean class="org.mockito.Mockito" factory-method="mock" id="mockEmployeeService">
+    <constructor-arg value="com.nikolay.service.impl.EmployeeServiceImpl"/>
   </bean>
 
   <bean class="com.nikolay.utility.validate.EmployeeValidator" id="employeeValidator"/>
