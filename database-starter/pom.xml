@@ -9,9 +9,9 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <name>database-spring-boot-starter</name>
+  <name>database-starter</name>
 
-  <artifactId>database-spring-boot-starter</artifactId>
+  <artifactId>database-starter</artifactId>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,7 +28,7 @@
     </dependency>
     <dependency>
       <groupId>com.nikolay.department-app</groupId>
-      <artifactId>database-spring-boot-autoconfigure</artifactId>
+      <artifactId>database-autoconfigure</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>

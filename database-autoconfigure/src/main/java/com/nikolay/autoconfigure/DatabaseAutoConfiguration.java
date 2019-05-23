@@ -2,6 +2,7 @@ package com.nikolay.autoconfigure;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -22,10 +23,11 @@ public class DatabaseAutoConfiguration {
   private static final String URL = "jdbc:hsqldb:mem:hr";
   private static final String USERNAME = "sa";
   private static final String PASSWORD = "";
-  private static final String DEFAULT_SCHEMA = "create_table.sql";
+  private static final String DEFAULT_SCHEMA = "hsqldb/create_table.sql";
 
   private final DatabaseProperties databaseProperties;
 
+  @Autowired
   public DatabaseAutoConfiguration(DatabaseProperties databaseProperties) {
     this.databaseProperties = databaseProperties;
   }

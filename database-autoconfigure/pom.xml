@@ -10,8 +10,8 @@
   <modelVersion>4.0.0</modelVersion>
   <packaging>jar</packaging>
 
-  <name>database-spring-boot-autoconfigure</name>
-  <artifactId>database-spring-boot-autoconfigure</artifactId>
+  <name>database-autoconfigure</name>
+  <artifactId>database-autoconfigure</artifactId>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,12 +40,6 @@
       <artifactId>spring-boot-configuration-processor</artifactId>
       <version>${spring-boot.version}</version>
       <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <version>${spring-boot.version}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 

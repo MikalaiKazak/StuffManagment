@@ -21,8 +21,7 @@
 
   <context:property-placeholder
     location="classpath*:${DATABASE}/sql.properties,
-              classpath*:messages.properties,
-              classpath*:${DATABASE}/db.properties"/>
+              classpath*:messages.properties"/>
 
   <bean class="com.nikolay.dao.mapper.DepartmentMapper" id="departmentMapper"/>
 
