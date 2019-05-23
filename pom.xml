@@ -19,6 +19,8 @@
     <module>service-api</module>
     <module>utility</module>
     <module>functional-test</module>
+    <module>database-spring-boot-starter</module>
+    <module>database-spring-boot-autoconfigure</module>
   </modules>
 
   <properties>
