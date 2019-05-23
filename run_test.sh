@@ -6,7 +6,7 @@ port=$(docker inspect --format='{{(index (index .NetworkSettings.Ports "8080/tcp
 base=/
 host=http://127.0.0.1
 
-url="$host:$port$bash rse"
+url="$host:$port$base"
 
 attempt=0
 
