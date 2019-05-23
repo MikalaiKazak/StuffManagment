@@ -19,6 +19,8 @@
     <module>service-api</module>
     <module>utility</module>
     <module>functional-test</module>
+    <module>database-starter</module>
+    <module>database-autoconfigure</module>
   </modules>
 
   <properties>
@@ -45,6 +47,11 @@
       <dependency>
         <groupId>com.nikolay.department-app</groupId>
         <artifactId>model</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.nikolay.department-app</groupId>
+        <artifactId>database-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
